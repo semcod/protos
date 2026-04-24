@@ -50,6 +50,10 @@ from .user_handler import (
     handle_list_events,
     handle_dual_write_user,
 )
+from .search_handler import (
+    handle_index_entry,
+    handle_search,
+)
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -78,6 +82,8 @@ async def lifespan(app: FastAPI):  # noqa: RUF029
 # App
 # ---------------------------------------------------------------------------
 
+from fastapi.staticfiles import StaticFiles
+
 app = FastAPI(
     title="semcod platform gateway",
     version="0.1.0",
@@ -87,6 +93,8 @@ app = FastAPI(
     ),
     lifespan=lifespan,
 )
+
+app.mount("/static", StaticFiles(directory="gateway/static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -159,6 +167,14 @@ class CreateUserRequest(BaseModel):
 class DualCreateUserRequest(CreateUserRequest):
     command_id: str
     age: int
+
+
+class IndexEntryRequest(BaseModel):
+    id: str
+    title: str
+    category: str
+    content: str
+    metadata: dict[str, str] = {}
 
 
 class ChangeEmailRequest(BaseModel):
@@ -249,3 +265,33 @@ async def list_events(aggregate_id: str | None = None) -> list[dict[str, Any]]:
     Optional query param: ``?aggregate_id=<uuid>``
     """
     return handle_list_events(aggregate_id)
+
+
+# ---------------------------------------------------------------------------
+# Search Platform
+# ---------------------------------------------------------------------------
+
+
+@app.post("/commands/search/index", tags=["search", "commands"], status_code=201)
+async def cmd_index_search_entry(body: IndexEntryRequest) -> dict[str, Any]:
+    """Index a new entry for searching."""
+    result = handle_index_entry(
+        id=body.id,
+        title=body.title,
+        category=body.category,
+        content=body.content,
+        metadata=body.metadata
+    )
+    # Broadcast event
+    await manager.broadcast("EntryIndexed", {"id": body.id, "title": body.title})
+    return result
+
+
+@app.get("/queries/search", tags=["search", "queries"])
+async def query_search(
+    q: str = "", 
+    category: str | None = None, 
+    limit: int = 20
+) -> dict[str, Any]:
+    """Perform a full-text search on the index."""
+    return handle_search(q, category, limit)

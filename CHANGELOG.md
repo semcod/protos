@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.4] - 2026-04-24
+
+### Docs
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+
+### Other
+- Update contracts/search/v1/search.proto
+- Update event_store.db-shm
+- Update event_store.db-wal
+- Update gateway/main.py
+- Update gateway/search_handler.py
+- Update gateway/static/search_v2.html
+- Update scratch/smoke_test_search.py
+- Update scripts/search_index.py
+- Update search_index.db
+
 ## [0.0.3] - 2026-04-24
 
 ### Docs

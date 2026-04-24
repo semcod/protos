@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Platform V2 - Iframe View</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; padding: 20px; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { padding: 10px; flex-grow: 1; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .results { display: grid; gap: 10px; }
+        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .card h3 { margin: 0 0 5px 0; color: #333; }
+        .category { font-size: 0.8em; color: #666; text-transform: uppercase; }
+        .badge { background: #e9ecef; padding: 2px 6px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h2>Platform Engineering: Search V2</h2>
+    <div class="search-box">
+        <input type="text" id="query" placeholder="Wyszukaj w nowej architekturze...">
+        <button onclick="performSearch()">Szukaj</button>
+    </div>
+    <div id="results" class="results">
+        <!-- Wyniki wyszukiwania -->
+    </div>
+
+    <script>
+        async function performSearch() {
+            const q = document.getElementById('query').value;
+            const res = await fetch(`/queries/search?q=${q}`);
+            const data = await res.json();
+            
+            const container = document.getElementById('results');
+            container.innerHTML = '';
+            
+            if (data.results.length === 0) {
+                container.innerHTML = '<p>Brak wyników w nowym indeksie.</p>';
+                return;
+            }
+
+            data.results.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                    <div class="category"><span class="badge">${item.category}</span></div>
+                    <h3>${item.title}</h3>
+                    <small>Score: ${item.rank.toFixed(4)}</small>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        // Initial search
+        performSearch();
+    </script>
+</body>
+</html>

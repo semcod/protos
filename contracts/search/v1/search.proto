@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package search.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Komenda dodania wpisu do indeksu
+message IndexEntryCommand {
+  string id = 1;
+  string title = 2;
+  string category = 3;
+  string content = 4;
+  map<string, string> metadata = 5;
+}
+
+// Zdarzenie: Wpis został zaindeksowany
+message EntryIndexed {
+  string id = 1;
+  string title = 2;
+  string category = 3;
+  double timestamp = 4;
+}
+
+// Zapytanie o wyszukiwanie
+message SearchRequest {
+  string query = 1;
+  string category_filter = 2;
+  int32 limit = 3;
+}
+
+message SearchResponse {
+  message Result {
+    string id = 1;
+    string title = 2;
+    string category = 3;
+    float score = 4;
+  }
+  repeated Result results = 1;
+  int32 total_count = 2;
+}
