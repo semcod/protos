@@ -1,0 +1,11 @@
+version: v1
+
+plugins:
+  - name: ts
+    out: generated/ts
+
+  - name: python
+    out: generated/python
+
+  - name: grpc-python
+    out: generated/grpc
