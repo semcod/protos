@@ -27,12 +27,10 @@ DEFAULT_CONFIG: dict[str, Any] = {
     ],
     "frontend": {
         "roots": ["frontend/src"],
-        "extensions": [".ts", ".tsx", ".js", ".jsx"],
+        "extensions": [".ts"],
         "page_patterns": [
             "pages/**/*.page.ts",
-            "pages/**/*.page.tsx",
             "**/*.page.ts",
-            "**/*.page.tsx",
         ],
         "module_dir_names": ["modules"],
         "shared_dir_names": ["services", "utils", "shared", "components", "registry", "config"],
@@ -300,13 +298,26 @@ def parse_python_imports(tree: ast.AST) -> set[str]:
 def route_group_from_prefixes(rel_path: Path, prefixes: list[str]) -> str:
     for prefix in prefixes:
         parts = [part for part in prefix.split("/") if part]
-        if len(parts) >= 3 and parts[0] == "api" and re.fullmatch(r"v\d+", parts[1]):
-            return parts[2]
         if parts:
             return parts[0]
     if len(rel_path.parts) > 1:
         return rel_path.parts[0]
-    return rel_path.stem.replace("_", "-")
+    stem = rel_path.stem
+    special = {
+        "module_registry": "registry",
+        "data_domain": "data",
+        "data_generic_crud": "data",
+        "data_models": "data",
+        "data_templates": "data",
+        "feature_flags": "feature-flags",
+        "navigation_options": "navigation-options",
+        "client_state": "state",
+    }
+    if stem in special:
+        return special[stem]
+    if stem.startswith("data_"):
+        return "data"
+    return stem.replace("_", "-")
 
 
 def counter_rows(counter: Counter[str], limit: int = 10) -> list[dict[str, Any]]:
