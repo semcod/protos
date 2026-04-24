@@ -427,6 +427,12 @@ def run_cli(
         cross_root = layers_root if layers_root is not None else contracts_dir.parent
         pairs = cross_check_contracts(result.contracts, layers_root=cross_root)
         failures = [(c, r) for c, r in pairs if not r.ok]
+        warnings_pairs = [(c, r) for c, r in pairs if r.warnings]
+        if warnings_pairs and verbose:
+            print("\n⚠️  Cross-check warnings (non-blocking):")
+            for _contract, cross_result in warnings_pairs:
+                for warn in cross_result.warnings:
+                    print(f"  ⚠️  {warn}")
         if failures:
             print(
                 "\n❌ Cross-check failed (contract enum vs Pydantic Literal):",
@@ -439,7 +445,7 @@ def run_cli(
         if verbose:
             print(
                 "\n🔗 Cross-check passed "
-                "(contract enums match Pydantic Literal[...] annotations)"
+                "(contract enums compatible with Pydantic Literal[...] annotations)"
             )
 
     if check_only:
