@@ -5,4 +5,4 @@ A CLI tool for generating code from Protobuf contracts, managing schema registri
 and migrating bounded slices from legacy systems.
 """
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
