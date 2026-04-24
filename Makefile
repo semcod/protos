@@ -96,7 +96,20 @@ legacy-register:
 diff-legacy:
 	python scripts/legacy_registry.py diff user.legacy user.v1
 
+# Generate detailed migration report
+legacy-report:
+	python scripts/legacy_registry.py report user.legacy user.v1
+
+# List all schemas
+legacy-list:
+	python scripts/legacy_registry.py list
+
 # Full sync check (fails if readiness < 1.0)
 sync-check:
 	@echo "==> Checking legacy vs proto sync"
 	@PYTHONPATH=. python scripts/legacy_bridge/sync_check.py
+
+# Bootstrap EventStore from Legacy DB
+bootstrap-legacy:
+	@echo "==> Bootstrapping EventStore from legacy.db"
+	@PYTHONPATH=. python scripts/legacy_bridge/migrator.py

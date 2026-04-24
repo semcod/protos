@@ -19,7 +19,8 @@ sys.path.insert(0, os.path.dirname(__file__))
 from parse_proto import parse_proto
 from legacy_bridge.normalizer import normalize_json_schema, normalize_proto_ast
 from legacy_bridge.diff_engine import diff_fields
-from legacy_bridge.migration_advisor import get_migration_summary
+from legacy_bridge.migration_advisor import get_migration_summary, suggest_proto_additions
+from legacy_bridge.report_generator import generate_markdown_report
 
 DB_PATH = "legacy_registry.db"
 
@@ -32,6 +33,8 @@ CREATE TABLE IF NOT EXISTS legacy_schemas (
     sha256      TEXT NOT NULL,
     schema_json TEXT NOT NULL,
     source_file TEXT,
+    author      TEXT,
+    description TEXT,
     timestamp   REAL NOT NULL,
     UNIQUE (subject, format, version)
 );
@@ -58,6 +61,8 @@ class LegacySchemaVersion:
     sha256: str
     schema_dict: dict[str, Any]
     source_file: str | None
+    author: str | None
+    description: str | None
     timestamp: float
 
 
@@ -72,7 +77,15 @@ class LegacySchemaRegistry:
             self.conn.execute(DDL_LEGACY_SCHEMAS)
             self.conn.execute(DDL_SCHEMA_DIFFS)
 
-    def register(self, subject: str, schema_format: str, schema_dict: dict[str, Any], source_file: str | None = None) -> LegacySchemaVersion:
+    def register(
+        self, 
+        subject: str, 
+        schema_format: str, 
+        schema_dict: dict[str, Any], 
+        source_file: str | None = None,
+        author: str | None = None,
+        description: str | None = None
+    ) -> LegacySchemaVersion:
         schema_json = json.dumps(schema_dict, sort_keys=True)
         sha256 = hashlib.sha256(schema_json.encode()).hexdigest()
         
@@ -82,10 +95,10 @@ class LegacySchemaRegistry:
         with self.conn:
             cursor = self.conn.execute(
                 """
-                INSERT INTO legacy_schemas (subject, format, version, sha256, schema_json, source_file, timestamp)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO legacy_schemas (subject, format, version, sha256, schema_json, source_file, author, description, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (subject, schema_format, version, sha256, schema_json, source_file, ts),
+                (subject, schema_format, version, sha256, schema_json, source_file, author, description, ts),
             )
             row_id = cursor.lastrowid
 
@@ -97,6 +110,8 @@ class LegacySchemaRegistry:
             sha256=sha256,
             schema_dict=schema_dict,
             source_file=source_file,
+            author=author,
+            description=description,
             timestamp=ts,
         )
 
@@ -125,8 +140,14 @@ class LegacySchemaRegistry:
             sha256=row["sha256"],
             schema_dict=json.loads(row["schema_json"]),
             source_file=row["source_file"],
+            author=row["author"],
+            description=row["description"],
             timestamp=row["timestamp"],
         )
+
+    def list_schemas(self) -> list[LegacySchemaVersion]:
+        rows = self.conn.execute("SELECT * FROM legacy_schemas ORDER BY subject, version DESC").fetchall()
+        return [self._row_to_sv(r) for r in rows]
 
 
 def main() -> None:
@@ -138,16 +159,28 @@ def main() -> None:
     reg_json = sub.add_parser("register-json", help="Register a JSON Schema")
     reg_json.add_argument("subject", help="Schema subject name")
     reg_json.add_argument("file", help="Path to JSON Schema file")
+    reg_json.add_argument("--author", help="Author of the schema")
+    reg_json.add_argument("--desc", help="Description of the schema")
 
     # Register Proto
     reg_proto = sub.add_parser("register-proto", help="Register a Proto contract")
     reg_proto.add_argument("subject", help="Schema subject name")
     reg_proto.add_argument("file", help="Path to .proto file")
+    reg_proto.add_argument("--author", help="Author of the contract")
+    reg_proto.add_argument("--desc", help="Description of the contract")
 
     # Diff
     diff_cmd = sub.add_parser("diff", help="Perform cross-format diff")
     diff_cmd.add_argument("legacy_subject", help="Legacy subject name")
     diff_cmd.add_argument("proto_subject", help="Proto subject name")
+
+    # Report
+    report_cmd = sub.add_parser("report", help="Generate markdown migration report")
+    report_cmd.add_argument("legacy_subject", help="Legacy subject name")
+    report_cmd.add_argument("proto_subject", help="Proto subject name")
+
+    # List
+    sub.add_parser("list", help="List all registered schemas")
 
     args = parser.parse_args()
     registry = LegacySchemaRegistry()
@@ -155,12 +188,12 @@ def main() -> None:
     if args.command == "register-json":
         with open(args.file, "r") as f:
             schema = json.load(f)
-        sv = registry.register(args.subject, "json_schema", schema, args.file)
+        sv = registry.register(args.subject, "json_schema", schema, args.file, args.author, args.desc)
         print(f"Registered {sv.subject} (JSON) version {sv.version}")
 
     elif args.command == "register-proto":
         ast = parse_proto(args.file)
-        sv = registry.register(args.subject, "proto", ast, args.file)
+        sv = registry.register(args.subject, "proto", ast, args.file, args.author, args.desc)
         print(f"Registered {sv.subject} (Proto) version {sv.version}")
 
     elif args.command == "diff":
@@ -171,12 +204,41 @@ def main() -> None:
             print("Error: Could not find latest version for one of the subjects.")
             sys.exit(1)
 
-        # Normalize (assuming first message in proto for simplicity in CLI)
         legacy_fields = normalize_json_schema(legacy.schema_dict)
         proto_fields = normalize_proto_ast(proto.schema_dict["messages"][0])
 
         report = diff_fields(legacy_fields, proto_fields)
         print(get_migration_summary(report))
+
+    elif args.command == "report":
+        legacy = registry.get_latest(args.legacy_subject, "json_schema")
+        proto = registry.get_latest(args.proto_subject, "proto")
+
+        if not legacy or not proto:
+            print("Error: Missing subjects for report.")
+            sys.exit(1)
+
+        legacy_fields = normalize_json_schema(legacy.schema_dict)
+        proto_fields = normalize_proto_ast(proto.schema_dict["messages"][0])
+
+        report = diff_fields(legacy_fields, proto_fields)
+        suggestion = suggest_proto_additions(report, proto.schema_dict["messages"][0]["name"])
+        
+        md = generate_markdown_report(
+            args.legacy_subject, 
+            legacy.version, 
+            proto.version, 
+            report, 
+            suggestion
+        )
+        print(md)
+
+    elif args.command == "list":
+        schemas = registry.list_schemas()
+        print(f"{'Subject':<20} | {'Format':<12} | {'Ver':<3} | {'Author':<15} | {'SHA256':<10}")
+        print("-" * 70)
+        for s in schemas:
+            print(f"{s.subject:<20} | {s.format:<12} | {s.version:<3} | {str(s.author):<15} | {s.sha256[:10]}")
 
 
 if __name__ == "__main__":

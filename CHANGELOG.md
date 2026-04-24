@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-04-24
+
+### Docs
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+- Update tests/test_migrator.py
+
+### Other
+- Update Makefile
+- Update legacy_registry.db
+- Update scripts/dual_writer.py
+- Update scripts/legacy_bridge/migrator.py
+- Update scripts/legacy_bridge/report_generator.py
+- Update scripts/legacy_registry.py
+
 ## [0.0.2] - 2026-04-24
 
 ### Docs

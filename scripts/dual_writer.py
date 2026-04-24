@@ -57,6 +57,10 @@ class LegacyDB:
                 user_data
             )
 
+    def get_all_users(self) -> list[dict[str, Any]]:
+        cursor = self.conn.execute("SELECT * FROM users")
+        return [dict(row) for row in cursor.fetchall()]
+
 
 class DualWriter:
     def __init__(
