@@ -1,0 +1,25 @@
+flowchart TD
+
+    %% Entry points (blue)
+    classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
+
+    subgraph Core
+        legacy_mock__src__main__search["search"]
+        legacy_mock__src__SearchIframe__SearchIframe__el["el"]
+        legacy_mock__src__SearchIframe__SearchIframe__render["render"]
+        legacy_mock__src__SearchIframe__SearchIframe__sendMessage["sendMessage"]
+        gateway__ws__ConnectionManager__connect["connect"]
+        gateway__ws__ConnectionManager__disconnect["disconnect"]
+        gateway__ws__ConnectionManager__broadcast["broadcast"]
+        adapters__legacy_to_proto__user_adapter__wrap_for_event_store["wrap_for_event_store"]
+        adapters__proto_to_legacy__user_adapter__proto_to_legacy["proto_to_legacy"]
+        gateway__delegation__DelegatedSlice___path_checks["_path_checks"]
+        gateway__delegation__DelegatedSlice__health["health"]
+        gateway__delegation__DelegatedSlice__summary["summary"]
+        gateway__delegation__DelegatedSlice__detail["detail"]
+        gateway__delegation__list_delegated_slices["list_delegated_slices"]
+        gateway__delegation__get_delegation_health["get_delegation_health"]
+        ...["+16 more"]
+    end
+
+    class legacy_mock__src__main__search,legacy_mock__src__SearchIframe__SearchIframe__el,legacy_mock__src__SearchIframe__SearchIframe__render,legacy_mock__src__SearchIframe__SearchIframe__sendMessage,gateway__ws__ConnectionManager__connect,gateway__ws__ConnectionManager__disconnect,gateway__ws__ConnectionManager__broadcast,adapters__legacy_to_proto__user_adapter__wrap_for_event_store,adapters__proto_to_legacy__user_adapter__proto_to_legacy,gateway__delegation__DelegatedSlice___path_checks entry

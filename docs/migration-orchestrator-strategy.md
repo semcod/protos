@@ -521,23 +521,40 @@ The orchestrator should enforce these invariants:
 
 ## How this maps to current `protos`
 
-### Already present
+### Already present (Phase 1 ✅)
 
-- `scripts/detect_migration_candidates.py`
-- `scripts/legacy_bridge/analyze_service_boundaries.py`
-- `scripts/legacy_bridge/generate_delegation_plan.py`
-- `scripts/legacy_bridge/delegation_plan.py`
-- slice health model in `gateway/delegation.py`
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| Candidate detection | Score modules for migration readiness | `scripts/detect_migration_candidates.py` |
+| Service boundary analysis | Detect cross-module dependencies | `scripts/legacy_bridge/analyze_service_boundaries.py` |
+| Delegation plan generator | Generate JSON/Markdown plans from candidates | `scripts/legacy_bridge/generate_delegation_plan.py` |
+| Blueprint model | Shared slice model (runtime + docs) | `scripts/legacy_bridge/delegation_plan.py` |
+| Slice registry | Runtime `DelegatedSlice` metadata & health | `gateway/delegation.py` |
+| Health endpoints | Per-slice & aggregate health checks | `GET /health/modules/{slice}` |
+| Delegation API | List slices, get metadata, check health | `/delegation/slices` |
 
-### Next orchestration steps
+### Runtime health contract
 
-1. add `run_arch_migration_discovery.py`
+```python
+# Per-slice health check
+delegated_slice.health() -> {
+  "status": "ok | degraded",
+  "missing_required": ["contracts/x/v1/x.proto"],
+  "contracts": [...],
+  "read_models": [...],
+  "frontend_assets": [...]
+}
+```
+
+### Next orchestration steps (Phase 2-3)
+
+1. add `run_arch_migration_discovery.py` – unified discovery pipeline
 2. add repository profile detection stage
 3. add shared package detection in `protos`
-4. add a common artifact schema module
+4. add a common artifact schema module (`report_models.py`)
 5. add `archive_ready_gate.py`
 6. add bootstrap/parity orchestration
-7. connect generated plans with executable slice metadata and runtime health
+7. ~~connect generated plans with executable slice metadata and runtime health~~ ✅ Phase 1 complete
 
 ## Recommended implementation roadmap
 

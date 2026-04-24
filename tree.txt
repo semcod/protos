@@ -1,0 +1,148 @@
+.
+├── adapters
+│   ├── legacy_to_proto
+│   │   └── user_adapter.py
+│   └── proto_to_legacy
+│       └── user_adapter.py
+├── buf.gen.yaml
+├── buf.yaml
+├── CHANGELOG.md
+├── contracts
+│   ├── legacy_bridge
+│   │   ├── user_legacy.schema.json
+│   │   └── user_legacy.v1.proto
+│   ├── search
+│   │   └── v1
+│   │       └── search.proto
+│   └── user
+│       ├── v1
+│       │   └── user.proto
+│       └── v2
+│           └── user.proto
+├── docker-compose.yml
+├── Dockerfile.generator
+├── event_store.db
+├── event_store.db-shm
+├── event_store.db-wal
+├── gateway
+│   ├── delegation.py
+│   ├── Dockerfile
+│   ├── __init__.py
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── search_handler.py
+│   ├── sse.py
+│   ├── static
+│   │   └── search_v2.html
+│   ├── tests
+│   │   └── test_gateway.py
+│   ├── user_handler.py
+│   └── ws.py
+├── generated
+│   ├── dart
+│   ├── go
+│   ├── grpc
+│   ├── python
+│   ├── schema
+│   ├── sql
+│   └── ts
+│       └── zod
+├── goal.yaml
+├── idempotency.db
+├── legacy.db
+├── legacy-mock
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── src
+│   │   ├── main.ts
+│   │   └── SearchIframe.ts
+│   └── tsconfig.json
+├── legacy_registry.db
+├── LICENSE
+├── Makefile
+├── project
+│   ├── analysis.toon.yaml
+│   ├── calls.mmd
+│   ├── calls.png
+│   ├── calls.toon.yaml
+│   ├── calls.yaml
+│   ├── compact_flow.mmd
+│   ├── compact_flow.png
+│   ├── context.md
+│   ├── evolution.toon.yaml
+│   ├── flow.mmd
+│   ├── flow.png
+│   ├── index.html
+│   ├── map.toon.yaml
+│   ├── mermaid.export
+│   ├── project.toon.yaml
+│   ├── prompt.txt
+│   └── README.md
+├── project.sh
+├── pytest.ini
+├── README.md
+├── requirements.txt
+├── scratch
+│   ├── smoke_test_dual_write.py
+│   └── smoke_test_search.py
+├── scripts
+│   ├── conflict_resolver.py
+│   ├── detect_migration_candidates.py
+│   ├── dual_writer.py
+│   ├── event_store.py
+│   ├── generate_incremental.py
+│   ├── generate_json_schema.py
+│   ├── generate_pydantic.py
+│   ├── generate_sql.py
+│   ├── generate_zod.py
+│   ├── idempotency_store.py
+│   ├── __init__.py
+│   ├── legacy_bridge
+│   │   ├── analyze_service_boundaries.py
+│   │   ├── delegation_plan.py
+│   │   ├── detect_cqrs_pattern_clusters.py
+│   │   ├── diff_engine.py
+│   │   ├── generate_delegation_plan.py
+│   │   ├── generate_migration_wave_plan.py
+│   │   ├── __init__.py
+│   │   ├── migration_advisor.py
+│   │   ├── migrator.py
+│   │   ├── normalizer.py
+│   │   ├── report_generator.py
+│   │   ├── run_arch_migration_discovery.py
+│   │   └── sync_check.py
+│   ├── legacy_registry.py
+│   ├── parse_proto.py
+│   ├── schema_registry.py
+│   ├── search_index.py
+│   └── vector_clock.py
+├── search_index.db
+├── test_event_store.db-shm
+├── test_event_store.db-wal
+├── test_event_store_mig.db-shm
+├── test_event_store_mig.db-wal
+├── tests
+│   ├── conftest.py
+│   ├── test_analyze_service_boundaries.py
+│   ├── test_conflict_resolver.py
+│   ├── test_delegation_plan.py
+│   ├── test_delegation_registry.py
+│   ├── test_detect_cqrs_pattern_clusters.py
+│   ├── test_detect_migration_candidates.py
+│   ├── test_diff_engine.py
+│   ├── test_dual_write.py
+│   ├── test_event_store.py
+│   ├── test_generate_migration_wave_plan.py
+│   ├── test_generators.py
+│   ├── test_incremental.py
+│   ├── test_legacy_registry.py
+│   ├── test_migrator.py
+│   ├── test_run_arch_migration_discovery.py
+│   └── test_schema_registry.py
+├── TODO.md
+├── tree.sh
+├── tree.txt
+└── VERSION
+
+30 directories, 116 files

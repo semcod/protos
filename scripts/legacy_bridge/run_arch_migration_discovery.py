@@ -4,6 +4,7 @@ import argparse
 import json
 import sys
 from collections import Counter
+from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -29,6 +30,7 @@ try:
     from legacy_bridge.detect_cqrs_pattern_clusters import analyze_repository as analyze_cqrs_pattern_clusters
     from legacy_bridge.detect_cqrs_pattern_clusters import render_markdown as render_cqrs_pattern_clusters_markdown
     from legacy_bridge.delegation_plan import build_output_row, render_markdown as render_delegation_markdown
+    from legacy_bridge.generate_migration_wave_plan import build_waves, render_markdown as render_wave_plan_markdown
 except ModuleNotFoundError:
     from analyze_service_boundaries import analyze as analyze_service_boundaries
     from analyze_service_boundaries import build_markdown as build_service_boundaries_markdown
@@ -36,6 +38,7 @@ except ModuleNotFoundError:
     from detect_cqrs_pattern_clusters import analyze_repository as analyze_cqrs_pattern_clusters
     from detect_cqrs_pattern_clusters import render_markdown as render_cqrs_pattern_clusters_markdown
     from delegation_plan import build_output_row, render_markdown as render_delegation_markdown
+    from generate_migration_wave_plan import build_waves, render_markdown as render_wave_plan_markdown
 
 LANGUAGE_SUFFIXES = {
     ".py": "python",
@@ -239,6 +242,7 @@ def build_summary(
     service_boundary_payload: dict[str, Any],
     cqrs_pattern_payload: dict[str, Any],
     delegation_rows: list[dict[str, Any]],
+    wave_plan_payload: dict[str, Any],
     artifact_paths: dict[str, str],
 ) -> dict[str, Any]:
     return {
@@ -254,12 +258,14 @@ def build_summary(
             "service_boundary_modules": len(service_boundary_payload.get("frontend_modules", [])),
             "cqrs_pattern_modules": len(cqrs_pattern_payload.get("rows", [])),
             "cqrs_clusters": len(cqrs_pattern_payload.get("clusters", [])),
+            "migration_waves": len(wave_plan_payload.get("waves", [])),
             "recommended_services": len(service_boundary_payload.get("recommended_service_candidates", [])),
             "delegation_plan_modules": len(delegation_rows),
         },
         "top_candidates": [row["module"] for row in candidate_rows[:5]],
         "top_service_candidates": [row["module"] for row in service_boundary_payload.get("recommended_service_candidates", [])[:5]],
         "top_cqrs_pattern_candidates": [row["module"] for row in cqrs_pattern_payload.get("rows", [])[:5]],
+        "top_migration_waves": [w["wave_name"] for w in wave_plan_payload.get("waves", [])[:5]],
         "artifacts": artifact_paths,
     }
 
@@ -358,6 +364,12 @@ def run_discovery(
     )
     delegation_rows, delegation_markdown = build_delegation_plan(candidate_rows, delegation_limit)
 
+    # Generate migration wave plan
+    wave_plan_payload = {
+        "waves": [asdict(w) for w in build_waves(cqrs_pattern_payload, candidate_rows, max_waves=5)]
+    }
+    wave_plan_markdown = render_wave_plan_markdown([w for w in build_waves(cqrs_pattern_payload, candidate_rows, max_waves=5)])
+
     artifacts: dict[str, Path] = {
         "repository_profile_json": output_dir / "repository-profile.json",
         "repository_profile_md": output_dir / "repository-profile.md",
@@ -367,6 +379,8 @@ def run_discovery(
         "service_boundaries_md": output_dir / "service-boundaries.md",
         "cqrs_pattern_clusters_json": output_dir / "cqrs-pattern-clusters.json",
         "cqrs_pattern_clusters_md": output_dir / "cqrs-pattern-clusters.md",
+        "migration_wave_plan_json": output_dir / "migration-wave-plan.json",
+        "migration_wave_plan_md": output_dir / "migration-wave-plan.md",
         "delegation_plan_json": output_dir / "delegation-plan.generated.json",
         "delegation_plan_md": output_dir / "delegation-plan.generated.md",
     }
@@ -379,11 +393,13 @@ def run_discovery(
     write_text(artifacts["service_boundaries_md"], build_service_boundaries_markdown(service_boundary_payload))
     write_json(artifacts["cqrs_pattern_clusters_json"], cqrs_pattern_payload)
     write_text(artifacts["cqrs_pattern_clusters_md"], render_cqrs_pattern_clusters_markdown(cqrs_pattern_payload))
+    write_json(artifacts["migration_wave_plan_json"], wave_plan_payload)
+    write_text(artifacts["migration_wave_plan_md"], wave_plan_markdown)
     write_json(artifacts["delegation_plan_json"], delegation_rows)
     write_text(artifacts["delegation_plan_md"], delegation_markdown)
 
     artifact_paths = {name: relative_artifact_path(path, repo_root) for name, path in artifacts.items()}
-    summary = build_summary(repo_root, profile, candidate_rows, service_boundary_payload, cqrs_pattern_payload, delegation_rows, artifact_paths)
+    summary = build_summary(repo_root, profile, candidate_rows, service_boundary_payload, cqrs_pattern_payload, delegation_rows, wave_plan_payload, artifact_paths)
     artifacts["summary_json"] = output_dir / "migration-discovery.summary.json"
     artifacts["summary_md"] = output_dir / "migration-discovery.summary.md"
     write_json(artifacts["summary_json"], summary)
@@ -400,6 +416,7 @@ def run_discovery(
         "module_candidates": candidate_rows,
         "service_boundaries": service_boundary_payload,
         "cqrs_pattern_clusters": cqrs_pattern_payload,
+        "migration_wave_plan": wave_plan_payload,
         "delegation_plan": delegation_rows,
         "summary": summary,
     }

@@ -1,0 +1,21 @@
+# SCENARIO: Auto-generated API Smoke Tests
+# TYPE: api
+# GENERATED: true
+
+CONFIG[2]{key, value}:
+  base_url, http://localhost:8101
+  timeout_ms, 5000
+
+API[9]{method, endpoint, expected_status}:
+  GET, /events/stream, 200
+  GET, /health, 200
+  GET, /health/modules, 200
+  GET, /delegation/slices, 200
+  POST, /commands/user/create, 201
+  POST, /commands/user/dual-create, 201
+  GET, /events, 200
+  POST, /commands/search/index, 201
+  GET, /queries/search, 200
+
+ASSERT[1]{field, operator, expected}:
+  status, <, 400

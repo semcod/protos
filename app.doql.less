@@ -1,0 +1,145 @@
+// LESS format — define @variables here as needed
+
+app {
+  name: protos;
+  version: 0.1.0;
+}
+
+interface[type="api"] {
+  type: rest;
+  framework: fastapi;
+}
+
+workflow[name="proto"] {
+  trigger: manual;
+  step-1: run cmd=buf generate;
+}
+
+workflow[name="zod"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/generate_zod.py;
+}
+
+workflow[name="python"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/generate_pydantic.py;
+}
+
+workflow[name="json"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/generate_json_schema.py;
+}
+
+workflow[name="sql"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/generate_sql.py;
+}
+
+workflow[name="proto-changed"] {
+  trigger: manual;
+  step-1: run cmd=git diff --name-only origin/main | grep ".proto" > changed.txt || true;
+}
+
+workflow[name="generate-incremental"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/generate_incremental.py changed.txt;
+}
+
+workflow[name="clean"] {
+  trigger: manual;
+  step-1: run cmd=find generated/ -type f ! -name '.gitkeep' -delete;
+}
+
+workflow[name="registry-register"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/schema_registry.py register contracts/user/v1/user.proto;
+}
+
+workflow[name="registry-check"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/schema_registry.py check contracts/user/v1/user.proto;
+}
+
+workflow[name="registry-list"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/schema_registry.py list;
+}
+
+workflow[name="proto-all"] {
+  trigger: manual;
+  step-1: depend target=proto;
+  step-2: depend target=zod;
+  step-3: depend target=python;
+  step-4: depend target=json;
+  step-5: depend target=sql;
+}
+
+workflow[name="gateway"] {
+  trigger: manual;
+  step-1: run cmd=pip install -q -r gateway/requirements.txt;
+  step-2: run cmd=PYTHONPATH=. uvicorn gateway.main:app --reload --port 8080;
+}
+
+workflow[name="gateway-docker"] {
+  trigger: manual;
+  step-1: run cmd=docker build -f gateway/Dockerfile -t semcod-gateway .;
+  step-2: run cmd=docker run --rm -p 8080:8080 semcod-gateway;
+}
+
+workflow[name="ci"] {
+  trigger: manual;
+  step-1: run cmd=echo "==> buf lint";
+  step-2: run cmd=buf lint || true;
+  step-3: run cmd=echo "==> proto-all (generate)";
+  step-4: run cmd=$(MAKE) proto-all;
+  step-5: run cmd=echo "==> pytest";
+  step-6: run cmd=pytest tests/ -v;
+  step-7: run cmd=echo "==> schema registry check (v1)";
+  step-8: run cmd=python scripts/schema_registry.py check contracts/user/v1/user.proto || true;
+  step-9: run cmd=echo "==> schema registry check (v2)";
+  step-10: run cmd=python scripts/schema_registry.py check contracts/user/v2/user.proto || true;
+  step-11: run cmd=echo "==> CI done ✓";
+}
+
+workflow[name="legacy-register"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/legacy_registry.py register-json user.legacy contracts/legacy_bridge/user_legacy.schema.json;
+  step-2: run cmd=python scripts/legacy_registry.py register-proto user.v1 contracts/legacy_bridge/user_legacy.v1.proto;
+}
+
+workflow[name="diff-legacy"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/legacy_registry.py diff user.legacy user.v1;
+}
+
+workflow[name="legacy-report"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/legacy_registry.py report user.legacy user.v1;
+}
+
+workflow[name="legacy-list"] {
+  trigger: manual;
+  step-1: run cmd=python scripts/legacy_registry.py list;
+}
+
+workflow[name="sync-check"] {
+  trigger: manual;
+  step-1: run cmd=echo "==> Checking legacy vs proto sync";
+  step-2: run cmd=PYTHONPATH=. python scripts/legacy_bridge/sync_check.py;
+}
+
+workflow[name="bootstrap-legacy"] {
+  trigger: manual;
+  step-1: run cmd=echo "==> Bootstrapping EventStore from legacy.db";
+  step-2: run cmd=PYTHONPATH=. python scripts/legacy_bridge/migrator.py;
+}
+
+deploy {
+  target: docker-compose;
+  compose_file: docker-compose.yml;
+}
+
+environment[name="local"] {
+  runtime: docker-compose;
+  env_file: .env;
+}

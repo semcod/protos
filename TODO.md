@@ -11,11 +11,17 @@ Turn protos into a reusable delegation platform where any bounded slice from leg
 3. Shared TypeScript and UI utilities are not extracted into reusable packages.
 4. Module readiness scoring and delegation planning were missing automation.
 
+## Recent progress
+
+1. Delegation generator now enriches module rows with CQRS pattern and recommended shared types package from c2004 cluster report.
+2. Shared contracts extraction waves implemented in c2004 include: cqrs-data-grid, reports-core, manager-core, scenario-core.
+
 ## Target architecture
 
 1. Protos owns contracts, commands, queries, events, read models, and delegated UI runtime.
 2. Legacy host (c2004) owns shell, auth/session bridge, and iframe routing only.
 3. Each delegated module follows one vertical-slice template:
+
 - contract
 - command handlers
 - query/read-model handlers
@@ -82,7 +88,7 @@ Turn protos into a reusable delegation platform where any bounded slice from leg
 Example command:
 
 python scripts/legacy_bridge/generate_delegation_plan.py \
-	--input /home/tom/github/maskservice/c2004/migration/module-candidates.json \
-	--clusters /home/tom/github/maskservice/c2004/migration/cqrs-pattern-clusters.json \
-	--output-dir /home/tom/github/semcod/protos/docs \
-	--limit 12
+  --input /home/tom/github/maskservice/c2004/migration/module-candidates.json \
+  --clusters /home/tom/github/maskservice/c2004/migration/cqrs-pattern-clusters.json \
+  --output-dir /home/tom/github/semcod/protos/docs \
+  --limit 12

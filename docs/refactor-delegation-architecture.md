@@ -33,10 +33,19 @@
 1. Candidate discovery is produced in c2004 migration reports.
 2. Shared package scaffolding is generated under c2004/packages.
 3. Recommended initial package taxonomy:
+
 - @semcod/ts-utils
 - @semcod/ui-components
 - @semcod/contracts-types
-4. Once stable, mirror or publish packages for protos delegated frontend use.
+
+1. Current extracted CQRS modules in contracts-types:
+
+- @semcod/contracts-types:cqrs-data-grid
+- @semcod/contracts-types:reports-core
+- @semcod/contracts-types:manager-core
+- @semcod/contracts-types:scenario-core
+
+1. Once stable, mirror or publish packages for protos delegated frontend use.
 
 ## Delegation execution flow
 
@@ -51,15 +60,51 @@
 ## Operational scripts
 
 1. c2004 side:
+
 - scripts/detect_migration_candidates.py
 - scripts/detect_shared_ts_packages.py
 - scripts/run_arch_migration_discovery.sh
 - scripts/scaffold_shared_ts_packages.py
 
-2. protos side:
+1. protos side:
+
 - `scripts/legacy_bridge/generate_delegation_plan.py` – generates delegation plan from c2004 reports
 - `scripts/legacy_bridge/delegation_plan.py` – shared blueprint model (runtime + docs)
 - `gateway/delegation.py` – `DelegatedSlice` registry with health checks
+
+## Runtime Slice Model
+
+Each delegated slice is registered in `gateway/delegation.SLICE_REGISTRY`:
+
+```python
+DelegatedSlice(
+    name="search",
+    phase="phase-1",              # phase-1 | phase-2 | live
+    backend="delegated",          # delegated | planned | legacy
+    frontend="static",            # none | static | planned
+    contract_paths=("contracts/search/v1/search.proto",),
+    command_routes=("/commands/search/index",),
+    query_routes=("/queries/search",),
+    read_model_paths=("event_store.db", "search_index.db"),
+    frontend_paths=("gateway/static/search_v2.html",),
+    smoke_checks=("/health", "/queries/search?q=test"),
+    transports=("http", "ws"),
+)
+```
+
+### Health Endpoint Contract
+
+Per-slice health available at `GET /health/modules/{slice}`:
+
+```json
+{
+  "status": "ok | degraded",
+  "missing_required": ["path1", "path2"],
+  "contracts": [{"path": "...", "required": true, "exists": true}],
+  "read_models": [...],
+  "frontend_assets": [...]
+}
+```
 
 ## Governance checklist per module
 

@@ -1,0 +1,395 @@
+flowchart TD
+    subgraph adapters__legacy_to_proto
+        adapters__legacy_to_proto__user_adapter__legacy_to_proto["legacy_to_proto"]
+        adapters__legacy_to_proto__user_adapter__wrap_for_event_store["wrap_for_event_store"]
+    end
+    subgraph adapters__proto_to_legacy
+        adapters__proto_to_legacy__user_adapter__proto_to_legacy["proto_to_legacy"]
+    end
+    subgraph gateway__delegation
+        gateway__delegation__DelegatedSlice___path_checks["_path_checks"]
+        gateway__delegation__DelegatedSlice__health["health"]
+        gateway__delegation__DelegatedSlice__summary["summary"]
+        gateway__delegation__DelegatedSlice__detail["detail"]
+        gateway__delegation__get_delegated_slice["get_delegated_slice"]
+        gateway__delegation__list_delegated_slices["list_delegated_slices"]
+        gateway__delegation__get_delegation_health["get_delegation_health"]
+    end
+    subgraph gateway__main
+        gateway__main__lifespan["lifespan"]
+        gateway__main__health["health"]
+        gateway__main__health_modules["health_modules"]
+        gateway__main__health_module["health_module"]
+        gateway__main__delegation_slices["delegation_slices"]
+        gateway__main__delegation_slice_detail["delegation_slice_detail"]
+        gateway__main__websocket_endpoint["websocket_endpoint"]
+        gateway__main__sse_stream["sse_stream"]
+        gateway__main__cmd_create_user["cmd_create_user"]
+        gateway__main__cmd_dual_create_user["cmd_dual_create_user"]
+        gateway__main__cmd_change_email["cmd_change_email"]
+        gateway__main__cmd_deactivate_user["cmd_deactivate_user"]
+        gateway__main__query_get_user["query_get_user"]
+        gateway__main__list_events["list_events"]
+        gateway__main__cmd_index_search_entry["cmd_index_search_entry"]
+        gateway__main__query_search["query_search"]
+    end
+    subgraph gateway__search_handler
+        gateway__search_handler__handle_index_entry["handle_index_entry"]
+        gateway__search_handler__handle_search["handle_search"]
+    end
+    subgraph gateway__sse
+        gateway__sse__subscribe["subscribe"]
+        gateway__sse__unsubscribe["unsubscribe"]
+        gateway__sse__push_to_subscribers["push_to_subscribers"]
+        gateway__sse__event_generator["event_generator"]
+    end
+    subgraph gateway__user_handler
+        gateway__user_handler__handle_create_user["handle_create_user"]
+        gateway__user_handler__handle_dual_write_user["handle_dual_write_user"]
+        gateway__user_handler__handle_change_email["handle_change_email"]
+        gateway__user_handler__handle_deactivate_user["handle_deactivate_user"]
+        gateway__user_handler__handle_get_user["handle_get_user"]
+        gateway__user_handler__handle_list_events["handle_list_events"]
+    end
+    subgraph gateway__ws
+        gateway__ws__ConnectionManager____init__["__init__"]
+        gateway__ws__ConnectionManager__connect["connect"]
+        gateway__ws__ConnectionManager__disconnect["disconnect"]
+        gateway__ws__ConnectionManager__broadcast["broadcast"]
+    end
+    subgraph legacy_mock__src
+        legacy_mock__src__main__search["search"]
+        legacy_mock__src__SearchIframe__SearchIframe__el["el"]
+        legacy_mock__src__SearchIframe__SearchIframe__render["render"]
+        legacy_mock__src__SearchIframe__SearchIframe__sendMessage["sendMessage"]
+    end
+    subgraph scripts__conflict_resolver
+        scripts__conflict_resolver__UnresolvableConflictError____init__["__init__"]
+        scripts__conflict_resolver___field_effects["_field_effects"]
+        scripts__conflict_resolver__ConflictResolver____post_init__["__post_init__"]
+        scripts__conflict_resolver__ConflictResolver__resolve_lww["resolve_lww"]
+        scripts__conflict_resolver__ConflictResolver__resolve_merge{{resolve_merge CC=22}}
+    end
+    subgraph scripts__detect_migration_candidates
+        scripts__detect_migration_candidates__normalize_token["normalize_token"]
+        scripts__detect_migration_candidates__has_candidate_markers["has_candidate_markers"]
+        scripts__detect_migration_candidates__infer_kind("infer_kind CC=8")
+        scripts__detect_migration_candidates__discover_candidate_paths{{discover_candidate_paths CC=20}}
+        scripts__detect_migration_candidates__iter_files("iter_files CC=8")
+        scripts__detect_migration_candidates__read_text["read_text"]
+        scripts__detect_migration_candidates__extract_python_imports["extract_python_imports"]
+        scripts__detect_migration_candidates__extract_ts_imports["extract_ts_imports"]
+        scripts__detect_migration_candidates__import_tokens["import_tokens"]
+        scripts__detect_migration_candidates__count_api_routes["count_api_routes"]
+        scripts__detect_migration_candidates__count_outbound_api_calls["count_outbound_api_calls"]
+        scripts__detect_migration_candidates__analyze_candidate{{analyze_candidate CC=28}}
+        scripts__detect_migration_candidates__score_migration_candidate{{score_migration_candidate CC=15}}
+        scripts__detect_migration_candidates__classify_extraction_target{{classify_extraction_target CC=19}}
+        scripts__detect_migration_candidates__build_output_row["build_output_row"]
+        scripts__detect_migration_candidates__analyze_repository["analyze_repository"]
+        scripts__detect_migration_candidates__get_service_candidates["get_service_candidates"]
+        scripts__detect_migration_candidates__parse_args["parse_args"]
+        scripts__detect_migration_candidates__main["main"]
+    end
+    subgraph scripts__dual_writer
+        scripts__dual_writer__LegacyDB____init__["__init__"]
+        scripts__dual_writer__LegacyDB___init_db["_init_db"]
+        scripts__dual_writer__LegacyDB__upsert_user["upsert_user"]
+        scripts__dual_writer__LegacyDB__get_all_users["get_all_users"]
+        scripts__dual_writer__DualWriter____init__["__init__"]
+        scripts__dual_writer__DualWriter__execute_create_user["execute_create_user"]
+    end
+    subgraph scripts__event_store
+        scripts__event_store___connect["_connect"]
+        scripts__event_store__EventStore____init__["__init__"]
+        scripts__event_store__EventStore__append["append"]
+        scripts__event_store__EventStore__get_stream["get_stream"]
+        scripts__event_store__EventStore__iter_all["iter_all"]
+        scripts__event_store__EventStore__save_snapshot["save_snapshot"]
+        scripts__event_store__EventStore__load_snapshot["load_snapshot"]
+        scripts__event_store__EventStore__merge_streams["merge_streams"]
+        scripts__event_store__EventStore___current_version["_current_version"]
+        scripts__event_store__EventStore___row_to_event["_row_to_event"]
+        scripts__event_store__ReplayEngine__register["register"]
+        scripts__event_store__ReplayEngine__replay["replay"]
+        scripts__event_store__make_user_replay_engine["make_user_replay_engine"]
+    end
+    subgraph scripts__generate_incremental
+        scripts__generate_incremental__file_hash["file_hash"]
+        scripts__generate_incremental__load_cache["load_cache"]
+        scripts__generate_incremental__save_cache["save_cache"]
+        scripts__generate_incremental__should_regenerate["should_regenerate"]
+        scripts__generate_incremental___stem["_stem"]
+        scripts__generate_incremental___write["_write"]
+        scripts__generate_incremental__regenerate["regenerate"]
+        scripts__generate_incremental__main("main CC=11")
+    end
+    subgraph scripts__generate_json_schema
+        scripts__generate_json_schema__generate["generate"]
+        scripts__generate_json_schema__main["main"]
+    end
+    subgraph scripts__generate_pydantic
+        scripts__generate_pydantic__generate["generate"]
+        scripts__generate_pydantic__main["main"]
+    end
+    subgraph scripts__generate_sql
+        scripts__generate_sql___table_name["_table_name"]
+        scripts__generate_sql__generate_sql["generate_sql"]
+        scripts__generate_sql__main["main"]
+    end
+    subgraph scripts__generate_zod
+        scripts__generate_zod__to_zod["to_zod"]
+        scripts__generate_zod__main["main"]
+    end
+    subgraph scripts__idempotency_store
+        scripts__idempotency_store__IdempotencyStore____init__["__init__"]
+        scripts__idempotency_store__IdempotencyStore___init_db["_init_db"]
+        scripts__idempotency_store__IdempotencyStore__is_processed["is_processed"]
+        scripts__idempotency_store__IdempotencyStore__mark_processed["mark_processed"]
+        scripts__idempotency_store__IdempotencyStore__get_response["get_response"]
+    end
+    subgraph scripts__legacy_bridge
+        scripts__legacy_bridge__delegation_plan__to_slice_name["to_slice_name"]
+        scripts__legacy_bridge__delegation_plan__build_steps["build_steps"]
+        scripts__legacy_bridge__delegation_plan__build_slice_blueprint["build_slice_blueprint"]
+        scripts__legacy_bridge__delegation_plan__build_output_row["build_output_row"]
+        scripts__legacy_bridge__delegation_plan__render_markdown("render_markdown CC=8")
+        scripts__legacy_bridge__report_generator__generate_markdown_report["generate_markdown_report"]
+        scripts__legacy_bridge__normalizer__normalize_json_schema["normalize_json_schema"]
+        scripts__legacy_bridge__normalizer__normalize_proto_ast["normalize_proto_ast"]
+        scripts__legacy_bridge__sync_check__main["main"]
+        scripts__legacy_bridge__migrator__migrate_users["migrate_users"]
+        scripts__legacy_bridge__migrator__main["main"]
+        scripts__legacy_bridge__migration_advisor__suggest_proto_additions("suggest_proto_additions CC=9")
+        scripts__legacy_bridge__migration_advisor__get_migration_summary["get_migration_summary"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__deep_merge["deep_merge"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__load_config["load_config"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__normalize_config["normalize_config"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__parse_args["parse_args"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__read_text["read_text"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__load_candidate_scores("load_candidate_scores CC=8")
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__module_from_types_path["module_from_types_path"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__split_tokens["split_tokens"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__classify_pattern["classify_pattern"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__jaccard["jaccard"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__assign_clusters("assign_clusters CC=9")
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository{{analyze_repository CC=19}}
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__render_markdown["render_markdown"]
+        scripts__legacy_bridge__detect_cqrs_pattern_clusters__main("main CC=10")
+        scripts__legacy_bridge__run_arch_migration_discovery__parse_args["parse_args"]
+        scripts__legacy_bridge__run_arch_migration_discovery__read_text["read_text"]
+        scripts__legacy_bridge__run_arch_migration_discovery__resolve_output_dir["resolve_output_dir"]
+        scripts__legacy_bridge__run_arch_migration_discovery__profile_repository{{profile_repository CC=18}}
+        scripts__legacy_bridge__run_arch_migration_discovery__render_repository_profile_markdown("render_repository_profile_markdown CC=9")
+        scripts__legacy_bridge__run_arch_migration_discovery__render_module_candidates_markdown["render_module_candidates_markdown"]
+        scripts__legacy_bridge__run_arch_migration_discovery__build_delegation_plan["build_delegation_plan"]
+        scripts__legacy_bridge__run_arch_migration_discovery__build_summary["build_summary"]
+        scripts__legacy_bridge__run_arch_migration_discovery__render_summary_markdown("render_summary_markdown CC=13")
+        scripts__legacy_bridge__run_arch_migration_discovery__write_text["write_text"]
+        scripts__legacy_bridge__run_arch_migration_discovery__write_json["write_json"]
+        scripts__legacy_bridge__run_arch_migration_discovery__relative_artifact_path["relative_artifact_path"]
+        scripts__legacy_bridge__run_arch_migration_discovery__run_discovery["run_discovery"]
+        scripts__legacy_bridge__run_arch_migration_discovery__main["main"]
+        scripts__legacy_bridge__diff_engine__diff_fields("diff_fields CC=12")
+        scripts__legacy_bridge__generate_delegation_plan__load_candidates["load_candidates"]
+        scripts__legacy_bridge__generate_delegation_plan__load_clusters["load_clusters"]
+        scripts__legacy_bridge__generate_delegation_plan__parse_args["parse_args"]
+        scripts__legacy_bridge__generate_delegation_plan__main["main"]
+        scripts__legacy_bridge__generate_migration_wave_plan__parse_args["parse_args"]
+        scripts__legacy_bridge__generate_migration_wave_plan__load_json["load_json"]
+        scripts__legacy_bridge__generate_migration_wave_plan__resolve_path["resolve_path"]
+        scripts__legacy_bridge__generate_migration_wave_plan__determine_wave_name["determine_wave_name"]
+        scripts__legacy_bridge__generate_migration_wave_plan__estimate_effort("estimate_effort CC=8")
+        scripts__legacy_bridge__generate_migration_wave_plan__build_waves{{build_waves CC=15}}
+        scripts__legacy_bridge__generate_migration_wave_plan__render_markdown("render_markdown CC=10")
+        scripts__legacy_bridge__generate_migration_wave_plan__main("main CC=8")
+        scripts__legacy_bridge__analyze_service_boundaries__deep_merge["deep_merge"]
+        scripts__legacy_bridge__analyze_service_boundaries__load_config["load_config"]
+        scripts__legacy_bridge__analyze_service_boundaries__parse_args["parse_args"]
+        scripts__legacy_bridge__analyze_service_boundaries__is_ignored["is_ignored"]
+        scripts__legacy_bridge__analyze_service_boundaries__iter_files["iter_files"]
+        scripts__legacy_bridge__analyze_service_boundaries__strip_source_suffix["strip_source_suffix"]
+    end
+    subgraph scripts__legacy_registry
+        scripts__legacy_registry__LegacySchemaRegistry____init__["__init__"]
+        scripts__legacy_registry__LegacySchemaRegistry___init_db["_init_db"]
+        scripts__legacy_registry__LegacySchemaRegistry__register["register"]
+        scripts__legacy_registry__LegacySchemaRegistry___get_next_version["_get_next_version"]
+        scripts__legacy_registry__LegacySchemaRegistry__get_latest["get_latest"]
+        scripts__legacy_registry__LegacySchemaRegistry___row_to_sv["_row_to_sv"]
+        scripts__legacy_registry__LegacySchemaRegistry__list_schemas["list_schemas"]
+        scripts__legacy_registry__main("main CC=11")
+    end
+    subgraph scripts__parse_proto
+        scripts__parse_proto___parse_reserved_numbers["_parse_reserved_numbers"]
+        scripts__parse_proto__parse_proto{{parse_proto CC=17}}
+    end
+    subgraph scripts__schema_registry
+        scripts__schema_registry__IncompatibleSchemaError____init__["__init__"]
+        scripts__schema_registry___connect["_connect"]
+        scripts__schema_registry___diff_messages{{_diff_messages CC=19}}
+        scripts__schema_registry__check_compatibility["check_compatibility"]
+        scripts__schema_registry___sha256_file["_sha256_file"]
+        scripts__schema_registry__SchemaRegistry____init__["__init__"]
+        scripts__schema_registry__SchemaRegistry__set_compatibility["set_compatibility"]
+        scripts__schema_registry__SchemaRegistry__get_compatibility["get_compatibility"]
+        scripts__schema_registry__SchemaRegistry__register("register CC=10")
+        scripts__schema_registry__SchemaRegistry__get_latest["get_latest"]
+        scripts__schema_registry__SchemaRegistry__get_by_version["get_by_version"]
+        scripts__schema_registry__SchemaRegistry__list_schemas["list_schemas"]
+        scripts__schema_registry__SchemaRegistry___next_version["_next_version"]
+        scripts__schema_registry__SchemaRegistry___all_versions["_all_versions"]
+        scripts__schema_registry__SchemaRegistry___row_to_sv["_row_to_sv"]
+        scripts__schema_registry___cli("_cli CC=11")
+    end
+    subgraph scripts__search_index
+        scripts__search_index__SearchIndex____init__["__init__"]
+        scripts__search_index__SearchIndex___init_db["_init_db"]
+        scripts__search_index__SearchIndex__upsert_entry["upsert_entry"]
+        scripts__search_index__SearchIndex__search["search"]
+    end
+    subgraph scripts__vector_clock
+        scripts__vector_clock__VectorClock__increment["increment"]
+        scripts__vector_clock__VectorClock__merge["merge"]
+        scripts__vector_clock__VectorClock__happened_before["happened_before"]
+        scripts__vector_clock__VectorClock__concurrent_with["concurrent_with"]
+        scripts__vector_clock__VectorClock__dominates["dominates"]
+        scripts__vector_clock__VectorClock__to_dict["to_dict"]
+        scripts__vector_clock__VectorClock__from_dict["from_dict"]
+        scripts__vector_clock__VectorClock____eq__["__eq__"]
+        scripts__vector_clock__VectorClock____repr__["__repr__"]
+    end
+    scripts__generate_sql__generate_sql --> scripts__generate_sql___table_name
+    scripts__generate_sql__main --> scripts__parse_proto__parse_proto
+    scripts__generate_sql__main --> scripts__generate_sql__generate_sql
+    scripts__generate_json_schema__main --> scripts__parse_proto__parse_proto
+    scripts__generate_json_schema__main --> scripts__generate_json_schema__generate
+    scripts__generate_pydantic__main --> scripts__parse_proto__parse_proto
+    scripts__generate_pydantic__main --> scripts__generate_pydantic__generate
+    gateway__sse__push_to_subscribers --> gateway__sse__unsubscribe
+    gateway__sse__event_generator --> gateway__sse__unsubscribe
+    scripts__generate_zod__main --> scripts__parse_proto__parse_proto
+    scripts__generate_zod__main --> scripts__generate_zod__to_zod
+    scripts__legacy_bridge__delegation_plan__build_steps --> scripts__legacy_bridge__delegation_plan__to_slice_name
+    scripts__legacy_bridge__delegation_plan__build_slice_blueprint --> scripts__legacy_bridge__delegation_plan__to_slice_name
+    scripts__legacy_bridge__delegation_plan__build_slice_blueprint --> scripts__legacy_bridge__delegation_plan__build_steps
+    scripts__legacy_bridge__delegation_plan__build_output_row --> scripts__legacy_bridge__delegation_plan__build_slice_blueprint
+    scripts__legacy_bridge__delegation_plan__render_markdown --> scripts__legacy_bridge__delegation_plan__build_output_row
+    scripts__generate_incremental__should_regenerate --> scripts__generate_incremental__file_hash
+    scripts__generate_incremental__regenerate --> scripts__generate_incremental___stem
+    scripts__generate_incremental__regenerate --> scripts__parse_proto__parse_proto
+    scripts__generate_incremental__regenerate --> scripts__generate_incremental___write
+    scripts__generate_incremental__regenerate --> scripts__generate_zod__to_zod
+    scripts__generate_incremental__regenerate --> scripts__generate_sql__generate_sql
+    scripts__generate_incremental__main --> scripts__generate_incremental__load_cache
+    scripts__generate_incremental__main --> scripts__generate_incremental__should_regenerate
+    scripts__generate_incremental__main --> scripts__generate_incremental__save_cache
+    scripts__generate_incremental__main --> scripts__generate_incremental__regenerate
+    scripts__conflict_resolver__ConflictResolver__resolve_merge --> scripts__conflict_resolver___field_effects
+    scripts__schema_registry__check_compatibility --> scripts__schema_registry___diff_messages
+    scripts__schema_registry__SchemaRegistry____init__ --> scripts__schema_registry___connect
+    scripts__schema_registry__SchemaRegistry__register --> scripts__parse_proto__parse_proto
+    scripts__schema_registry__SchemaRegistry__register --> scripts__schema_registry___sha256_file
+    scripts__schema_registry__SchemaRegistry__register --> scripts__schema_registry__check_compatibility
+    scripts__legacy_bridge__sync_check__main --> scripts__legacy_bridge__normalizer__normalize_json_schema
+    scripts__legacy_bridge__sync_check__main --> scripts__legacy_bridge__normalizer__normalize_proto_ast
+    scripts__legacy_bridge__sync_check__main --> scripts__legacy_bridge__diff_engine__diff_fields
+    scripts__legacy_bridge__migrator__main --> scripts__legacy_bridge__migrator__migrate_users
+    scripts__event_store__EventStore____init__ --> scripts__schema_registry___connect
+    adapters__legacy_to_proto__user_adapter__wrap_for_event_store --> adapters__legacy_to_proto__user_adapter__legacy_to_proto
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__load_config --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__deep_merge
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__normalize_config --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__deep_merge
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__assign_clusters --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__jaccard
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__normalize_config
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__assign_clusters
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__module_from_types_path
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__read_text
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__split_tokens
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__main --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__parse_args
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__main --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository
+    scripts__legacy_bridge__detect_cqrs_pattern_clusters__main --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__load_config
+    scripts__legacy_bridge__run_arch_migration_discovery__build_delegation_plan --> scripts__legacy_bridge__delegation_plan__build_output_row
+    scripts__legacy_bridge__run_arch_migration_discovery__write_json --> scripts__legacy_bridge__run_arch_migration_discovery__write_text
+    scripts__legacy_bridge__run_arch_migration_discovery__run_discovery --> scripts__legacy_bridge__run_arch_migration_discovery__profile_repository
+    scripts__legacy_bridge__run_arch_migration_discovery__run_discovery --> scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository
+    scripts__legacy_bridge__run_arch_migration_discovery__run_discovery --> scripts__legacy_bridge__run_arch_migration_discovery__build_delegation_plan
+    scripts__legacy_bridge__run_arch_migration_discovery__run_discovery --> scripts__legacy_bridge__run_arch_migration_discovery__write_json
+    scripts__legacy_bridge__run_arch_migration_discovery__run_discovery --> scripts__legacy_bridge__run_arch_migration_discovery__write_text
+    scripts__legacy_bridge__run_arch_migration_discovery__main --> scripts__legacy_bridge__run_arch_migration_discovery__parse_args
+    scripts__legacy_bridge__run_arch_migration_discovery__main --> scripts__legacy_bridge__run_arch_migration_discovery__resolve_output_dir
+    scripts__legacy_bridge__run_arch_migration_discovery__main --> scripts__legacy_bridge__run_arch_migration_discovery__run_discovery
+    scripts__detect_migration_candidates__discover_candidate_paths --> scripts__detect_migration_candidates__has_candidate_markers
+    scripts__detect_migration_candidates__import_tokens --> scripts__detect_migration_candidates__normalize_token
+    scripts__detect_migration_candidates__analyze_candidate --> scripts__detect_migration_candidates__normalize_token
+    scripts__detect_migration_candidates__analyze_candidate --> scripts__detect_migration_candidates__iter_files
+    scripts__detect_migration_candidates__analyze_candidate --> scripts__detect_migration_candidates__read_text
+    scripts__detect_migration_candidates__build_output_row --> scripts__detect_migration_candidates__score_migration_candidate
+    scripts__detect_migration_candidates__build_output_row --> scripts__detect_migration_candidates__classify_extraction_target
+    scripts__detect_migration_candidates__analyze_repository --> scripts__detect_migration_candidates__discover_candidate_paths
+    scripts__detect_migration_candidates__analyze_repository --> scripts__detect_migration_candidates__analyze_candidate
+    scripts__detect_migration_candidates__analyze_repository --> scripts__detect_migration_candidates__build_output_row
+    scripts__detect_migration_candidates__main --> scripts__detect_migration_candidates__parse_args
+    scripts__detect_migration_candidates__main --> scripts__detect_migration_candidates__analyze_repository
+    scripts__detect_migration_candidates__main --> scripts__detect_migration_candidates__get_service_candidates
+    scripts__legacy_bridge__generate_delegation_plan__main --> scripts__legacy_bridge__generate_delegation_plan__parse_args
+    scripts__legacy_bridge__generate_delegation_plan__main --> scripts__legacy_bridge__generate_delegation_plan__load_candidates
+    scripts__legacy_bridge__generate_delegation_plan__main --> scripts__legacy_bridge__generate_delegation_plan__load_clusters
+    scripts__legacy_bridge__generate_migration_wave_plan__main --> scripts__legacy_bridge__generate_migration_wave_plan__parse_args
+    scripts__legacy_bridge__generate_migration_wave_plan__main --> scripts__legacy_bridge__generate_migration_wave_plan__resolve_path
+    scripts__legacy_bridge__generate_migration_wave_plan__main --> scripts__legacy_bridge__generate_migration_wave_plan__load_json
+    scripts__legacy_bridge__generate_migration_wave_plan__main --> scripts__legacy_bridge__generate_migration_wave_plan__build_waves
+    gateway__delegation__get_delegation_health --> gateway__delegation__list_delegated_slices
+    scripts__legacy_bridge__analyze_service_boundaries__load_config --> scripts__legacy_bridge__analyze_service_boundaries__deep_merge
+    scripts__legacy_bridge__analyze_service_boundaries__iter_files --> scripts__legacy_bridge__analyze_service_boundaries__is_ignored
+    scripts__legacy_bridge__analyze_service_boundaries__extract_prefixed_module --> scripts__legacy_bridge__analyze_service_boundaries__strip_source_suffix
+    scripts__legacy_bridge__analyze_service_boundaries__detect_frontend_module --> scripts__legacy_bridge__analyze_service_boundaries__extract_prefixed_module
+    scripts__legacy_bridge__analyze_service_boundaries__resolve_ts_import --> scripts__legacy_bridge__analyze_service_boundaries__resolve_candidate_file
+    scripts__legacy_bridge__analyze_service_boundaries__extract_api_groups --> scripts__legacy_bridge__analyze_service_boundaries__normalize_api_group
+    scripts__legacy_bridge__analyze_service_boundaries__build_ts_index --> scripts__legacy_bridge__analyze_service_boundaries__iter_files
+    scripts__legacy_bridge__analyze_service_boundaries__build_ts_index --> scripts__legacy_bridge__analyze_service_boundaries__read_text
+    scripts__legacy_bridge__analyze_service_boundaries__build_ts_index --> scripts__legacy_bridge__analyze_service_boundaries__parse_ts_import_specs
+    scripts__legacy_bridge__analyze_service_boundaries__build_ts_index --> scripts__legacy_bridge__analyze_service_boundaries__resolve_ts_import
+    scripts__legacy_bridge__analyze_service_boundaries__parse_router_prefixes --> scripts__legacy_bridge__analyze_service_boundaries__const_str
+    scripts__legacy_bridge__analyze_service_boundaries__merge_named_rows --> scripts__legacy_bridge__analyze_service_boundaries__counter_rows
+    scripts__legacy_bridge__analyze_service_boundaries__build_backend_index --> scripts__legacy_bridge__analyze_service_boundaries__iter_files
+    scripts__legacy_bridge__analyze_service_boundaries__build_backend_index --> scripts__legacy_bridge__analyze_service_boundaries__read_text
+    scripts__legacy_bridge__analyze_service_boundaries__build_backend_index --> scripts__legacy_bridge__analyze_service_boundaries__parse_router_prefixes
+    scripts__legacy_bridge__analyze_service_boundaries__build_backend_index --> scripts__legacy_bridge__analyze_service_boundaries__route_group_from_prefixes
+    scripts__legacy_bridge__analyze_service_boundaries__backend_group_summary --> scripts__legacy_bridge__analyze_service_boundaries__counter_rows
+    scripts__legacy_bridge__analyze_service_boundaries__build_service_components --> scripts__legacy_bridge__analyze_service_boundaries__choose_component_anchor
+    scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules --> scripts__legacy_bridge__analyze_service_boundaries__backend_group_summary
+    scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules --> scripts__legacy_bridge__analyze_service_boundaries__build_service_components
+    scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules --> scripts__legacy_bridge__analyze_service_boundaries__select_execution_plan
+    scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules --> scripts__legacy_bridge__analyze_service_boundaries__build_target_structure
+    scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules --> scripts__legacy_bridge__analyze_service_boundaries__build_cleanup_checklist
+    scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules --> scripts__legacy_bridge__analyze_service_boundaries__transitive_closure
+    scripts__legacy_bridge__analyze_service_boundaries__analyze --> scripts__legacy_bridge__analyze_service_boundaries__build_ts_index
+    scripts__legacy_bridge__analyze_service_boundaries__analyze --> scripts__legacy_bridge__analyze_service_boundaries__build_backend_index
+    scripts__legacy_bridge__analyze_service_boundaries__analyze --> scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules
+    scripts__legacy_bridge__analyze_service_boundaries__main --> scripts__legacy_bridge__analyze_service_boundaries__parse_args
+    scripts__legacy_bridge__analyze_service_boundaries__main --> scripts__legacy_bridge__analyze_service_boundaries__analyze
+    scripts__legacy_bridge__analyze_service_boundaries__main --> scripts__legacy_bridge__analyze_service_boundaries__load_config
+    gateway__main__health --> gateway__delegation__get_delegation_health
+    gateway__main__health_modules --> gateway__delegation__get_delegation_health
+    gateway__main__health_module --> gateway__delegation__get_delegated_slice
+    gateway__main__delegation_slices --> gateway__delegation__list_delegated_slices
+    gateway__main__delegation_slice_detail --> gateway__delegation__get_delegated_slice
+    gateway__main__sse_stream --> gateway__sse__subscribe
+    gateway__main__sse_stream --> gateway__sse__event_generator
+    gateway__main__cmd_create_user --> gateway__user_handler__handle_create_user
+    gateway__main__cmd_create_user --> gateway__sse__push_to_subscribers
+    gateway__main__cmd_dual_create_user --> gateway__user_handler__handle_dual_write_user
+    gateway__main__cmd_dual_create_user --> gateway__sse__push_to_subscribers
+    gateway__main__cmd_change_email --> gateway__user_handler__handle_change_email
+    gateway__main__cmd_change_email --> gateway__sse__push_to_subscribers
+    gateway__main__cmd_deactivate_user --> gateway__user_handler__handle_deactivate_user
+    gateway__main__cmd_deactivate_user --> gateway__sse__push_to_subscribers
+    gateway__main__query_get_user --> gateway__user_handler__handle_get_user
+    gateway__main__list_events --> gateway__user_handler__handle_list_events
+    gateway__main__cmd_index_search_entry --> gateway__search_handler__handle_index_entry
+    gateway__main__query_search --> gateway__search_handler__handle_search
+
+    classDef highCC fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    classDef medCC fill:#ffd43b,stroke:#f08c00,color:#000
+    class scripts__conflict_resolver__ConflictResolver__resolve_merge,scripts__schema_registry___diff_messages,scripts__parse_proto__parse_proto,scripts__legacy_bridge__detect_cqrs_pattern_clusters__analyze_repository,scripts__legacy_bridge__run_arch_migration_discovery__profile_repository,scripts__detect_migration_candidates__discover_candidate_paths,scripts__detect_migration_candidates__analyze_candidate,scripts__detect_migration_candidates__score_migration_candidate,scripts__detect_migration_candidates__classify_extraction_target,scripts__legacy_bridge__generate_migration_wave_plan__build_waves,scripts__legacy_bridge__analyze_service_boundaries__build_service_components,scripts__legacy_bridge__analyze_service_boundaries__select_execution_plan,scripts__legacy_bridge__analyze_service_boundaries__analyze_frontend_modules,scripts__legacy_bridge__analyze_service_boundaries__build_markdown highCC
+    class scripts__legacy_bridge__delegation_plan__render_markdown,scripts__generate_incremental__main,scripts__schema_registry__SchemaRegistry__register,scripts__schema_registry___cli,scripts__legacy_bridge__migration_advisor__suggest_proto_additions,scripts__legacy_bridge__detect_cqrs_pattern_clusters__load_candidate_scores,scripts__legacy_bridge__detect_cqrs_pattern_clusters__assign_clusters,scripts__legacy_bridge__detect_cqrs_pattern_clusters__main,scripts__legacy_bridge__run_arch_migration_discovery__render_repository_profile_markdown,scripts__legacy_bridge__run_arch_migration_discovery__render_summary_markdown,scripts__legacy_registry__main,scripts__legacy_bridge__diff_engine__diff_fields,scripts__detect_migration_candidates__infer_kind,scripts__detect_migration_candidates__iter_files,scripts__legacy_bridge__generate_migration_wave_plan__estimate_effort,scripts__legacy_bridge__generate_migration_wave_plan__render_markdown,scripts__legacy_bridge__generate_migration_wave_plan__main,scripts__legacy_bridge__analyze_service_boundaries__extract_prefixed_module,scripts__legacy_bridge__analyze_service_boundaries__build_ts_index,scripts__legacy_bridge__analyze_service_boundaries__parse_router_prefixes,scripts__legacy_bridge__analyze_service_boundaries__route_group_from_prefixes,scripts__legacy_bridge__analyze_service_boundaries__backend_group_summary medCC

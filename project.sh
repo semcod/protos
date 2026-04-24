@@ -15,6 +15,8 @@ elif ! head -1 "$PIP" | grep -q "$(pwd)"; then
 fi
 
 #$PIP install -e . --quiet
+$PIP install doql --upgrade --quiet
+$PIP install testql --upgrade --quiet
 #$PIP install regix --upgrade --quiet
 #$PIP install pyqual --upgrade --quiet
 #$PIP install prefact --upgrade --quiet
@@ -42,3 +44,5 @@ $VENV/bin/doql adopt . --format less --output app.doql.less --force
 $PIP install sumd --upgrade --quiet
 $VENV/bin/sumd .
 $VENV/bin/sumr .
+
+tree.sh
