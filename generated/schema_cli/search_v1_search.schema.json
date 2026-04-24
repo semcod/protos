@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "IndexEntryCommand": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "category",
+        "content",
+        "metadata"
+      ],
+      "additionalProperties": false
+    },
+    "EntryIndexed": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "category",
+        "timestamp"
+      ],
+      "additionalProperties": false
+    },
+    "SearchRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "category_filter": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "query",
+        "category_filter",
+        "limit"
+      ],
+      "additionalProperties": false
+    },
+    "SearchResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "total_count": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "results",
+        "total_count"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -204,6 +204,69 @@ def cmd_generate_zod(args: argparse.Namespace) -> int:
     return _batch_generate(args, ".ts", "generate_zod.py", "to_zod")
 
 
+def _batch_generate_json_schema(args: argparse.Namespace) -> int:
+    """Batch-generate JSON Schema from .proto contracts."""
+    import json
+    import importlib.util
+
+    input_dir = Path(args.input_dir)
+    output_dir = Path(args.output_dir)
+    if not input_dir.exists():
+        print(f"Input directory not found: {input_dir}", file=sys.stderr)
+        return 1
+
+    script_path = REPO_ROOT / "scripts" / "generate_json_schema.py"
+    if not script_path.exists():
+        print(f"Generator script not found: {script_path}", file=sys.stderr)
+        return 1
+
+    spec = importlib.util.spec_from_file_location("_gen_mod", script_path)
+    if spec is None or spec.loader is None:
+        print(f"Cannot load script: {script_path}", file=sys.stderr)
+        return 1
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    generate_func = getattr(mod, "generate")
+
+    proto_files = sorted(input_dir.rglob("*.proto"))
+    if not proto_files:
+        print(f"No .proto files found under {input_dir}", file=sys.stderr)
+        return 1
+
+    ok = 0
+    fail = 0
+    for proto_file in proto_files:
+        rel = proto_file.relative_to(input_dir)
+        out_name = _proto_to_output_name(rel, ".schema.json")
+        out_path = output_dir / out_name
+        try:
+            from parse_proto import parse_proto  # type: ignore
+            ast = parse_proto(str(proto_file))
+            content = generate_func(ast)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(out_path, "w", encoding="utf-8") as fh:
+                json.dump(content, fh, indent=2)
+                fh.write("\n")
+            print(f"  generated → {out_path}")
+            ok += 1
+        except Exception as exc:
+            print(f"  FAILED    → {proto_file}: {exc}", file=sys.stderr)
+            fail += 1
+
+    print(f"\nDone: {ok} ok, {fail} failed")
+    return 1 if fail else 0
+
+
+def cmd_generate_json_schema(args: argparse.Namespace) -> int:
+    """Batch-generate JSON Schema definitions from .proto contracts."""
+    return _batch_generate_json_schema(args)
+
+
+def cmd_generate_sql(args: argparse.Namespace) -> int:
+    """Batch-generate SQL DDL from .proto contracts."""
+    return _batch_generate(args, ".sql", "generate_sql.py", "generate_sql")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="protogate",
@@ -277,6 +340,18 @@ def main() -> int:
     zod_parser.add_argument("input_dir", help="Directory containing .proto files")
     zod_parser.add_argument("output_dir", help="Output directory for generated .ts files")
     zod_parser.set_defaults(func=cmd_generate_zod)
+
+    # generate-json-schema command
+    json_parser = subparsers.add_parser("generate-json-schema", help="Batch-generate JSON Schema from .proto contracts")
+    json_parser.add_argument("input_dir", help="Directory containing .proto files")
+    json_parser.add_argument("output_dir", help="Output directory for generated .schema.json files")
+    json_parser.set_defaults(func=cmd_generate_json_schema)
+
+    # generate-sql command
+    sql_parser = subparsers.add_parser("generate-sql", help="Batch-generate SQL DDL from .proto contracts")
+    sql_parser.add_argument("input_dir", help="Directory containing .proto files")
+    sql_parser.add_argument("output_dir", help="Output directory for generated .sql files")
+    sql_parser.set_defaults(func=cmd_generate_sql)
 
     args = parser.parse_args()
     

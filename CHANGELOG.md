@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-04-24
+
+### Docs
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+
+### Other
+- Update generated/schema_cli/examples_identification_v1_identification.schema.json
+- Update generated/schema_cli/legacy_bridge_user_legacy.v1.schema.json
+- Update generated/schema_cli/search_v1_search.schema.json
+- Update generated/schema_cli/user_v1_user.schema.json
+- Update generated/schema_cli/user_v2_user.schema.json
+- Update protogate/cli.py
+
 ## [0.1.6] - 2026-04-24
 
 ### Docs
