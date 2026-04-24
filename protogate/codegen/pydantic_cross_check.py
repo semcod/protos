@@ -37,9 +37,44 @@ Design notes
 from __future__ import annotations
 
 import ast
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+
+@dataclass
+class ContractFix:
+    """Structural description of a JSON-only auto-fix for contract enum drift.
+
+    The fix is **always applied to the contract JSON** (never to Python
+    Pydantic source). Two actions are supported:
+
+    * ``remove_extra`` -- drop values from the contract enum that Pydantic
+      cannot produce (safe cleanup of dead code paths; warning-level).
+    * ``expand_contract`` -- add values to the contract enum that Pydantic
+      can produce but the contract did not advertise (error-level; fixes
+      the Wave 2 regression scenario).
+
+    The ``expand_contract`` action is opt-in because it can hide a server-
+    side bug: if Pydantic happens to list a value by accident, expanding
+    the contract silently blesses that accident. Callers must pass
+    ``include_error_expansion=True`` to :func:`apply_fixes_to_contract`.
+    """
+
+    block_kind: str              # "input" | "output" | "payload"
+    field_path: str              # dotted path inside the block, e.g. "checks.database"
+    action: str                  # "remove_extra" | "expand_contract"
+    values: list[str]            # values to remove (remove_extra) or add (expand_contract)
+    severity: str                # "warning" | "error"
+    rationale: str               # one-line human explanation
+
+    def describe(self) -> str:
+        verb = "remove" if self.action == "remove_extra" else "add"
+        return (
+            f"{self.block_kind} field {self.field_path!r}: {verb} "
+            f"{sorted(self.values)!r} ({self.rationale})"
+        )
 
 
 @dataclass
@@ -47,6 +82,7 @@ class CrossCheckResult:
     ok: bool = True
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    fixes: list[ContractFix] = field(default_factory=list)
 
     def format(self) -> str:
         parts: list[str] = []
@@ -55,6 +91,20 @@ class CrossCheckResult:
         if self.warnings:
             parts.append("warnings: " + "; ".join(self.warnings))
         return " | ".join(parts) if parts else "ok"
+
+    def auto_fixable_fixes(self, include_error_expansion: bool = False) -> list[ContractFix]:
+        """Return the subset of fixes safe to apply without human review.
+
+        Always includes ``remove_extra`` (warning-level). Includes
+        ``expand_contract`` only when *include_error_expansion* is True.
+        """
+        out: list[ContractFix] = []
+        for fix in self.fixes:
+            if fix.action == "remove_extra":
+                out.append(fix)
+            elif fix.action == "expand_contract" and include_error_expansion:
+                out.append(fix)
+        return out
 
 
 # ---------------------------------------------------------------------------
@@ -265,9 +315,14 @@ def cross_check_contract(
         return result
 
     contract_file = contract.get("_file", "<unknown>")
+    # Dedup by (block_kind, dotted_path). We only emit one fix per unique
+    # location even if ``_iter_enum_fields`` yields both the bare name and
+    # the dotted path for the same enum spec.
     seen: set[tuple[str, str]] = set()
     for block_kind, block in _contract_schemas(contract):
         for field_name, enum_values in _iter_enum_fields(block):
+            # Only consider dotted paths once; bare-name duplicates are skipped
+            # to keep fix emission unique per logical location.
             key = (block_kind, field_name)
             if key in seen:
                 continue
@@ -290,9 +345,174 @@ def cross_check_contract(
             else:
                 result.warnings.append(message)
 
+            # Emit a structural fix alongside the message. We only emit
+            # fixes for drift types that have a deterministic, single-
+            # action resolution on the JSON side:
+            #   output/payload warning -> remove_extra (safe)
+            #   output/payload error   -> expand_contract (opt-in)
+            # Input errors are intentionally skipped because they have
+            # two equally valid resolutions (narrow contract vs loosen
+            # Pydantic) and require a human decision.
+            extra_in_contract = contract_set - pydantic_values
+            extra_in_pydantic = pydantic_values - contract_set
+            if block_kind in ("output", "payload"):
+                if severity == "warning" and extra_in_contract:
+                    result.fixes.append(
+                        ContractFix(
+                            block_kind=block_kind,
+                            field_path=field_name,
+                            action="remove_extra",
+                            values=sorted(extra_in_contract),
+                            severity="warning",
+                            rationale=(
+                                "server never returns these values; "
+                                "contract should not advertise them"
+                            ),
+                        )
+                    )
+                elif severity == "error" and extra_in_pydantic:
+                    result.fixes.append(
+                        ContractFix(
+                            block_kind=block_kind,
+                            field_path=field_name,
+                            action="expand_contract",
+                            values=sorted(extra_in_pydantic),
+                            severity="error",
+                            rationale=(
+                                "server may return these values; "
+                                "contract must advertise them"
+                            ),
+                        )
+                    )
+
     if result.errors:
         result.ok = False
     return result
+
+
+# ---------------------------------------------------------------------------
+# Auto-fix: apply structural fixes to a contract JSON file
+# ---------------------------------------------------------------------------
+
+
+def _navigate_to_enum_spec(
+    raw: dict, block_kind: str, field_path: str
+) -> dict | None:
+    """Walk *raw* contract dict to the dict holding the ``enum`` key for the
+    given ``block_kind`` + ``field_path``. Returns ``None`` if not found.
+
+    Handles both direct keys (top-level block) and JSON-Schema-style nested
+    ``properties`` (objects).
+    """
+    block = raw.get(block_kind)
+    if not isinstance(block, dict):
+        return None
+    current: Any = block
+    for segment in field_path.split("."):
+        if not isinstance(current, dict):
+            return None
+        # Prefer a direct key (top-level block case).
+        if segment in current and isinstance(current[segment], dict):
+            current = current[segment]
+            continue
+        # Fall back to JSON-Schema ``properties`` traversal.
+        props = current.get("properties") if isinstance(current, dict) else None
+        if isinstance(props, dict) and segment in props and isinstance(props[segment], dict):
+            current = props[segment]
+            continue
+        return None
+    if isinstance(current, dict) and isinstance(current.get("enum"), list):
+        return current
+    return None
+
+
+@dataclass
+class FixApplicationReport:
+    applied: list[ContractFix] = field(default_factory=list)
+    skipped: list[ContractFix] = field(default_factory=list)
+    not_found: list[ContractFix] = field(default_factory=list)
+
+    @property
+    def any_applied(self) -> bool:
+        return bool(self.applied)
+
+
+def apply_fixes_to_contract(
+    contract_path: Path,
+    fixes: list[ContractFix],
+    *,
+    include_error_expansion: bool = False,
+) -> FixApplicationReport:
+    """Apply *fixes* in place to the JSON file at *contract_path*.
+
+    Only safe fixes are applied by default:
+
+    * ``remove_extra`` (warning-level, output/payload): always applied.
+
+    Opt-in with ``include_error_expansion=True``:
+
+    * ``expand_contract`` (error-level, output/payload): add Pydantic-known
+      values to the contract enum.
+
+    Fixes whose ``block_kind`` is not in ``{"output", "payload"}`` or whose
+    ``action`` is neither ``remove_extra`` nor ``expand_contract`` are
+    recorded in ``skipped`` without modifying the file.
+
+    On success the file is rewritten with ``indent=2`` and ``ensure_ascii=False``
+    so UTF-8 content (e.g. ``"—"`` for ws.channel) survives.
+    """
+    report = FixApplicationReport()
+    if not fixes:
+        return report
+
+    try:
+        raw = json.loads(contract_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        report.skipped.extend(fixes)
+        return report
+
+    modified = False
+    for fix in fixes:
+        if fix.action not in ("remove_extra", "expand_contract"):
+            report.skipped.append(fix)
+            continue
+        if fix.action == "expand_contract" and not include_error_expansion:
+            report.skipped.append(fix)
+            continue
+        if fix.block_kind not in ("output", "payload"):
+            # Input fixes require human decision; never auto-apply.
+            report.skipped.append(fix)
+            continue
+
+        spec = _navigate_to_enum_spec(raw, fix.block_kind, fix.field_path)
+        if spec is None:
+            report.not_found.append(fix)
+            continue
+
+        current_enum = [v for v in spec["enum"] if isinstance(v, str)]
+        if fix.action == "remove_extra":
+            new_enum = [v for v in current_enum if v not in set(fix.values)]
+        else:  # expand_contract
+            existing = set(current_enum)
+            new_enum = list(current_enum) + [v for v in fix.values if v not in existing]
+
+        if new_enum == current_enum:
+            # No-op; already in sync (e.g. fix was already applied).
+            report.skipped.append(fix)
+            continue
+
+        spec["enum"] = new_enum
+        modified = True
+        report.applied.append(fix)
+
+    if modified:
+        # Preserve the canonical indent=2 ensure_ascii=False format used by
+        # protogate.codegen.registry.write_registry and the rest of the
+        # contract authoring toolchain.
+        text = json.dumps(raw, indent=2, ensure_ascii=False) + "\n"
+        contract_path.write_text(text, encoding="utf-8")
+
+    return report
 
 
 def cross_check_contracts(

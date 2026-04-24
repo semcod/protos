@@ -508,6 +508,8 @@ def cmd_codegen_registry(args: argparse.Namespace) -> int:
         layers_root=layers_root,
         check_only=args.check,
         cross_check_pydantic=getattr(args, "cross_check_pydantic", False),
+        fix_safe=getattr(args, "fix_safe", False),
+        auto_expand_output=getattr(args, "auto_expand_output", False),
         verbose=not args.quiet,
     )
 

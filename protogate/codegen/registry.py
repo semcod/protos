@@ -381,6 +381,8 @@ def run_cli(
     layers_root: Path | None = None,
     check_only: bool = False,
     cross_check_pydantic: bool = False,
+    fix_safe: bool = False,
+    auto_expand_output: bool = False,
     verbose: bool = True,
 ) -> int:
     """CLI entry point used by ``protogate codegen registry``.
@@ -391,6 +393,18 @@ def run_cli(
     additionally cross-checked against ``Literal[...]`` annotations found in
     the Pydantic module referenced by ``layers.python``. See
     :mod:`protogate.codegen.pydantic_cross_check`.
+
+    When *fix_safe* is ``True`` the cross-check additionally auto-applies
+    warning-level drift fixes to the contract JSON files on disk (remove
+    enum values the Pydantic model does not emit). Requires
+    *cross_check_pydantic=True*.
+
+    When *auto_expand_output* is ``True`` (opt-in, requires *fix_safe*), the
+    cross-check **also** expands output/payload contract enums to cover
+    values the Pydantic Literal emits but the contract did not advertise.
+    This resolves the ADR-012 Wave 2 regression class automatically at the
+    cost of potentially blessing a server-side bug. Never applied to input
+    blocks.
     """
     if output_dir is None:
         output_dir = contracts_dir
@@ -423,8 +437,47 @@ def run_cli(
             print(f"  ✅ {name}")
 
     if cross_check_pydantic:
-        from protogate.codegen.pydantic_cross_check import cross_check_contracts
+        from protogate.codegen.pydantic_cross_check import (
+            apply_fixes_to_contract,
+            cross_check_contracts,
+        )
         cross_root = layers_root if layers_root is not None else contracts_dir.parent
+
+        if fix_safe:
+            # First pass: identify drift and proposed fixes.
+            first_pairs = cross_check_contracts(result.contracts, layers_root=cross_root)
+            any_applied = False
+            for raw_contract, cross_result in first_pairs:
+                if not cross_result.fixes:
+                    continue
+                file_name = raw_contract.get("_file")
+                if not file_name:
+                    continue
+                fixes_to_apply = cross_result.auto_fixable_fixes(
+                    include_error_expansion=auto_expand_output,
+                )
+                if not fixes_to_apply:
+                    continue
+                report = apply_fixes_to_contract(
+                    contracts_dir / file_name,
+                    fixes_to_apply,
+                    include_error_expansion=auto_expand_output,
+                )
+                if report.applied and verbose:
+                    print(f"\n✏️  Auto-fixed {file_name}:")
+                    for fix in report.applied:
+                        print(f"  ✏️  {fix.describe()}")
+                    any_applied = any_applied or True
+                if report.not_found and verbose:
+                    for fix in report.not_found:
+                        print(
+                            f"  ⚠️  could not locate enum to fix in "
+                            f"{file_name}: {fix.field_path}"
+                        )
+            if any_applied:
+                # Reload contracts so the subsequent second pass sees the edits.
+                result = build(contracts_dir, layers_root=layers_root)
+
         pairs = cross_check_contracts(result.contracts, layers_root=cross_root)
         failures = [(c, r) for c, r in pairs if not r.ok]
         warnings_pairs = [(c, r) for c, r in pairs if r.warnings]
@@ -441,6 +494,13 @@ def run_cli(
             for _contract, cross_result in failures:
                 for err in cross_result.errors:
                     print(f"  ❌ {err}", file=sys.stderr)
+            if not fix_safe:
+                print(
+                    "\n💡 Tip: rerun with --fix-safe (auto-fixes warnings) or "
+                    "--fix-safe --auto-expand-output (also auto-expands output "
+                    "contract enums to match Pydantic).",
+                    file=sys.stderr,
+                )
             return 1
         if verbose:
             print(
