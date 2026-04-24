@@ -1,4 +1,5 @@
-.PHONY: all proto zod python json sql clean generate-incremental proto-changed
+.PHONY: all proto zod python json sql clean generate-incremental proto-changed \
+        registry-register registry-check registry-list
 
 # Default: run all generators (requires buf on PATH for the proto target)
 all: proto zod python json sql
@@ -34,3 +35,18 @@ generate-incremental: proto-changed
 # Remove all generated artefacts (keeps the directory skeletons)
 clean:
 	find generated/ -type f ! -name '.gitkeep' -delete
+
+# ---------------------------------------------------------------------------
+# Schema Registry targets
+# ---------------------------------------------------------------------------
+# Register the default proto file (contracts/user/v1/user.proto) in the registry
+registry-register:
+	python scripts/schema_registry.py register contracts/user/v1/user.proto
+
+# Check compatibility of the default proto without registering
+registry-check:
+	python scripts/schema_registry.py check contracts/user/v1/user.proto
+
+# List all schemas in the registry
+registry-list:
+	python scripts/schema_registry.py list
