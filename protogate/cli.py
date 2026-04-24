@@ -678,6 +678,24 @@ def main() -> int:
         ),
     )
     codegen_registry.add_argument(
+        "--fix-safe",
+        action="store_true",
+        help=(
+            "Auto-apply safe warning-level drift fixes to contract JSON on disk "
+            "(remove enum values Pydantic never emits). Requires "
+            "--cross-check-pydantic. Never modifies Python source."
+        ),
+    )
+    codegen_registry.add_argument(
+        "--auto-expand-output",
+        action="store_true",
+        help=(
+            "With --fix-safe: also expand output/payload contract enums to "
+            "cover values Pydantic Literal emits (opt-in; resolves Wave 2 "
+            "regression class automatically but may bless a server-side bug)."
+        ),
+    )
+    codegen_registry.add_argument(
         "--quiet",
         action="store_true",
         help="Suppress per-contract progress output",
