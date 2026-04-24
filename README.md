@@ -144,6 +144,47 @@ Legacy schema migration and synchronization:
 | ------ | ----------- |
 | `make ci` | Full CI: lint → generate → test → registry check |
 
+## Contract Enum Cross-Check
+
+`protogate codegen registry` cross-checks CQRS contract JSON files
+(`*.command.json`, `*.query.json`, `*.event.json`) against Pydantic
+`Literal[...]` annotations found in `layers.python`. It catches the
+drift class that broke ADR-012 Wave 2 in c2004, where a server could
+return an enum value the contract did not advertise, crashing the
+client decoder.
+
+### CLI
+
+```bash
+# 1. Report-only gate (CI default)
+protogate codegen registry contracts/ --check --cross-check-pydantic
+
+# 2. Auto-fix warnings (safe; touches JSON only)
+protogate codegen registry contracts/ --cross-check-pydantic --fix-safe
+
+# 3. Auto-fix warnings + expand output enums (opt-in; may bless server bugs)
+protogate codegen registry contracts/ --cross-check-pydantic --fix-safe --auto-expand-output
+```
+
+### Directional rules
+
+| Direction | Rule | Verdict |
+| --- | --- | --- |
+| `output`/`payload` | `pydantic ⊆ contract` | compatible |
+| `output`/`payload` | `pydantic ⊋ contract` | **error** — client may crash on undeclared value |
+| `output`/`payload` | `contract ⊋ pydantic` | **warning** — dead code paths on client |
+| `input`            | `contract ⊆ pydantic` | compatible |
+| `input`            | `contract ⊋ pydantic` | **error** — server rejects valid-per-contract input (HTTP 422) |
+| `input`            | `pydantic ⊋ contract` | compatible (intentional API restriction) |
+
+Pydantic source is **never** modified; all fixes apply to contract JSON
+only. Input-direction errors are never auto-fixed (require human
+decision between narrowing the contract or loosening Pydantic).
+
+See [docs/contract-cross-check.md](docs/contract-cross-check.md) for the
+full reference, the c2004 Makefile integration, and the Wave 2
+post-mortem that motivated the feature.
+
 ## Delegation Workflow
 
 1. **Generate candidate report** in c2004 (`detect_migration_candidates.py`)
@@ -357,11 +398,11 @@ pytest tests/test_event_store.py -v
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.16-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$4.05-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-13.8h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.17-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$4.20-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-13.8h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $4.0500 (27 commits)
-- 👤 **Human dev:** ~$1376 (13.8h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $4.2000 (28 commits)
+- 👤 **Human dev:** ~$1380 (13.8h @ $100/h, 30min dedup)
 
 Generated on 2026-04-24 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 

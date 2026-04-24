@@ -7,6 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Contract enum cross-check auto-fix
+
+Two-tier auto-fix for enum drift between contract JSON and Pydantic
+`Literal[...]` annotations, layered on top of the existing
+`--cross-check-pydantic` validator.
+
+- **`protogate codegen registry --cross-check-pydantic --fix-safe`**
+  Auto-applies warning-level drift fixes to contract JSON on disk:
+  removes enum values the Pydantic model never emits (eliminates dead
+  code paths on the client). Always safe; never modifies Python source.
+
+- **`... --fix-safe --auto-expand-output`** (opt-in)
+  Additionally expands output/payload contract enums to cover values
+  the Pydantic Literal emits (resolves the ADR-012 Wave 2 regression
+  class automatically). Input-direction errors are never auto-fixed
+  because they have two equally valid resolutions (narrow contract vs
+  loosen Pydantic) and require a human decision.
+
+### Changed — Directional subset check
+
+The `--cross-check-pydantic` validator no longer requires strict set
+equality. It now uses directional subset rules to reduce false
+positives:
+
+| Direction | Rule | Verdict |
+| --- | --- | --- |
+| `output`/`payload` | `pydantic ⊆ contract`   | compatible |
+| `output`/`payload` | `pydantic ⊋ contract`   | **error** — client may crash on undeclared value |
+| `output`/`payload` | `contract ⊋ pydantic`   | **warning** — dead code paths on client |
+| `input`            | `contract ⊆ pydantic`   | compatible |
+| `input`            | `contract ⊋ pydantic`   | **error** — server rejects valid-per-contract input (HTTP 422) |
+| `input`            | `pydantic ⊋ contract`   | compatible (intentional API restriction) |
+
+Error messages now carry the `block_kind` ("input"/"output"/"payload")
+and a one-line rationale ("server may return values the client cannot
+decode", "dead code paths on the client", "HTTP 422 for client").
+
+See [docs/contract-cross-check.md](docs/contract-cross-check.md) for the
+full reference and c2004 integration.
+
+## [0.1.17] - 2026-04-24
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+
 ## [0.1.16] - 2026-04-24
 
 ### Docs
