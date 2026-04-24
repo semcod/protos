@@ -13,6 +13,10 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
+def _swop_candidate_sort_key(candidate: Path) -> tuple[float, str]:
+    return (candidate.stat().st_mtime, candidate.as_posix())
+
+
 def _load_module_from_path(module_name: str, script_path: Path):
     spec = importlib.util.spec_from_file_location(module_name, script_path)
     if spec is None or spec.loader is None:
@@ -53,7 +57,7 @@ def _resolve_proto_input_dir(input_dir: Path) -> Path:
         if candidate.is_dir() and list(candidate.rglob("*.proto"))
     ]
     if swop_candidates:
-        selected = max(swop_candidates, key=lambda candidate: candidate.stat().st_mtime)
+        selected = max(swop_candidates, key=_swop_candidate_sort_key)
         print(
             f"[INFO] No .proto under {resolved}; using swop protobuf dir {selected}",
             file=sys.stderr,

@@ -63,3 +63,22 @@ def test_resolve_proto_input_dir_prefers_latest_swop_proto(tmp_path: Path) -> No
     resolved = _resolve_proto_input_dir(contracts_root)
 
     assert resolved == newer.resolve()
+
+
+def test_resolve_proto_input_dir_prefers_deterministic_candidate_on_equal_mtime(tmp_path: Path) -> None:
+    contracts_root = tmp_path / "contracts"
+    contracts_root.mkdir(parents=True)
+    _write(contracts_root / "CreateUser.command.json", "{}\n")
+
+    left = tmp_path / "reports" / "alpha" / "swop" / "proto"
+    right = tmp_path / "reports" / "beta" / "swop" / "proto"
+    _write(left / "events" / "v1" / "events.proto", 'syntax = "proto3";\n')
+    _write(right / "events" / "v1" / "events.proto", 'syntax = "proto3";\n')
+
+    equal_time = (1_900_000_000, 1_900_000_000)
+    os.utime(left, equal_time)
+    os.utime(right, equal_time)
+
+    resolved = _resolve_proto_input_dir(contracts_root)
+
+    assert resolved == right.resolve()
