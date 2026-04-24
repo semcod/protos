@@ -14,12 +14,19 @@ PostgreSQL / EventStoreDB / Kafka etc.
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
+import sys
 import time
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Iterator
+
+# Allow importing sibling scripts regardless of working directory.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from conflict_resolver import ConflictResolver  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -256,11 +263,6 @@ class EventStore:
         ValueError
             When an unknown *strategy* is supplied.
         """
-        import os as _os
-        import sys as _sys
-        _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
-        from conflict_resolver import ConflictResolver  # noqa: E402
-
         server_events = self.get_stream(aggregate_id, from_version=fork_version)
         resolver = ConflictResolver()
 

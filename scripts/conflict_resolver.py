@@ -176,17 +176,18 @@ class ConflictResolver:
         branch_types = {e.event_type for e in branch_events}
 
         for pair in self.exclusive_pairs:
-            if pair <= (server_types | branch_types):
-                pair_list = list(pair)
-                if any(t in server_types for t in pair_list) and any(
-                    t in branch_types for t in pair_list
-                ):
-                    conflicts.append(
-                        {
-                            "kind": "exclusive_event_pair",
-                            "types": pair_list,
-                        }
-                    )
+            pair_list = list(pair)
+            # A conflict requires one event type from the pair present in the
+            # server stream and the other in the branch stream.
+            server_has = {t for t in pair_list if t in server_types}
+            branch_has = {t for t in pair_list if t in branch_types}
+            if server_has and branch_has:
+                conflicts.append(
+                    {
+                        "kind": "exclusive_event_pair",
+                        "types": pair_list,
+                    }
+                )
 
         if conflicts:
             raise UnresolvableConflictError(
@@ -206,7 +207,12 @@ class ConflictResolver:
                 for fld in shared_fields:
                     s_val = s_evt.payload.get(fld)
                     b_val = b_evt.payload.get(fld)
-                    if s_val is not None and b_val is not None and s_val != b_val:
+                    # Conflict when both events carry an explicit value for the
+                    # same field and those values differ (None counts as a
+                    # distinct value – one event deletes the field, the other sets it).
+                    s_present = fld in s_evt.payload
+                    b_present = fld in b_evt.payload
+                    if s_present and b_present and s_val != b_val:
                         conflicts.append(
                             {
                                 "kind": "field_value_conflict",

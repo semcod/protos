@@ -143,8 +143,9 @@ class TestLWWStrategy:
         e_branch = _event("EmailChanged", {"email": "branch@x.com"}, timestamp=1.0, version=2)
         merged = resolver.resolve_lww([e_server], [e_branch])
         assert len(merged) == 2
-        # Last event in the merged stream wins when replayed
-        assert merged[-1].payload["email"] == "server@x.com"
+        # Both events are preserved; the last one (by timestamp) wins on replay
+        assert merged[0].payload["email"] == "branch@x.com"
+        assert merged[1].payload["email"] == "server@x.com"
 
     def test_lww_returns_all_events_sorted_by_timestamp(self, resolver):
         t = time.time()

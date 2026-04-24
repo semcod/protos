@@ -37,7 +37,9 @@ _FIELD_RE = re.compile(
 _MESSAGE_START_RE = re.compile(r"^\s*message\s+(\w+)\s*\{")
 _PACKAGE_RE = re.compile(r"^\s*package\s+([\w.]+)\s*;")
 # Matches:  reserved 1, 2, 3;   or   reserved 1 to 5;
-_RESERVED_NUMBERS_RE = re.compile(r"^\s*reserved\s+([\d\s,to]+)\s*;")
+_RESERVED_NUMBERS_RE = re.compile(
+    r"^\s*reserved\s+((?:\d+(?:\s+to\s+\d+)?(?:\s*,\s*)?)+)\s*;"
+)
 # Matches:  reserved "field_a", "field_b";
 _RESERVED_NAMES_RE = re.compile(r'^\s*reserved\s+("[\w"]+.*?)\s*;')
 
