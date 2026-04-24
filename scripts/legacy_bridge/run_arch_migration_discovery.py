@@ -228,10 +228,25 @@ def render_module_candidates_markdown(rows: list[dict[str, Any]]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def build_delegation_plan(rows: list[dict[str, Any]], limit: int) -> tuple[list[dict[str, Any]], str]:
-    sorted_rows = sorted(rows, key=lambda item: float(item.get("score", 0.0)), reverse=True)
-    selected = [build_output_row(row) for row in sorted_rows[:limit]]
-    markdown = render_delegation_markdown(sorted_rows, limit)
+def _parse_score(row: dict[str, Any]) -> float:
+    try:
+        return float(row.get("score", 0.0))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def build_delegation_plan(
+    rows: list[dict[str, Any]],
+    limit: int,
+    clusters_by_module: dict[str, dict[str, Any]] | None = None,
+) -> tuple[list[dict[str, Any]], str]:
+    clusters_by_module = clusters_by_module or {}
+    sorted_rows = sorted(rows, key=_parse_score, reverse=True)
+    selected = [
+        build_output_row(row, clusters_by_module.get(str(row.get("module", "")), {}))
+        for row in sorted_rows[:limit]
+    ]
+    markdown = render_delegation_markdown(sorted_rows, limit, clusters_by_module)
     return selected, markdown
 
 
@@ -362,13 +377,24 @@ def run_discovery(
         config,
         {str(row.get("module")): row for row in candidate_rows if isinstance(row.get("module"), str)},
     )
-    delegation_rows, delegation_markdown = build_delegation_plan(candidate_rows, delegation_limit)
+    cqrs_rows = cqrs_pattern_payload.get("rows", [])
+    clusters_by_module = {
+        str(row.get("module")): row
+        for row in cqrs_rows
+        if isinstance(row, dict) and isinstance(row.get("module"), str)
+    }
+    delegation_rows, delegation_markdown = build_delegation_plan(
+        candidate_rows,
+        delegation_limit,
+        clusters_by_module,
+    )
 
     # Generate migration wave plan
+    waves = build_waves(cqrs_pattern_payload, candidate_rows, max_waves=5)
     wave_plan_payload = {
-        "waves": [asdict(w) for w in build_waves(cqrs_pattern_payload, candidate_rows, max_waves=5)]
+        "waves": [asdict(w) for w in waves]
     }
-    wave_plan_markdown = render_wave_plan_markdown([w for w in build_waves(cqrs_pattern_payload, candidate_rows, max_waves=5)])
+    wave_plan_markdown = render_wave_plan_markdown(waves)
 
     artifacts: dict[str, Path] = {
         "repository_profile_json": output_dir / "repository-profile.json",

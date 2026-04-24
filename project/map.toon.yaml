@@ -1,10 +1,10 @@
-# protos | 63f 8760L | python:58,typescript:2,shell:2,less:1 | 2026-04-24
-# stats: 212 func | 58 cls | 63 mod | CC̄=4.9 | critical:24 | cycles:0
+# protos | 61f 8697L | python:58,shell:2,less:1 | 2026-04-24
+# stats: 212 func | 58 cls | 61 mod | CC̄=4.9 | critical:24 | cycles:0
 # alerts[5]: CC analyze_frontend_modules=43; CC build_service_components=34; CC analyze_candidate=28; CC discover_candidate_paths=20; CC select_execution_plan=20
 # hotspots[5]: analyze_frontend_modules fan=26; analyze_repository fan=24; run_discovery fan=24; build_ts_index fan=21; main fan=21
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[63]:
+M[61]:
   adapters/legacy_to_proto/user_adapter.py,37
   adapters/proto_to_legacy/user_adapter.py,22
   app.doql.less,146
@@ -16,8 +16,6 @@ M[63]:
   gateway/tests/test_gateway.py,12
   gateway/user_handler.py,151
   gateway/ws.py,77
-  legacy-mock/src/SearchIframe.ts,38
-  legacy-mock/src/main.ts,25
   project.sh,48
   scratch/smoke_test_dual_write.py,28
   scratch/smoke_test_search.py,31

@@ -30,8 +30,14 @@ PATTERN_WAVE_PRIORITY: dict[str, int] = {
     "data-grid-cqrs": 1,  # Most mature, already extracted in c2004
     "reports-filtering-cqrs": 2,
     "manager-library-workflow-cqrs": 3,
-    "config-admin-cqrs": 4,
-    "custom-cqrs": 5,  # Least mature, per-module extraction
+    "scenario-builder-cqrs": 4,
+    "menu-tree-cqrs": 5,
+    "devtools-ops-cqrs": 6,
+    "id-user-admin-cqrs": 7,
+    "menu-editor-snapshots-cqrs": 8,
+    "config-admin-cqrs": 9,
+    "test-orchestration-cqrs": 10,
+    "custom-cqrs": 11,  # Least mature, per-module extraction
 }
 
 PHASE_PRIORITY: dict[str, int] = {
@@ -99,8 +105,20 @@ def determine_wave_name(pattern: str, extraction_target: str) -> str:
         return "Reports Core Types"
     if pattern == "manager-library-workflow-cqrs":
         return "Manager Library Workflow"
+    if pattern == "scenario-builder-cqrs":
+        return "Scenario Builder Core"
+    if pattern == "menu-tree-cqrs":
+        return "Menu Tree Contracts"
+    if pattern == "devtools-ops-cqrs":
+        return "Devtools Operations Types"
+    if pattern == "id-user-admin-cqrs":
+        return "ID User Admin Types"
+    if pattern == "menu-editor-snapshots-cqrs":
+        return "Menu Editor Snapshot Types"
     if pattern == "config-admin-cqrs":
         return "Config Admin Types"
+    if pattern == "test-orchestration-cqrs":
+        return "Test Orchestration Types"
     if "custom" in pattern:
         return f"Custom Extraction: {extraction_target.split(':')[-1]}"
     return f"{pattern.replace('-', ' ').title()}"

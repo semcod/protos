@@ -22,6 +22,37 @@ EVENT_SUFFIXES = (
     "Tested",
     "Failed",
 )
+
+# Mapping of modules to their already-extracted shared type files
+# This allows detection of CQRS patterns even in modules that have been partially refactored
+SHARED_TYPE_FILE_BY_MODULE: dict[str, list[str]] = {
+    "connect-config": [
+        "connect-config.ts",
+        "config-admin.ts",
+        "config-system-core.ts",
+        "config-flags-core.ts",
+        "config-nav-core.ts",
+        "config-template-core.ts",
+        "config-access-core.ts",
+        "config-module-core.ts",
+    ],
+    "connect-data": ["cqrs-data-grid.ts"],
+    "connect-workshop": ["cqrs-data-grid.ts"],
+    "connect-reports": ["reports-core.ts"],
+    "connect-manager": ["manager-core.ts"],
+    "connect-scenario": ["scenario-core.ts"],
+    "connect-menu-tree": ["menu-tree-core.ts", "menu-tree-structure-core.ts", "menu-tree-mutation-core.ts"],
+    "connect-devtools": ["devtools-core.ts", "devtools-panel-core.ts", "devtools-runs-core.ts"],
+    "connect-id": ["id-core.ts", "id-navigation-core.ts", "id-users-core.ts"],
+    "connect-menu-editor": ["menu-editor-core.ts", "menu-editor-storage-core.ts", "menu-editor-ops-core.ts"],
+    "connect-test": [
+        "test-orchestration-core.ts",
+        "test-device-customer-core.ts",
+        "test-assignment-core.ts",
+        "test-protocol-core.ts",
+    ],
+}
+
 DEFAULT_CONFIG: dict[str, Any] = {
     "cqrs": {
         "module_roots": ["frontend/src/modules"],
@@ -58,6 +89,54 @@ DEFAULT_CONFIG: dict[str, Any] = {
                 "events": ["LibraryLoaded", "LibraryItemAdded", "LibraryItemDeleted", "ScenariosLoaded", "ScenarioCreated", "ScenarioUpdated", "ScenarioDeleted"],
                 "min_command_matches": 3,
                 "min_event_matches": 3,
+            },
+            {
+                "name": "scenario-builder-cqrs",
+                "extraction_target": "@semcod/contracts-types:scenario-core",
+                "commands": ["AddGoal", "DeleteGoal", "AddTask", "DeleteTask", "LoadScenarioById", "LoadScenarioByTitle", "UpdateScenarioDSL", "UpdateScenarioDEF", "UpdateScenarioContent", "SaveScenario"],
+                "events": ["GoalAdded", "GoalDeleted", "TaskAdded", "TaskDeleted", "ScenarioLoaded", "ScenarioSaved", "ScenarioDSLUpdated", "ScenarioDEFUpdated", "ScenarioContentUpdated"],
+                "min_command_matches": 4,
+                "min_event_matches": 4,
+            },
+            {
+                "name": "menu-tree-cqrs",
+                "extraction_target": "@semcod/contracts-types:menu-tree-core",
+                "commands": ["LoadMenus", "UpsertItem", "DeleteItem", "AddModulesToMenu", "EnsureModulesMenus", "ExportMigration"],
+                "events": ["MenusRequested", "MenusLoaded", "MenusLoadFailed", "ItemUpserted", "ItemDeleted", "ModulesAdded", "ConfigCreated", "RouteMapped", "MigrationGenerated"],
+                "min_command_matches": 4,
+                "min_event_matches": 4,
+            },
+            {
+                "name": "devtools-ops-cqrs",
+                "extraction_target": "@semcod/contracts-types:devtools-core",
+                "commands": ["SetDevtoolsPanel", "SetDevtoolsLogLevel", "LoadScripts", "RunScript", "GetRun", "GetRunLogs", "LoadRuns"],
+                "events": ["DevtoolsPanelSet", "DevtoolsLogLevelSet", "ScriptsLoaded", "ScriptRunStarted", "RunStatusUpdated", "RunLogsLoaded", "RunsLoaded"],
+                "min_command_matches": 5,
+                "min_event_matches": 5,
+            },
+            {
+                "name": "id-user-admin-cqrs",
+                "extraction_target": "@semcod/contracts-types:id-core",
+                "commands": ["SetIdSection", "SetIdMethod", "LoadUsers", "AddUser", "RemoveUser", "FilterUsers"],
+                "events": ["IdSectionSet", "IdMethodSet", "UsersLoaded", "UserAdded", "UserRemoved", "UsersFiltered"],
+                "min_command_matches": 4,
+                "min_event_matches": 4,
+            },
+            {
+                "name": "menu-editor-snapshots-cqrs",
+                "extraction_target": "@semcod/contracts-types:menu-editor-core",
+                "commands": ["SaveScreenshot", "LoadScreenshots", "DeleteScreenshot", "ClearAllScreenshots"],
+                "events": ["ScreenshotSaved", "ScreenshotsLoaded", "ScreenshotDeleted", "ScreenshotsCleared"],
+                "min_command_matches": 3,
+                "min_event_matches": 3,
+            },
+            {
+                "name": "test-orchestration-cqrs",
+                "extraction_target": "@semcod/contracts-types:test-orchestration-core",
+                "commands": ["SetTestMethod", "LoadDevices", "LoadCustomers", "LoadAssignments", "LoadScenarioById", "LoadScenarioByTitle", "LoadProtocols", "StartProtocol", "FinalizeProtocol", "LoadAuthUsers", "LoadTestScenarios", "LoadDslParamValues"],
+                "events": ["TestMethodSet", "DevicesLoaded", "CustomersLoaded", "AssignmentsLoaded", "ScenarioLoaded", "ProtocolsLoaded", "ProtocolCreated", "ProtocolFinalized", "AuthUsersLoaded", "TestScenariosLoaded", "DslParamValuesLoaded"],
+                "min_command_matches": 7,
+                "min_event_matches": 7,
             },
         ],
         "custom_extraction_target": "@semcod/contracts-types:custom-per-module",
@@ -159,12 +238,22 @@ def split_tokens(tokens: list[str]) -> tuple[list[str], list[str]]:
 
 
 def classify_pattern(commands: set[str], events: set[str], config: dict[str, Any]) -> tuple[str, str]:
+    all_tokens = commands | events
     for pattern in config["cqrs"]["patterns"]:
         cmd_required = int(pattern.get("min_command_matches", 1))
         evt_required = int(pattern.get("min_event_matches", 1))
         command_matches = len(commands & set(pattern.get("commands", [])))
         event_matches = len(events & set(pattern.get("events", [])))
+
+        # Some modules are now split into multiple shared files and re-export hubs.
+        # In these cases token suffix heuristics can undercount command/event buckets,
+        # so we also allow matching against the union token set.
+        all_command_matches = len(all_tokens & set(pattern.get("commands", [])))
+        all_event_matches = len(all_tokens & set(pattern.get("events", [])))
+
         if command_matches >= cmd_required and event_matches >= evt_required:
+            return str(pattern["name"]), str(pattern["extraction_target"])
+        if all_command_matches >= cmd_required and all_event_matches >= evt_required:
             return str(pattern["name"]), str(pattern["extraction_target"])
     return "custom-cqrs", str(config["cqrs"]["custom_extraction_target"])
 
@@ -210,6 +299,21 @@ def assign_clusters(
     return {root: sorted(members) for root, members in grouped.items()}
 
 
+def shared_tokens_for_module(repo_root: Path, module: str) -> list[str]:
+    """Extract tokens from already-extracted shared type files for a module."""
+    shared_files = SHARED_TYPE_FILE_BY_MODULE.get(module, [])
+    if not shared_files:
+        return []
+
+    tokens: list[str] = []
+    for shared_file in shared_files:
+        shared_path = repo_root / "packages" / "contracts-types" / "src" / shared_file
+        if not shared_path.exists():
+            continue
+        tokens.extend(TYPE_TOKEN_RE.findall(read_text(shared_path)))
+    return tokens
+
+
 def analyze_repository(repo_root: Path, config: dict[str, Any], candidate_scores: dict[str, dict[str, Any]] | None = None) -> dict[str, Any]:
     config = normalize_config(config)
     candidate_scores = candidate_scores or {}
@@ -225,6 +329,9 @@ def analyze_repository(repo_root: Path, config: dict[str, Any], candidate_scores
             module = module_from_types_path(types_path, repo_root)
             text = read_text(types_path)
             tokens = TYPE_TOKEN_RE.findall(text)
+            # If module imports from shared types, extend tokens with shared type tokens
+            if "@semcod/contracts-types" in text:
+                tokens.extend(shared_tokens_for_module(repo_root, module))
             commands, events = split_tokens(tokens)
             command_set = set(commands)
             event_set = set(events)

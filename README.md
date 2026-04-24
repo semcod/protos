@@ -72,12 +72,20 @@ make gateway
    ```bash
    python scripts/legacy_bridge/generate_delegation_plan.py \
      --input /path/to/c2004/module-candidates.json \
+     --clusters /path/to/c2004/cqrs-pattern-clusters.json \
      --output-dir docs
    ```
-3. Pick top module from Phase-1
-4. Implement full vertical slice in protos
-5. Switch c2004 route to iframe host
-6. Validate parity & archive legacy
+3. **(Recommended) Run full discovery pipeline** in protos:
+   ```bash
+   python scripts/legacy_bridge/run_arch_migration_discovery.py \
+     --repo-root /path/to/c2004 \
+     --output-dir reports/migration-discovery \
+     --delegation-limit 30
+   ```
+4. Pick top module from Phase-1
+5. Implement full vertical slice in protos
+6. Switch c2004 route to iframe host
+7. Validate parity & archive legacy
 
 ## Project Structure
 

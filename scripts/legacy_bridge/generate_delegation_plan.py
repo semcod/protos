@@ -34,17 +34,41 @@ def load_clusters(path: Path | None) -> dict[str, dict[str, Any]]:
     if path is None or not path.exists():
         return {}
     data = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(data, list):
+    rows: list[Any]
+    if isinstance(data, list):
+        rows = data
+    elif isinstance(data, dict) and isinstance(data.get("rows"), list):
+        rows = data["rows"]
+    else:
         return {}
 
     out: dict[str, dict[str, Any]] = {}
-    for row in data:
+    for row in rows:
         if not isinstance(row, dict):
             continue
         module = row.get("module")
         if isinstance(module, str):
             out[module] = row
     return out
+
+
+def parse_score(row: dict[str, Any]) -> float:
+    try:
+        return float(row.get("score", 0.0))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def dedupe_candidates(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_module: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        module = row.get("module")
+        if not isinstance(module, str) or not module.strip():
+            continue
+        existing = by_module.get(module)
+        if existing is None or parse_score(row) > parse_score(existing):
+            by_module[module] = row
+    return list(by_module.values())
 
 
 def parse_args() -> argparse.Namespace:
@@ -73,18 +97,19 @@ def main() -> int:
         print(f"[ERROR] input not found: {input_path}")
         return 1
 
-    rows = load_candidates(input_path)
+    rows = dedupe_candidates(load_candidates(input_path))
     cluster_path = Path(args.clusters).resolve() if args.clusters else None
     clusters = load_clusters(cluster_path)
-    rows.sort(key=lambda r: float(r.get("score", 0.0)), reverse=True)
+    rows.sort(key=parse_score, reverse=True)
+    limit = max(1, int(args.limit))
 
     out_dir.mkdir(parents=True, exist_ok=True)
     out_json = out_dir / "delegation-plan.generated.json"
     out_md = out_dir / "delegation-plan.generated.md"
 
-    selected = [build_output_row(row, clusters.get(str(row.get("module", "")), {})) for row in rows[: args.limit]]
+    selected = [build_output_row(row, clusters.get(str(row.get("module", "")), {})) for row in rows[:limit]]
     out_json.write_text(json.dumps(selected, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    out_md.write_text(render_markdown(rows, args.limit, clusters), encoding="utf-8")
+    out_md.write_text(render_markdown(rows, limit, clusters), encoding="utf-8")
 
     print(f"[INFO] wrote {out_json}")
     print(f"[INFO] wrote {out_md}")

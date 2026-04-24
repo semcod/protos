@@ -1,42 +1,42 @@
-# protos | 241 func | 37f | 13104L | python | 2026-04-24
+# protos | 597 func | 37f | 18130L | python | 2026-04-24
 
 HEALTH:
-  CC̄=4.3  critical=23 (limit:10)  dup=0  cycles=2
+  CC̄=1.7  critical=23 (limit:10)  dup=0  cycles=0
 
 ALERTS[20]:
   !!! cc_exceeded      analyze_frontend_modules = 43 (limit:15)
   !!! cc_exceeded      build_service_components = 34 (limit:15)
   !!! high_fan_out     analyze_frontend_modules = 30 (limit:10)
   !!! cc_exceeded      analyze_candidate = 28 (limit:15)
-  !!! high_fan_out     analyze_repository = 25 (limit:10)
   !!! high_fan_out     run_discovery = 25 (limit:10)
+  !!! high_fan_out     analyze_repository = 25 (limit:10)
   !!! high_fan_out     main = 24 (limit:10)
   !!! high_fan_out     parse_proto = 23 (limit:10)
   !!! high_fan_out     profile_repository = 23 (limit:10)
   !!! high_fan_out     build_ts_index = 22 (limit:10)
 
-MODULES[67] (top by size):
+MODULES[74] (top by size):
+  M[project/calls.yaml] 1548L C:0 F:0 CC↑0 D:0 (yaml)
   M[docs/delegation-plan.generated.json] 1262L C:0 F:0 CC↑0 D:0 (json)
+  M[SUMD.md] 1025L C:0 F:180 CC↑0 D:0 (md)
+  M[SUMR.md] 998L C:0 F:0 CC↑0 D:0 (md)
   M[scripts/legacy_bridge/analyze_service_boundaries.py] 843L C:2 F:37 CC↑43 D:0 (python)
   M[docs/migration-orchestrator-strategy.md] 626L C:0 F:0 CC↑0 D:0 (md)
+  M[project/context.md] 554L C:0 F:0 CC↑0 D:0 (md)
   M[scripts/schema_registry.py] 543L C:3 F:16 CC↑19 D:1 (python)
   M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
-  M[scripts/detect_migration_candidates.py] 499L C:2 F:19 CC↑28 D:0 (python)
+  M[scripts/detect_migration_candidates.py] 499L C:2 F:19 CC↑28 D:2 (python)
   M[scripts/legacy_bridge/run_arch_migration_discovery.py] 459L C:0 F:14 CC↑18 D:0 (python)
+  M[project/map.toon.yaml] 451L C:0 F:180 CC↑0 D:0 (yaml)
   M[scripts/event_store.py] 398L C:4 F:13 CC↑7 D:0 (python)
-  M[scripts/legacy_bridge/detect_cqrs_pattern_clusters.py] 369L C:1 F:14 CC↑19 D:1 (python)
-  M[gateway/main.py] 332L C:4 F:16 CC↑3 D:0 (python)
-  M[scripts/legacy_bridge/generate_migration_wave_plan.py] 320L C:2 F:8 CC↑15 D:1 (python)
-  M[scripts/legacy_registry.py] 245L C:2 F:8 CC↑11 D:0 (python)
-  M[scripts/conflict_resolver.py] 236L C:2 F:5 CC↑22 D:0 (python)
-  M[scripts/parse_proto.py] 159L C:0 F:2 CC↑17 D:7 (python)
-  M[gateway/user_handler.py] 150L C:0 F:6 CC↑3 D:1 (python)
-  LANGS: python:40/md:5/json:4/proto:4/yaml:3/typescript:2/other:2/txt:2/shell:2/generator:1/yml:1/ini:1
+  M[scripts/legacy_bridge/detect_cqrs_pattern_clusters.py] 369L C:1 F:14 CC↑19 D:0 (python)
+  M[project/README.md] 339L C:0 F:0 CC↑0 D:0 (md)
+  LANGS: python:38/yaml:11/md:9/proto:4/txt:4/other:2/json:2/generator:1/yml:1/shell:1/ini:1
 
 HOTSPOTS[10]:
   ★ analyze_frontend_modules fan=30  // Analysis pipeline, 30 stages
-  ★ analyze_repository fan=25  // Analysis pipeline, 25 stages
   ★ run_discovery fan=25  // Orchestrates 25 calls
+  ★ analyze_repository fan=25  // Analysis pipeline, 25 stages
   ★ main fan=24  // Orchestrates 24 calls
   ★ parse_proto fan=23  // Parse a .proto file and return a simplified AST dict.
 
@@ -53,4 +53,4 @@ REFACTOR[15]:
   [5] H/H Split god module scripts/schema_registry.py (543L, 3 classes)
 
 EVOLUTION:
-  2026-04-24 CC̄=4.3 crit=23 13104L // Automated analysis
+  2026-04-24 CC̄=1.7 crit=23 18130L // Automated analysis

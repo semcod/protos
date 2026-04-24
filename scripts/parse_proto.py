@@ -12,6 +12,7 @@ the subset of proto3 needed by this project's generators:
 """
 
 import re
+from dataclasses import dataclass
 from typing import Any
 
 
@@ -28,11 +29,27 @@ SCALAR_TYPE_MAP: dict[str, str] = {
     "bytes": "bytes",
 }
 
+
+@dataclass
+class Field:
+    name: str
+    type: str
+    number: int
+    repeated: bool = False
+    map_key_type: str | None = None
+    map_value_type: str | None = None
+
 _FIELD_RE = re.compile(
     r"^\s*"
     r"(?:(repeated|optional|required)\s+)?"  # optional label
     r"(\w+)\s+"                               # type
     r"(\w+)\s*=\s*(\d+)\s*;"                 # name = number;
+)
+# Matches: map<string, SomeType> field_name = 1;
+_MAP_FIELD_RE = re.compile(
+    r"^\s*"
+    r"map\s*<\s*(\w+)\s*,\s*(\w+)\s*>\s+"  # map<key, value>
+    r"(\w+)\s*=\s*(\d+)\s*;"               # name = number;
 )
 _MESSAGE_START_RE = re.compile(r"^\s*message\s+(\w+)\s*\{")
 _PACKAGE_RE = re.compile(r"^\s*package\s+([\w.]+)\s*;")

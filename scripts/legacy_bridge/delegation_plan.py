@@ -3,6 +3,28 @@ from __future__ import annotations
 from typing import Any
 
 
+def _to_float(value: Any, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _normalize_shared_types_package(value: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return "@semcod/contracts-types:custom-per-module"
+    if ":" not in raw and raw.startswith("@semcod/contracts-types"):
+        return f"{raw}:custom-per-module"
+    return raw
+
+
+def _normalize_reasons(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [str(reason) for reason in value if str(reason).strip()]
+
+
 def to_slice_name(module: str) -> str:
     return module.strip().replace("_", "-").replace(" ", "-").lower()
 
@@ -46,7 +68,15 @@ def build_output_row(row: dict[str, Any], cluster_meta: dict[str, Any] | None = 
     module = str(row.get("module", "unknown"))
     cluster_meta = cluster_meta or {}
     cqrs_pattern = str(cluster_meta.get("pattern", "n/a"))
-    shared_types_package = str(cluster_meta.get("extraction_target", "@semcod/contracts-types:custom-per-module"))
+    shared_types_package = _normalize_shared_types_package(cluster_meta.get("extraction_target"))
+    score = _to_float(row.get("score", 0.0), 0.0)
+    phase = str(row.get("phase", "n/a"))
+    effort = str(row.get("effort", "n/a"))
+    command_count = int(cluster_meta.get("command_count", 0) or 0)
+    event_count = int(cluster_meta.get("event_count", 0) or 0)
+    cluster_members = cluster_meta.get("cluster_members", [module])
+    if not isinstance(cluster_members, list) or not cluster_members:
+        cluster_members = [module]
     return {
         **row,
         "module": module,
@@ -54,12 +84,15 @@ def build_output_row(row: dict[str, Any], cluster_meta: dict[str, Any] | None = 
         "cqrs": {
             "pattern": cqrs_pattern,
             "shared_types_package": shared_types_package,
+            "command_count": command_count,
+            "event_count": event_count,
+            "cluster_size": len(cluster_members),
         },
         "readiness": {
-            "score": float(row.get("score", 0.0)),
-            "phase": str(row.get("phase", "n/a")),
-            "effort": str(row.get("effort", "n/a")),
-            "reasons": [str(reason) for reason in row.get("reasons", [])],
+            "score": score,
+            "phase": phase,
+            "effort": effort,
+            "reasons": _normalize_reasons(row.get("reasons", [])),
         },
     }
 
@@ -74,13 +107,13 @@ def render_markdown(rows: list[dict[str, Any]], limit: int, clusters: dict[str, 
         "",
         "## Top modules to delegate first",
         "",
-        "| module | score | phase | effort | cqrs pattern | shared types package |",
-        "|---|---:|---|---|---|---|",
+        "| module | score | phase | effort | cqrs pattern | cmds | evts | shared types package |",
+        "|---|---:|---|---|---|---:|---:|---|",
     ]
 
     for row in selected:
         lines.append(
-            f"| {row['module']} | {row['readiness']['score']:.2f} | {row['readiness']['phase']} | {row['readiness']['effort']} | {row['cqrs']['pattern']} | {row['cqrs']['shared_types_package']} |"
+            f"| {row['module']} | {row['readiness']['score']:.2f} | {row['readiness']['phase']} | {row['readiness']['effort']} | {row['cqrs']['pattern']} | {row['cqrs']['command_count']} | {row['cqrs']['event_count']} | {row['cqrs']['shared_types_package']} |"
         )
 
     lines.append("")
@@ -99,6 +132,9 @@ def render_markdown(rows: list[dict[str, Any]], limit: int, clusters: dict[str, 
         lines.append(f"- Frontend strategy: `{blueprint['frontend']['strategy']}`")
         lines.append(f"- Host mode: `{blueprint['frontend']['host_mode']}`")
         lines.append(f"- CQRS pattern: `{row['cqrs']['pattern']}`")
+        lines.append(f"- CQRS command tokens: `{row['cqrs']['command_count']}`")
+        lines.append(f"- CQRS event tokens: `{row['cqrs']['event_count']}`")
+        lines.append(f"- CQRS cluster size: `{row['cqrs']['cluster_size']}`")
         lines.append(f"- Shared types package: `{row['cqrs']['shared_types_package']}`")
         lines.append("- Readiness reasons:")
         for reason in row["readiness"]["reasons"]:

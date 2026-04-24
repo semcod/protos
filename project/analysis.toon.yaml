@@ -1,52 +1,51 @@
-# code2llm | 67f 9715L | python:40,md:5,json:4,proto:4,yaml:3,txt:2,shell:2,typescript:2,yml:1,generator:1,ini:1 | 2026-04-24
-# CC̄=4.3 | critical:14/241 | dups:0 | cycles:2
+# code2llm | 74f 15346L | python:38,yaml:11,md:9,txt:4,proto:4,json:2,yml:1,generator:1,ini:1,shell:1 | 2026-04-24
+# CC̄=1.7 | critical:14/597 | dups:0 | cycles:0
 
 HEALTH[14]:
-  🟡 CC    resolve_merge CC=22 (limit:15)
-  🟡 CC    _diff_messages CC=19 (limit:15)
   🟡 CC    parse_proto CC=17 (limit:15)
-  🟡 CC    analyze_repository CC=19 (limit:15)
-  🟡 CC    profile_repository CC=18 (limit:15)
+  🟡 CC    _diff_messages CC=19 (limit:15)
   🟡 CC    discover_candidate_paths CC=20 (limit:15)
   🟡 CC    analyze_candidate CC=28 (limit:15)
   🟡 CC    score_migration_candidate CC=15 (limit:15)
   🟡 CC    classify_extraction_target CC=19 (limit:15)
-  🟡 CC    build_waves CC=15 (limit:15)
+  🟡 CC    resolve_merge CC=22 (limit:15)
+  🟡 CC    profile_repository CC=18 (limit:15)
+  🟡 CC    analyze_repository CC=19 (limit:15)
   🟡 CC    build_service_components CC=34 (limit:15)
   🟡 CC    select_execution_plan CC=20 (limit:15)
   🟡 CC    analyze_frontend_modules CC=43 (limit:15)
   🟡 CC    build_markdown CC=15 (limit:15)
+  🟡 CC    build_waves CC=15 (limit:15)
 
-REFACTOR[2]:
+REFACTOR[1]:
   1. split 14 high-CC methods  (CC>15)
-  2. break 2 circular dependencies
 
-PIPELINES[100]:
-  [1] Src [search]: search
+PIPELINES[96]:
+  [1] Src [__init__]: __init__
       PURITY: 100% pure
-  [2] Src [el]: el
+  [2] Src [connect]: connect
       PURITY: 100% pure
-  [3] Src [render]: render
+  [3] Src [disconnect]: disconnect
       PURITY: 100% pure
-  [4] Src [sendMessage]: sendMessage
+  [4] Src [broadcast]: broadcast
       PURITY: 100% pure
-  [5] Src [main]: main → parse_proto → _parse_reserved_numbers
+  [5] Src [_path_checks]: _path_checks
       PURITY: 100% pure
 
 LAYERS:
-  scripts/                        CC̄=4.9    ←in:0  →out:9  !! split
+  scripts/                        CC̄=4.9    ←in:3  →out:9  !! split
   │ !! analyze_service_boundaries   843L  2C   37m  CC=43     ←0
   │ !! schema_registry            543L  3C   16m  CC=19     ←1
-  │ !! detect_migration_candidates   499L  2C   19m  CC=28     ←0
+  │ !! detect_migration_candidates   499L  2C   19m  CC=28     ←2
   │ !! run_arch_migration_discovery   459L  0C   14m  CC=18     ←0
   │ event_store                398L  4C   13m  CC=7      ←0
-  │ !! detect_cqrs_pattern_clusters   369L  1C   14m  CC=19     ←1
+  │ !! detect_cqrs_pattern_clusters   369L  1C   14m  CC=19     ←0
   │ !! generate_migration_wave_plan   320L  2C    8m  CC=15     ←1
   │ legacy_registry            245L  2C    8m  CC=11     ←0
   │ !! conflict_resolver          236L  2C    5m  CC=22     ←0
   │ !! parse_proto                159L  0C    2m  CC=17     ←7
   │ generate_incremental       148L  0C    8m  CC=11     ←0
-  │ delegation_plan            118L  0C    5m  CC=8      ←2
+  │ delegation_plan            118L  0C    5m  CC=8      ←1
   │ dual_writer                114L  2C    6m  CC=5      ←0
   │ vector_clock               112L  1C    9m  CC=4      ←0
   │ diff_engine                109L  3C    1m  CC=12     ←2
@@ -62,8 +61,6 @@ LAYERS:
   │ migration_advisor           54L  0C    2m  CC=9      ←1
   │ idempotency_store           41L  1C    5m  CC=2      ←0
   │ sync_check                  39L  0C    1m  CC=6      ←0
-  │ __init__                     0L  0C    0m  CC=0.0    ←0
-  │ __init__                     0L  0C    0m  CC=0.0    ←0
   │
   gateway/                        CC̄=1.9    ←in:0  →out:0
   │ main                       332L  4C   16m  CC=3      ←0
@@ -73,33 +70,41 @@ LAYERS:
   │ ws                          76L  1C    4m  CC=5      ←0
   │ search_handler              46L  0C    2m  CC=1      ←1
   │ requirements.txt             3L  0C    0m  CC=0.0    ←0
-  │ Dockerfile                   0L  0C    0m  CC=0.0    ←0
   │ __init__                     0L  0C    0m  CC=0.0    ←0
-  │
-  legacy-mock/                    CC̄=1.5    ←in:0  →out:0
-  │ SearchIframe.ts             37L  2C    3m  CC=2      ←0
-  │ main.ts                     24L  0C    1m  CC=1      ←0
-  │ package.json                12L  0C    0m  CC=0.0    ←0
-  │ tsconfig.json               12L  0C    0m  CC=0.0    ←0
+  │ Dockerfile                   0L  0C    0m  CC=0.0    ←0
   │
   adapters/                       CC̄=1.0    ←in:0  →out:0
   │ user_adapter                36L  0C    2m  CC=1      ←0
   │ user_adapter                21L  0C    1m  CC=1      ←0
   │
   ./                              CC̄=0.0    ←in:0  →out:0
+  │ !! SUMD.md                   1025L  0C  180m  CC=0.0    ←0
+  │ !! SUMR.md                    998L  0C    0m  CC=0.0    ←0
   │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
   │ README.md                  150L  0C    0m  CC=0.0    ←0
+  │ tree.txt                   148L  0C    0m  CC=0.0    ←0
   │ TODO.md                     94L  0C    0m  CC=0.0    ←0
   │ CHANGELOG.md                92L  0C    0m  CC=0.0    ←0
   │ docker-compose.yml          69L  0C    0m  CC=0.0    ←0
-  │ project.sh                  46L  0C    0m  CC=0.0    ←0
+  │ project.sh                  48L  0C    0m  CC=0.0    ←0
   │ buf.gen.yaml                25L  0C    0m  CC=0.0    ←0
   │ buf.yaml                    10L  0C    0m  CC=0.0    ←0
   │ requirements.txt             8L  0C    0m  CC=0.0    ←0
   │ pytest.ini                   5L  0C    0m  CC=0.0    ←0
-  │ tree.sh                      1L  0C    0m  CC=0.0    ←0
   │ Makefile                     0L  0C    0m  CC=0.0    ←0
   │ Dockerfile.generator         0L  0C    0m  CC=0.0    ←0
+  │
+  project/                        CC̄=0.0    ←in:0  →out:0
+  │ !! calls.yaml                1548L  0C    0m  CC=0.0    ←0
+  │ !! context.md                 554L  0C    0m  CC=0.0    ←0
+  │ map.toon.yaml              451L  0C  180m  CC=0.0    ←0
+  │ README.md                  339L  0C    0m  CC=0.0    ←0
+  │ calls.toon.yaml            234L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml         138L  0C    0m  CC=0.0    ←0
+  │ duplication.toon.yaml      115L  0C    0m  CC=0.0    ←0
+  │ project.toon.yaml           56L  0C    0m  CC=0.0    ←0
+  │ prompt.txt                  49L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         39L  0C    0m  CC=0.0    ←0
   │
   docs/                           CC̄=0.0    ←in:0  →out:0
   │ !! delegation-plan.generated.json  1262L  0C    0m  CC=0.0    ←0
@@ -117,19 +122,20 @@ LAYERS:
   │ user_legacy.schema.json     18L  0C    0m  CC=0.0    ←0
   │ user_legacy.v1.proto        14L  0C    0m  CC=0.0    ←0
   │
+  testql-scenarios/               CC̄=0.0    ←in:0  →out:0
+  │ generated-api-smoke.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
+  │
   ── zero ──
      Dockerfile.generator                      0L
      Makefile                                  0L
      gateway/Dockerfile                        0L
      gateway/__init__.py                       0L
-     scripts/__init__.py                       0L
-     scripts/legacy_bridge/__init__.py         0L
 
 COUPLING:
                                        scripts  scripts.legacy_bridge
                 scripts                     ──                      9  !! fan-out
-  scripts.legacy_bridge                     ←9                     ──  hub
-  CYCLES: 2
+  scripts.legacy_bridge                      3                     ──  hub
+  CYCLES: none
   HUB: scripts.legacy_bridge/ (fan-in=9)
   SMELL: scripts/ fan-out=9 → split needed
 

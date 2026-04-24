@@ -4,6 +4,7 @@ flowchart TD
     gateway__search_handler["gateway.search_handler<br/>2 funcs"]
     gateway__sse["gateway.sse<br/>4 funcs"]
     gateway__user_handler["gateway.user_handler<br/>6 funcs"]
+    scripts__detect_migration_candidates["scripts.detect_migration_candidates<br/>19 funcs"]
     scripts__event_store["scripts.event_store<br/>13 funcs"]
     scripts__generate_incremental["scripts.generate_incremental<br/>8 funcs"]
     scripts__generate_json_schema["scripts.generate_json_schema<br/>2 funcs"]
@@ -18,14 +19,15 @@ flowchart TD
     gateway__main ==>|6| gateway__sse
     gateway__main ==>|6| gateway__user_handler
     gateway__main ==>|5| gateway__delegation
-    scripts__schema_registry -->|2| scripts__parse_proto
+    scripts__legacy_bridge -->|3| scripts__detect_migration_candidates
     gateway__main -->|2| gateway__search_handler
-    scripts__generate_sql -->|1| scripts__parse_proto
-    scripts__generate_json_schema -->|1| scripts__parse_proto
-    scripts__generate_pydantic -->|1| scripts__parse_proto
-    scripts__generate_zod -->|1| scripts__parse_proto
+    scripts__schema_registry -->|2| scripts__parse_proto
+    scripts__legacy_registry -->|1| scripts__parse_proto
     scripts__generate_incremental -->|1| scripts__parse_proto
     scripts__generate_incremental -->|1| scripts__generate_zod
     scripts__generate_incremental -->|1| scripts__generate_sql
+    scripts__generate_sql -->|1| scripts__parse_proto
+    scripts__generate_json_schema -->|1| scripts__parse_proto
+    scripts__generate_pydantic -->|1| scripts__parse_proto
     scripts__event_store -->|1| scripts__schema_registry
-    scripts__legacy_registry -->|1| scripts__parse_proto
+    scripts__generate_zod -->|1| scripts__parse_proto

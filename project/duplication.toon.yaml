@@ -6,7 +6,7 @@ SUMMARY:
   dup_groups:    10
   dup_fragments: 23
   saved_lines:   83
-  scan_ms:       6158
+  scan_ms:       5903
 
 HOTSPOTS[7] (files with most duplication):
   scripts/legacy_bridge/analyze_service_boundaries.py  dup=30L  groups=5  frags=5  (0.5%)
