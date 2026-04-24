@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-04-24T14:06:08.523132+00:00",
+  "repo_root": "/home/tom/github/maskservice/c2004",
+  "languages": [
+    {
+      "name": "typescript",
+      "files": 941
+    },
+    {
+      "name": "python",
+      "files": 790
+    },
+    {
+      "name": "javascript",
+      "files": 120
+    },
+    {
+      "name": "protobuf",
+      "files": 6
+    }
+  ],
+  "frameworks": [
+    "fastapi",
+    "vite"
+  ],
+  "manifests": [
+    {
+      "path": ".swop/generated/services/connect-data/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": ".swop/generated/services/connect-id/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": ".swop/generated/services/connect-scenario/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": ".swop/generated/services/connect-test-protocol/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": ".swop/generated/services/connect-test/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": "backend/dsl/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": "backend/firmware/firmware-sim/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "backend/firmware/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "kind": "python-project"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": "connect-template/backend/pyproject.toml",
+      "kind": "python-project"
+    },
+    {
+      "path": "connect-template/frontend/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "desktop/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "desktop/src-tauri/Cargo.toml",
+      "kind": "rust-project"
+    },
+    {
+      "path": "frontend/dsl/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "frontend/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "frontend/tests/ui/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "packages/contracts-types/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "packages/ts-utils/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "packages/ui-components/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "services/backend/fleet-data-manager/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": "services/backend/fleet-workshop-manager/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": "services/encoder-control/requirements.txt",
+      "kind": "python-requirements"
+    },
+    {
+      "path": "services/frontend/connect-display/package.json",
+      "kind": "node-package"
+    },
+    {
+      "path": "site/package.json",
+      "kind": "node-package"
+    }
+  ],
+  "frontend_roots": [
+    "frontend/src"
+  ],
+  "backend_route_roots": [
+    "backend/api/routes/v3"
+  ],
+  "detected_architecture_hints": [
+    "frontend-backend-repo",
+    "modular-monolith",
+    "monolith-root-backend",
+    "service-oriented"
+  ]
+}

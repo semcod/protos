@@ -1,0 +1,1458 @@
+[
+  {
+    "module": "connect-reports-month",
+    "path": "modules/connect-reports-month",
+    "kind": "module",
+    "files": 7,
+    "lines": 380,
+    "cross_module_imports": 0,
+    "page_imports": 2,
+    "external_imports": 4,
+    "api_endpoints_used": 0,
+    "own_api_routes": 16,
+    "entrypoints": 1,
+    "shared_refs": 1,
+    "score": 82.0,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 2",
+      "external imports: 4",
+      "api endpoints used: 0",
+      "files: 7",
+      "lines: 380"
+    ],
+    "service_candidate": true,
+    "service_score": 87.0,
+    "extraction_target": "delegated-slice",
+    "service_reasons": [
+      "has docker packaging",
+      "has dedicated api/app directory",
+      "has vertical api+ui structure",
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": true,
+    "has_docker": true,
+    "has_api_dir": true,
+    "has_ui_dir": true,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "connect-reports-month",
+      "contract_dir": "contracts/connect-reports-month/v1",
+      "gateway": {
+        "commands": "/commands/connect-reports-month/*",
+        "queries": "/queries/connect-reports-month/*",
+        "health": "/health/modules/connect-reports-month"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-reports-month/v1",
+          "Implement gateway handler for connect-reports-month commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-reports-month",
+          "Create delegated UI entrypoint for connect-reports-month",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-reports-month",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-reports-month implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 82.0,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 2",
+        "external imports: 4",
+        "api endpoints used: 0",
+        "files: 7",
+        "lines: 380"
+      ]
+    }
+  },
+  {
+    "module": "connect-config-network",
+    "path": "modules/connect-config-network",
+    "kind": "module",
+    "files": 17,
+    "lines": 2259,
+    "cross_module_imports": 0,
+    "page_imports": 20,
+    "external_imports": 4,
+    "api_endpoints_used": 0,
+    "own_api_routes": 16,
+    "entrypoints": 1,
+    "shared_refs": 0,
+    "score": 71.17,
+    "phase": "phase-2",
+    "effort": "medium",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 20",
+      "external imports: 4",
+      "api endpoints used: 0",
+      "files: 17",
+      "lines: 2259"
+    ],
+    "service_candidate": true,
+    "service_score": 90.0,
+    "extraction_target": "delegated-slice",
+    "service_reasons": [
+      "has docker packaging",
+      "has dedicated api/app directory",
+      "has vertical api+ui structure",
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": true,
+    "has_docker": true,
+    "has_api_dir": true,
+    "has_ui_dir": true,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "connect-config-network",
+      "contract_dir": "contracts/connect-config-network/v1",
+      "gateway": {
+        "commands": "/commands/connect-config-network/*",
+        "queries": "/queries/connect-config-network/*",
+        "health": "/health/modules/connect-config-network"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-config-network/v1",
+          "Implement gateway handler for connect-config-network commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-config-network",
+          "Create delegated UI entrypoint for connect-config-network",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-config-network",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-config-network implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 71.17,
+      "phase": "phase-2",
+      "effort": "medium",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 20",
+        "external imports: 4",
+        "api endpoints used: 0",
+        "files: 17",
+        "lines: 2259"
+      ]
+    }
+  },
+  {
+    "module": "connect-manager-library",
+    "path": "modules/connect-manager-library",
+    "kind": "module",
+    "files": 10,
+    "lines": 1518,
+    "cross_module_imports": 0,
+    "page_imports": 6,
+    "external_imports": 4,
+    "api_endpoints_used": 0,
+    "own_api_routes": 16,
+    "entrypoints": 1,
+    "shared_refs": 5,
+    "score": 67.35,
+    "phase": "phase-2",
+    "effort": "medium",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 6",
+      "external imports: 4",
+      "api endpoints used: 0",
+      "files: 10",
+      "lines: 1518"
+    ],
+    "service_candidate": true,
+    "service_score": 78.0,
+    "extraction_target": "delegated-slice",
+    "service_reasons": [
+      "has docker packaging",
+      "has dedicated api/app directory",
+      "has vertical api+ui structure",
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": true,
+    "has_docker": true,
+    "has_api_dir": true,
+    "has_ui_dir": true,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "connect-manager-library",
+      "contract_dir": "contracts/connect-manager-library/v1",
+      "gateway": {
+        "commands": "/commands/connect-manager-library/*",
+        "queries": "/queries/connect-manager-library/*",
+        "health": "/health/modules/connect-manager-library"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-manager-library/v1",
+          "Implement gateway handler for connect-manager-library commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-manager-library",
+          "Create delegated UI entrypoint for connect-manager-library",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-manager-library",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-manager-library implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 67.35,
+      "phase": "phase-2",
+      "effort": "medium",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 6",
+        "external imports: 4",
+        "api endpoints used: 0",
+        "files: 10",
+        "lines: 1518"
+      ]
+    }
+  },
+  {
+    "module": ".swop",
+    "path": "modules/.swop",
+    "kind": "component",
+    "files": 1,
+    "lines": 114,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "own_api_routes": 0,
+    "entrypoints": 0,
+    "shared_refs": 0,
+    "score": 55.0,
+    "phase": "phase-2",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 1",
+      "lines: 114"
+    ],
+    "service_candidate": false,
+    "service_score": 35.0,
+    "extraction_target": "monolith-fragment",
+    "service_reasons": [],
+    "has_module_descriptor": false,
+    "has_docker": false,
+    "has_api_dir": false,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "legacy-host",
+    "slice": {
+      "slice_name": ".swop",
+      "contract_dir": "contracts/.swop/v1",
+      "gateway": {
+        "commands": "/commands/.swop/*",
+        "queries": "/queries/.swop/*",
+        "health": "/health/modules/.swop"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/.swop/v1",
+          "Implement gateway handler for .swop commands and queries",
+          "Add read model storage and replay/bootstrap adapter for .swop",
+          "Create delegated UI entrypoint for .swop",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for .swop",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy .swop implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 55.0,
+      "phase": "phase-2",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 1",
+        "lines: 114"
+      ]
+    }
+  },
+  {
+    "module": "project",
+    "path": "modules/project",
+    "kind": "component",
+    "files": 0,
+    "lines": 0,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "own_api_routes": 0,
+    "entrypoints": 0,
+    "shared_refs": 0,
+    "score": 55.0,
+    "phase": "phase-2",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 0",
+      "lines: 0"
+    ],
+    "service_candidate": false,
+    "service_score": 35.0,
+    "extraction_target": "monolith-fragment",
+    "service_reasons": [],
+    "has_module_descriptor": false,
+    "has_docker": false,
+    "has_api_dir": false,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "legacy-host",
+    "slice": {
+      "slice_name": "project",
+      "contract_dir": "contracts/project/v1",
+      "gateway": {
+        "commands": "/commands/project/*",
+        "queries": "/queries/project/*",
+        "health": "/health/modules/project"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/project/v1",
+          "Implement gateway handler for project commands and queries",
+          "Add read model storage and replay/bootstrap adapter for project",
+          "Create delegated UI entrypoint for project",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for project",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy project implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 55.0,
+      "phase": "phase-2",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 0",
+        "lines: 0"
+      ]
+    }
+  },
+  {
+    "module": "testql-scenarios",
+    "path": "modules/testql-scenarios",
+    "kind": "component",
+    "files": 1,
+    "lines": 17,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "own_api_routes": 0,
+    "entrypoints": 0,
+    "shared_refs": 0,
+    "score": 55.0,
+    "phase": "phase-2",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 1",
+      "lines: 17"
+    ],
+    "service_candidate": false,
+    "service_score": 35.0,
+    "extraction_target": "monolith-fragment",
+    "service_reasons": [],
+    "has_module_descriptor": false,
+    "has_docker": false,
+    "has_api_dir": false,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "legacy-host",
+    "slice": {
+      "slice_name": "testql-scenarios",
+      "contract_dir": "contracts/testql-scenarios/v1",
+      "gateway": {
+        "commands": "/commands/testql-scenarios/*",
+        "queries": "/queries/testql-scenarios/*",
+        "health": "/health/modules/testql-scenarios"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/testql-scenarios/v1",
+          "Implement gateway handler for testql-scenarios commands and queries",
+          "Add read model storage and replay/bootstrap adapter for testql-scenarios",
+          "Create delegated UI entrypoint for testql-scenarios",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for testql-scenarios",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy testql-scenarios implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 55.0,
+      "phase": "phase-2",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 1",
+        "lines: 17"
+      ]
+    }
+  },
+  {
+    "module": "site",
+    "path": "site",
+    "kind": "frontend",
+    "files": 8,
+    "lines": 2022,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 7,
+    "api_endpoints_used": 2,
+    "own_api_routes": 0,
+    "entrypoints": 0,
+    "shared_refs": 0,
+    "score": 46.65,
+    "phase": "phase-3",
+    "effort": "medium",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 7",
+      "api endpoints used: 2",
+      "files: 8",
+      "lines: 2022"
+    ],
+    "service_candidate": false,
+    "service_score": 55.0,
+    "extraction_target": "frontend-microfrontend",
+    "service_reasons": [
+      "has docker packaging",
+      "has local tests"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": true,
+    "has_api_dir": false,
+    "has_ui_dir": true,
+    "has_tests": true,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "site",
+      "contract_dir": "contracts/site/v1",
+      "gateway": {
+        "commands": "/commands/site/*",
+        "queries": "/queries/site/*",
+        "health": "/health/modules/site"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/site/v1",
+          "Implement gateway handler for site commands and queries",
+          "Add read model storage and replay/bootstrap adapter for site",
+          "Create delegated UI entrypoint for site",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for site",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy site implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 46.65,
+      "phase": "phase-3",
+      "effort": "medium",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 7",
+        "api endpoints used: 2",
+        "files: 8",
+        "lines: 2022"
+      ]
+    }
+  },
+  {
+    "module": "connect-id-user-list",
+    "path": "modules/connect-id-user-list",
+    "kind": "module",
+    "files": 21,
+    "lines": 4508,
+    "cross_module_imports": 0,
+    "page_imports": 23,
+    "external_imports": 4,
+    "api_endpoints_used": 0,
+    "own_api_routes": 16,
+    "entrypoints": 1,
+    "shared_refs": 11,
+    "score": 40.0,
+    "phase": "phase-3",
+    "effort": "high",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 23",
+      "external imports: 4",
+      "api endpoints used: 0",
+      "files: 21",
+      "lines: 4508"
+    ],
+    "service_candidate": true,
+    "service_score": 88.0,
+    "extraction_target": "delegated-slice",
+    "service_reasons": [
+      "has docker packaging",
+      "has dedicated api/app directory",
+      "has vertical api+ui structure",
+      "owns db or migration assets",
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": true,
+    "has_docker": true,
+    "has_api_dir": true,
+    "has_ui_dir": true,
+    "has_tests": false,
+    "has_db_assets": true,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "connect-id-user-list",
+      "contract_dir": "contracts/connect-id-user-list/v1",
+      "gateway": {
+        "commands": "/commands/connect-id-user-list/*",
+        "queries": "/queries/connect-id-user-list/*",
+        "health": "/health/modules/connect-id-user-list"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-id-user-list/v1",
+          "Implement gateway handler for connect-id-user-list commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-id-user-list",
+          "Create delegated UI entrypoint for connect-id-user-list",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-id-user-list",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-id-user-list implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 40.0,
+      "phase": "phase-3",
+      "effort": "high",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 23",
+        "external imports: 4",
+        "api endpoints used: 0",
+        "files: 21",
+        "lines: 4508"
+      ]
+    }
+  },
+  {
+    "module": "env",
+    "path": "env",
+    "kind": "component",
+    "files": 1,
+    "lines": 255,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 4,
+    "api_endpoints_used": 2,
+    "own_api_routes": 8,
+    "entrypoints": 1,
+    "shared_refs": 1,
+    "score": 40.0,
+    "phase": "phase-3",
+    "effort": "medium",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 4",
+      "api endpoints used: 2",
+      "files: 1",
+      "lines: 255"
+    ],
+    "service_candidate": false,
+    "service_score": 47.0,
+    "extraction_target": "monolith-fragment",
+    "service_reasons": [
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": false,
+    "has_api_dir": false,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "legacy-host",
+    "slice": {
+      "slice_name": "env",
+      "contract_dir": "contracts/env/v1",
+      "gateway": {
+        "commands": "/commands/env/*",
+        "queries": "/queries/env/*",
+        "health": "/health/modules/env"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/env/v1",
+          "Implement gateway handler for env commands and queries",
+          "Add read model storage and replay/bootstrap adapter for env",
+          "Create delegated UI entrypoint for env",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for env",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy env implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 40.0,
+      "phase": "phase-3",
+      "effort": "medium",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 4",
+        "api endpoints used: 2",
+        "files: 1",
+        "lines: 255"
+      ]
+    }
+  },
+  {
+    "module": "encoder-control",
+    "path": "services/encoder-control",
+    "kind": "service",
+    "files": 11,
+    "lines": 1027,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 21,
+    "api_endpoints_used": 0,
+    "own_api_routes": 36,
+    "entrypoints": 1,
+    "shared_refs": 0,
+    "score": 39.0,
+    "phase": "phase-3",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 21",
+      "api endpoints used: 0",
+      "files: 11",
+      "lines: 1027"
+    ],
+    "service_candidate": false,
+    "service_score": 50.0,
+    "extraction_target": "monolith-fragment",
+    "service_reasons": [
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": false,
+    "has_api_dir": false,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "legacy-host",
+    "slice": {
+      "slice_name": "encoder-control",
+      "contract_dir": "contracts/encoder-control/v1",
+      "gateway": {
+        "commands": "/commands/encoder-control/*",
+        "queries": "/queries/encoder-control/*",
+        "health": "/health/modules/encoder-control"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/encoder-control/v1",
+          "Implement gateway handler for encoder-control commands and queries",
+          "Add read model storage and replay/bootstrap adapter for encoder-control",
+          "Create delegated UI entrypoint for encoder-control",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for encoder-control",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy encoder-control implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 39.0,
+      "phase": "phase-3",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 21",
+        "api endpoints used: 0",
+        "files: 11",
+        "lines: 1027"
+      ]
+    }
+  },
+  {
+    "module": "desktop",
+    "path": "desktop",
+    "kind": "frontend",
+    "files": 8,
+    "lines": 4729,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "own_api_routes": 0,
+    "entrypoints": 0,
+    "shared_refs": 0,
+    "score": 35.0,
+    "phase": "phase-3",
+    "effort": "high",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 8",
+      "lines: 4729"
+    ],
+    "service_candidate": false,
+    "service_score": 35.0,
+    "extraction_target": "monolith-fragment",
+    "service_reasons": [],
+    "has_module_descriptor": false,
+    "has_docker": false,
+    "has_api_dir": false,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "legacy-host",
+    "slice": {
+      "slice_name": "desktop",
+      "contract_dir": "contracts/desktop/v1",
+      "gateway": {
+        "commands": "/commands/desktop/*",
+        "queries": "/queries/desktop/*",
+        "health": "/health/modules/desktop"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/desktop/v1",
+          "Implement gateway handler for desktop commands and queries",
+          "Add read model storage and replay/bootstrap adapter for desktop",
+          "Create delegated UI entrypoint for desktop",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for desktop",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy desktop implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 35.0,
+      "phase": "phase-3",
+      "effort": "high",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 8",
+        "lines: 4729"
+      ]
+    }
+  },
+  {
+    "module": "fleet-workshop-manager",
+    "path": "services/backend/fleet-workshop-manager",
+    "kind": "service",
+    "files": 7,
+    "lines": 353,
+    "cross_module_imports": 2,
+    "page_imports": 0,
+    "external_imports": 11,
+    "api_endpoints_used": 0,
+    "own_api_routes": 16,
+    "entrypoints": 1,
+    "shared_refs": 3,
+    "score": 27.5,
+    "phase": "phase-3",
+    "effort": "medium",
+    "reasons": [
+      "cross-module imports: 2",
+      "page imports: 0",
+      "external imports: 11",
+      "api endpoints used: 0",
+      "files: 7",
+      "lines: 353"
+    ],
+    "service_candidate": false,
+    "service_score": 57.0,
+    "extraction_target": "standalone-service",
+    "service_reasons": [
+      "has docker packaging",
+      "has dedicated api/app directory",
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": true,
+    "has_api_dir": true,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "fleet-workshop-manager",
+      "contract_dir": "contracts/fleet-workshop-manager/v1",
+      "gateway": {
+        "commands": "/commands/fleet-workshop-manager/*",
+        "queries": "/queries/fleet-workshop-manager/*",
+        "health": "/health/modules/fleet-workshop-manager"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/fleet-workshop-manager/v1",
+          "Implement gateway handler for fleet-workshop-manager commands and queries",
+          "Add read model storage and replay/bootstrap adapter for fleet-workshop-manager",
+          "Create delegated UI entrypoint for fleet-workshop-manager",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for fleet-workshop-manager",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy fleet-workshop-manager implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 27.5,
+      "phase": "phase-3",
+      "effort": "medium",
+      "reasons": [
+        "cross-module imports: 2",
+        "page imports: 0",
+        "external imports: 11",
+        "api endpoints used: 0",
+        "files: 7",
+        "lines: 353"
+      ]
+    }
+  },
+  {
+    "module": "connect-template",
+    "path": "connect-template",
+    "kind": "component",
+    "files": 27,
+    "lines": 1493,
+    "cross_module_imports": 2,
+    "page_imports": 0,
+    "external_imports": 15,
+    "api_endpoints_used": 1,
+    "own_api_routes": 28,
+    "entrypoints": 2,
+    "shared_refs": 2,
+    "score": 7.56,
+    "phase": "phase-3",
+    "effort": "medium",
+    "reasons": [
+      "cross-module imports: 2",
+      "page imports: 0",
+      "external imports: 15",
+      "api endpoints used: 1",
+      "files: 27",
+      "lines: 1493"
+    ],
+    "service_candidate": false,
+    "service_score": 45.0,
+    "extraction_target": "frontend-microfrontend",
+    "service_reasons": [
+      "has docker packaging",
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": true,
+    "has_api_dir": false,
+    "has_ui_dir": true,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "connect-template",
+      "contract_dir": "contracts/connect-template/v1",
+      "gateway": {
+        "commands": "/commands/connect-template/*",
+        "queries": "/queries/connect-template/*",
+        "health": "/health/modules/connect-template"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-template/v1",
+          "Implement gateway handler for connect-template commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-template",
+          "Create delegated UI entrypoint for connect-template",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-template",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-template implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 7.56,
+      "phase": "phase-3",
+      "effort": "medium",
+      "reasons": [
+        "cross-module imports: 2",
+        "page imports: 0",
+        "external imports: 15",
+        "api endpoints used: 1",
+        "files: 27",
+        "lines: 1493"
+      ]
+    }
+  },
+  {
+    "module": "connect-display",
+    "path": "services/frontend/connect-display",
+    "kind": "service",
+    "files": 23,
+    "lines": 4284,
+    "cross_module_imports": 6,
+    "page_imports": 0,
+    "external_imports": 4,
+    "api_endpoints_used": 0,
+    "own_api_routes": 0,
+    "entrypoints": 1,
+    "shared_refs": 0,
+    "score": 4.0,
+    "phase": "phase-3",
+    "effort": "high",
+    "reasons": [
+      "cross-module imports: 6",
+      "page imports: 0",
+      "external imports: 4",
+      "api endpoints used: 0",
+      "files: 23",
+      "lines: 4284"
+    ],
+    "service_candidate": false,
+    "service_score": 30.0,
+    "extraction_target": "frontend-microfrontend",
+    "service_reasons": [
+      "has docker packaging",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": true,
+    "has_api_dir": false,
+    "has_ui_dir": true,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "connect-display",
+      "contract_dir": "contracts/connect-display/v1",
+      "gateway": {
+        "commands": "/commands/connect-display/*",
+        "queries": "/queries/connect-display/*",
+        "health": "/health/modules/connect-display"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-display/v1",
+          "Implement gateway handler for connect-display commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-display",
+          "Create delegated UI entrypoint for connect-display",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-display",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-display implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 4.0,
+      "phase": "phase-3",
+      "effort": "high",
+      "reasons": [
+        "cross-module imports: 6",
+        "page imports: 0",
+        "external imports: 4",
+        "api endpoints used: 0",
+        "files: 23",
+        "lines: 4284"
+      ]
+    }
+  },
+  {
+    "module": "backend",
+    "path": "backend",
+    "kind": "application",
+    "files": 586,
+    "lines": 90307,
+    "cross_module_imports": 10,
+    "page_imports": 0,
+    "external_imports": 1326,
+    "api_endpoints_used": 36,
+    "own_api_routes": 672,
+    "entrypoints": 6,
+    "shared_refs": 260,
+    "score": 0.0,
+    "phase": "phase-3",
+    "effort": "high",
+    "reasons": [
+      "cross-module imports: 10",
+      "page imports: 0",
+      "external imports: 1326",
+      "api endpoints used: 36",
+      "files: 586",
+      "lines: 90307"
+    ],
+    "service_candidate": false,
+    "service_score": 58.0,
+    "extraction_target": "standalone-service",
+    "service_reasons": [
+      "has docker packaging",
+      "has dedicated api/app directory",
+      "owns db or migration assets",
+      "exposes own API routes",
+      "has local tests",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": true,
+    "has_api_dir": true,
+    "has_ui_dir": false,
+    "has_tests": true,
+    "has_db_assets": true,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "backend",
+      "contract_dir": "contracts/backend/v1",
+      "gateway": {
+        "commands": "/commands/backend/*",
+        "queries": "/queries/backend/*",
+        "health": "/health/modules/backend"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/backend/v1",
+          "Implement gateway handler for backend commands and queries",
+          "Add read model storage and replay/bootstrap adapter for backend",
+          "Create delegated UI entrypoint for backend",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for backend",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy backend implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 0.0,
+      "phase": "phase-3",
+      "effort": "high",
+      "reasons": [
+        "cross-module imports: 10",
+        "page imports: 0",
+        "external imports: 1326",
+        "api endpoints used: 36",
+        "files: 586",
+        "lines: 90307"
+      ]
+    }
+  },
+  {
+    "module": "fleet-data-manager",
+    "path": "services/backend/fleet-data-manager",
+    "kind": "service",
+    "files": 22,
+    "lines": 892,
+    "cross_module_imports": 4,
+    "page_imports": 0,
+    "external_imports": 35,
+    "api_endpoints_used": 0,
+    "own_api_routes": 18,
+    "entrypoints": 1,
+    "shared_refs": 7,
+    "score": 0.0,
+    "phase": "phase-3",
+    "effort": "medium",
+    "reasons": [
+      "cross-module imports: 4",
+      "page imports: 0",
+      "external imports: 35",
+      "api endpoints used: 0",
+      "files: 22",
+      "lines: 892"
+    ],
+    "service_candidate": false,
+    "service_score": 43.0,
+    "extraction_target": "standalone-service",
+    "service_reasons": [
+      "has docker packaging",
+      "has dedicated api/app directory",
+      "exposes own API routes",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": true,
+    "has_api_dir": true,
+    "has_ui_dir": false,
+    "has_tests": false,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "fleet-data-manager",
+      "contract_dir": "contracts/fleet-data-manager/v1",
+      "gateway": {
+        "commands": "/commands/fleet-data-manager/*",
+        "queries": "/queries/fleet-data-manager/*",
+        "health": "/health/modules/fleet-data-manager"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/fleet-data-manager/v1",
+          "Implement gateway handler for fleet-data-manager commands and queries",
+          "Add read model storage and replay/bootstrap adapter for fleet-data-manager",
+          "Create delegated UI entrypoint for fleet-data-manager",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for fleet-data-manager",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy fleet-data-manager implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 0.0,
+      "phase": "phase-3",
+      "effort": "medium",
+      "reasons": [
+        "cross-module imports: 4",
+        "page imports: 0",
+        "external imports: 35",
+        "api endpoints used: 0",
+        "files: 22",
+        "lines: 892"
+      ]
+    }
+  },
+  {
+    "module": "frontend",
+    "path": "frontend",
+    "kind": "frontend",
+    "files": 875,
+    "lines": 219896,
+    "cross_module_imports": 7,
+    "page_imports": 402,
+    "external_imports": 283,
+    "api_endpoints_used": 41,
+    "own_api_routes": 0,
+    "entrypoints": 51,
+    "shared_refs": 480,
+    "score": 0.0,
+    "phase": "phase-3",
+    "effort": "high",
+    "reasons": [
+      "cross-module imports: 7",
+      "page imports: 402",
+      "external imports: 283",
+      "api endpoints used: 41",
+      "files: 875",
+      "lines: 219896"
+    ],
+    "service_candidate": false,
+    "service_score": 23.0,
+    "extraction_target": "frontend-microfrontend",
+    "service_reasons": [
+      "has docker packaging",
+      "has local tests",
+      "has executable entrypoint"
+    ],
+    "has_module_descriptor": false,
+    "has_docker": true,
+    "has_api_dir": false,
+    "has_ui_dir": true,
+    "has_tests": true,
+    "has_db_assets": false,
+    "recommended_owner": "protos",
+    "slice": {
+      "slice_name": "frontend",
+      "contract_dir": "contracts/frontend/v1",
+      "gateway": {
+        "commands": "/commands/frontend/*",
+        "queries": "/queries/frontend/*",
+        "health": "/health/modules/frontend"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/frontend/v1",
+          "Implement gateway handler for frontend commands and queries",
+          "Add read model storage and replay/bootstrap adapter for frontend",
+          "Create delegated UI entrypoint for frontend",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for frontend",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy frontend implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
+    },
+    "readiness": {
+      "score": 0.0,
+      "phase": "phase-3",
+      "effort": "high",
+      "reasons": [
+        "cross-module imports: 7",
+        "page imports: 402",
+        "external imports: 283",
+        "api endpoints used: 41",
+        "files: 875",
+        "lines: 219896"
+      ]
+    }
+  }
+]

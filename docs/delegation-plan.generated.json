@@ -46,7 +46,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 98.81,
@@ -109,7 +112,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 98.78,
@@ -172,7 +178,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 97.8,
@@ -235,7 +244,10 @@
     },
     "cqrs": {
       "pattern": "menu-tree-cqrs",
-      "shared_types_package": "@semcod/contracts-types:menu-tree-core"
+      "shared_types_package": "@semcod/contracts-types:menu-tree-core",
+      "command_count": 12,
+      "event_count": 3,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 95.14,
@@ -298,7 +310,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 93.91,
@@ -361,7 +376,10 @@
     },
     "cqrs": {
       "pattern": "scenario-builder-cqrs",
-      "shared_types_package": "@semcod/contracts-types:scenario-core"
+      "shared_types_package": "@semcod/contracts-types:scenario-core",
+      "command_count": 19,
+      "event_count": 8,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 91.69,
@@ -424,7 +442,10 @@
     },
     "cqrs": {
       "pattern": "devtools-ops-cqrs",
-      "shared_types_package": "@semcod/contracts-types:devtools-core"
+      "shared_types_package": "@semcod/contracts-types:devtools-core",
+      "command_count": 8,
+      "event_count": 6,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 88.01,
@@ -487,7 +508,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 86.75,
@@ -550,7 +574,10 @@
     },
     "cqrs": {
       "pattern": "reports-filtering-cqrs",
-      "shared_types_package": "@semcod/contracts-types:reports-core"
+      "shared_types_package": "@semcod/contracts-types:reports-core",
+      "command_count": 5,
+      "event_count": 5,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 84.82,
@@ -613,7 +640,10 @@
     },
     "cqrs": {
       "pattern": "manager-library-workflow-cqrs",
-      "shared_types_package": "@semcod/contracts-types:manager-core"
+      "shared_types_package": "@semcod/contracts-types:manager-core",
+      "command_count": 20,
+      "event_count": 16,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 78.38,
@@ -676,7 +706,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 77.3,
@@ -739,7 +772,10 @@
     },
     "cqrs": {
       "pattern": "id-user-admin-cqrs",
-      "shared_types_package": "@semcod/contracts-types:id-core"
+      "shared_types_package": "@semcod/contracts-types:id-core",
+      "command_count": 8,
+      "event_count": 4,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 74.64,
@@ -802,7 +838,10 @@
     },
     "cqrs": {
       "pattern": "data-grid-cqrs",
-      "shared_types_package": "@semcod/contracts-types:cqrs-data-grid"
+      "shared_types_package": "@semcod/contracts-types:cqrs-data-grid",
+      "command_count": 9,
+      "event_count": 9,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 60.03,
@@ -865,7 +904,10 @@
     },
     "cqrs": {
       "pattern": "menu-editor-snapshots-cqrs",
-      "shared_types_package": "@semcod/contracts-types:menu-editor-core"
+      "shared_types_package": "@semcod/contracts-types:menu-editor-core",
+      "command_count": 5,
+      "event_count": 3,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 59.33,
@@ -928,7 +970,10 @@
     },
     "cqrs": {
       "pattern": "config-admin-cqrs",
-      "shared_types_package": "@semcod/contracts-types:config-admin"
+      "shared_types_package": "@semcod/contracts-types:config-admin",
+      "command_count": 31,
+      "event_count": 25,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 55.53,
@@ -991,7 +1036,10 @@
     },
     "cqrs": {
       "pattern": "data-grid-cqrs",
-      "shared_types_package": "@semcod/contracts-types:cqrs-data-grid"
+      "shared_types_package": "@semcod/contracts-types:cqrs-data-grid",
+      "command_count": 13,
+      "event_count": 11,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 0.0,
@@ -1054,7 +1102,10 @@
     },
     "cqrs": {
       "pattern": "test-orchestration-cqrs",
-      "shared_types_package": "@semcod/contracts-types:test-orchestration-core"
+      "shared_types_package": "@semcod/contracts-types:test-orchestration-core",
+      "command_count": 57,
+      "event_count": 19,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 0.0,
@@ -1117,7 +1168,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 0.0,
@@ -1180,7 +1234,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 0.0,
@@ -1243,7 +1300,10 @@
     },
     "cqrs": {
       "pattern": "n/a",
-      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "command_count": 0,
+      "event_count": 0,
+      "cluster_size": 1
     },
     "readiness": {
       "score": 0.0,

@@ -1,0 +1,888 @@
+{
+  "meta": {
+    "tool": "detect-cqrs-pattern-clusters",
+    "repo_root": "/home/tom/github/maskservice/c2004",
+    "module_roots": [
+      "frontend/src/modules"
+    ],
+    "config": {
+      "cqrs": {
+        "module_roots": [
+          "frontend/src/modules"
+        ],
+        "types_glob": "*/cqrs/types.ts",
+        "patterns": [
+          {
+            "name": "data-grid-cqrs",
+            "extraction_target": "@semcod/contracts-types:cqrs-data-grid",
+            "commands": [
+              "LoadSchema",
+              "LoadRows",
+              "SaveRow",
+              "DeleteRow",
+              "CreateRow",
+              "BulkSave",
+              "BulkDelete"
+            ],
+            "events": [
+              "SchemaLoaded",
+              "RowsLoaded",
+              "RowSaved",
+              "RowDeleted",
+              "RowCreated",
+              "BulkSaveCompleted",
+              "BulkDeleteCompleted"
+            ],
+            "min_command_matches": 4,
+            "min_event_matches": 4
+          },
+          {
+            "name": "config-admin-cqrs",
+            "extraction_target": "@semcod/contracts-types:config-admin",
+            "commands": [
+              "LoadFlags",
+              "LoadFlagCategories",
+              "SaveFlag",
+              "LoadNavOptions",
+              "SaveNavOption",
+              "LoadRoles",
+              "LoadModules"
+            ],
+            "events": [
+              "FlagsLoaded",
+              "FlagCategoriesLoaded",
+              "FlagSaved",
+              "NavOptionsLoaded",
+              "NavOptionSaved",
+              "RolesLoaded",
+              "ModulesLoaded"
+            ],
+            "min_command_matches": 3,
+            "min_event_matches": 3
+          },
+          {
+            "name": "reports-filtering-cqrs",
+            "extraction_target": "@semcod/contracts-types:reports-core",
+            "commands": [
+              "LoadProtocols",
+              "LoadProtocolById",
+              "FilterProtocols"
+            ],
+            "events": [
+              "ProtocolsLoaded",
+              "ProtocolsFiltered",
+              "ProtocolLoaded"
+            ],
+            "min_command_matches": 2,
+            "min_event_matches": 2
+          },
+          {
+            "name": "manager-library-workflow-cqrs",
+            "extraction_target": "@semcod/contracts-types:manager-core",
+            "commands": [
+              "LoadLibrary",
+              "LibraryAddItem",
+              "LibraryDeleteItem",
+              "LoadScenarios",
+              "CreateScenario",
+              "UpdateScenario",
+              "DeleteScenario"
+            ],
+            "events": [
+              "LibraryLoaded",
+              "LibraryItemAdded",
+              "LibraryItemDeleted",
+              "ScenariosLoaded",
+              "ScenarioCreated",
+              "ScenarioUpdated",
+              "ScenarioDeleted"
+            ],
+            "min_command_matches": 3,
+            "min_event_matches": 3
+          },
+          {
+            "name": "scenario-builder-cqrs",
+            "extraction_target": "@semcod/contracts-types:scenario-core",
+            "commands": [
+              "AddGoal",
+              "DeleteGoal",
+              "AddTask",
+              "DeleteTask",
+              "LoadScenarioById",
+              "LoadScenarioByTitle",
+              "UpdateScenarioDSL",
+              "UpdateScenarioDEF",
+              "UpdateScenarioContent",
+              "SaveScenario"
+            ],
+            "events": [
+              "GoalAdded",
+              "GoalDeleted",
+              "TaskAdded",
+              "TaskDeleted",
+              "ScenarioLoaded",
+              "ScenarioSaved",
+              "ScenarioDSLUpdated",
+              "ScenarioDEFUpdated",
+              "ScenarioContentUpdated"
+            ],
+            "min_command_matches": 4,
+            "min_event_matches": 4
+          },
+          {
+            "name": "menu-tree-cqrs",
+            "extraction_target": "@semcod/contracts-types:menu-tree-core",
+            "commands": [
+              "LoadMenus",
+              "UpsertItem",
+              "DeleteItem",
+              "AddModulesToMenu",
+              "EnsureModulesMenus",
+              "ExportMigration"
+            ],
+            "events": [
+              "MenusRequested",
+              "MenusLoaded",
+              "MenusLoadFailed",
+              "ItemUpserted",
+              "ItemDeleted",
+              "ModulesAdded",
+              "ConfigCreated",
+              "RouteMapped",
+              "MigrationGenerated"
+            ],
+            "min_command_matches": 4,
+            "min_event_matches": 4
+          },
+          {
+            "name": "devtools-ops-cqrs",
+            "extraction_target": "@semcod/contracts-types:devtools-core",
+            "commands": [
+              "SetDevtoolsPanel",
+              "SetDevtoolsLogLevel",
+              "LoadScripts",
+              "RunScript",
+              "GetRun",
+              "GetRunLogs",
+              "LoadRuns"
+            ],
+            "events": [
+              "DevtoolsPanelSet",
+              "DevtoolsLogLevelSet",
+              "ScriptsLoaded",
+              "ScriptRunStarted",
+              "RunStatusUpdated",
+              "RunLogsLoaded",
+              "RunsLoaded"
+            ],
+            "min_command_matches": 5,
+            "min_event_matches": 5
+          },
+          {
+            "name": "id-user-admin-cqrs",
+            "extraction_target": "@semcod/contracts-types:id-core",
+            "commands": [
+              "SetIdSection",
+              "SetIdMethod",
+              "LoadUsers",
+              "AddUser",
+              "RemoveUser",
+              "FilterUsers"
+            ],
+            "events": [
+              "IdSectionSet",
+              "IdMethodSet",
+              "UsersLoaded",
+              "UserAdded",
+              "UserRemoved",
+              "UsersFiltered"
+            ],
+            "min_command_matches": 4,
+            "min_event_matches": 4
+          },
+          {
+            "name": "menu-editor-snapshots-cqrs",
+            "extraction_target": "@semcod/contracts-types:menu-editor-core",
+            "commands": [
+              "SaveScreenshot",
+              "LoadScreenshots",
+              "DeleteScreenshot",
+              "ClearAllScreenshots"
+            ],
+            "events": [
+              "ScreenshotSaved",
+              "ScreenshotsLoaded",
+              "ScreenshotDeleted",
+              "ScreenshotsCleared"
+            ],
+            "min_command_matches": 3,
+            "min_event_matches": 3
+          },
+          {
+            "name": "test-orchestration-cqrs",
+            "extraction_target": "@semcod/contracts-types:test-orchestration-core",
+            "commands": [
+              "SetTestMethod",
+              "LoadDevices",
+              "LoadCustomers",
+              "LoadAssignments",
+              "LoadScenarioById",
+              "LoadScenarioByTitle",
+              "LoadProtocols",
+              "StartProtocol",
+              "FinalizeProtocol",
+              "LoadAuthUsers",
+              "LoadTestScenarios",
+              "LoadDslParamValues"
+            ],
+            "events": [
+              "TestMethodSet",
+              "DevicesLoaded",
+              "CustomersLoaded",
+              "AssignmentsLoaded",
+              "ScenarioLoaded",
+              "ProtocolsLoaded",
+              "ProtocolCreated",
+              "ProtocolFinalized",
+              "AuthUsersLoaded",
+              "TestScenariosLoaded",
+              "DslParamValuesLoaded"
+            ],
+            "min_command_matches": 7,
+            "min_event_matches": 7
+          }
+        ],
+        "custom_extraction_target": "@semcod/contracts-types:custom-per-module",
+        "cluster_similarity_threshold": 0.5
+      },
+      "ignore_dirs": [
+        ".git",
+        "node_modules",
+        "__pycache__",
+        ".venv",
+        "venv",
+        "dist",
+        "build",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".mypy_cache",
+        "coverage",
+        "reports"
+      ],
+      "frontend": {
+        "roots": [
+          "frontend/src"
+        ],
+        "extensions": [
+          ".ts",
+          ".tsx",
+          ".js",
+          ".jsx"
+        ],
+        "page_patterns": [
+          "pages/**/*.page.ts",
+          "pages/**/*.page.tsx",
+          "**/*.page.ts",
+          "**/*.page.tsx"
+        ],
+        "module_dir_names": [
+          "modules"
+        ],
+        "shared_dir_names": [
+          "services",
+          "utils",
+          "shared",
+          "components",
+          "registry",
+          "config"
+        ],
+        "module_prefix_rules": [
+          {
+            "prefix": "connect-",
+            "segments": 2
+          }
+        ],
+        "alias_roots": {}
+      },
+      "backend": {
+        "route_roots": [
+          "backend/api/routes/v3"
+        ],
+        "extensions": [
+          ".py"
+        ]
+      },
+      "api": {
+        "path_regex": "/api/v\\d+(?:/[A-Za-z0-9._{}\\-]+)+",
+        "group_depth": 3
+      },
+      "analysis": {
+        "top_services": 4,
+        "shared_modules": [
+          "shared",
+          "shell"
+        ]
+      }
+    }
+  },
+  "rows": [
+    {
+      "module": "connect-config",
+      "commands": [
+        "BulkSaveRoleAccess",
+        "DeleteFlag",
+        "DeleteModule",
+        "DeleteNavOption",
+        "DeleteTemplateJsonItem",
+        "FlagsReset",
+        "LoadFlagCategories",
+        "LoadFlags",
+        "LoadModules",
+        "LoadNavContexts",
+        "LoadNavOptions",
+        "LoadRoleAccess",
+        "LoadRoles",
+        "LoadSystemSettings",
+        "LoadTemplateJsonItems",
+        "ModulesReset",
+        "NavOptionsReset",
+        "ResetFlags",
+        "ResetModules",
+        "ResetNavOptions",
+        "SaveFlag",
+        "SaveModule",
+        "SaveNavOption",
+        "SaveRoleAccess",
+        "SaveSystemSettings",
+        "SaveTemplateJsonItem",
+        "SetConfigPage",
+        "TestHardwareStatus",
+        "ToggleFlag",
+        "ToggleNavOption",
+        "UpdateConfigSetting"
+      ],
+      "events": [
+        "BulkRoleAccessSaved",
+        "ConfigPageSet",
+        "ConfigSettingUpdated",
+        "FlagCategoriesLoaded",
+        "FlagDeleted",
+        "FlagSaved",
+        "FlagToggled",
+        "FlagsLoaded",
+        "HardwareStatusTested",
+        "ModuleDeleted",
+        "ModuleSaved",
+        "ModulesLoaded",
+        "NavContextsLoaded",
+        "NavOptionDeleted",
+        "NavOptionSaved",
+        "NavOptionToggled",
+        "NavOptionsLoaded",
+        "RoleAccessLoaded",
+        "RoleAccessSaved",
+        "RolesLoaded",
+        "SystemSettingsLoaded",
+        "SystemSettingsSaved",
+        "TemplateJsonItemDeleted",
+        "TemplateJsonItemSaved",
+        "TemplateJsonItemsLoaded"
+      ],
+      "command_count": 31,
+      "event_count": 25,
+      "pattern": "config-admin-cqrs",
+      "extraction_target": "@semcod/contracts-types:config-admin",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-config"
+      ]
+    },
+    {
+      "module": "connect-data",
+      "commands": [
+        "BulkDelete",
+        "BulkImport",
+        "BulkSave",
+        "CreateRow",
+        "DeleteRow",
+        "LoadOptions",
+        "LoadRows",
+        "LoadSchema",
+        "RefreshSchema",
+        "SaveRow",
+        "SchemaRefreshed",
+        "SetDataAction",
+        "SetDataSection"
+      ],
+      "events": [
+        "BulkDeleteCompleted",
+        "BulkImportCompleted",
+        "BulkSaveCompleted",
+        "DataActionSet",
+        "DataSectionSet",
+        "OptionsLoaded",
+        "RowCreated",
+        "RowDeleted",
+        "RowSaved",
+        "RowsLoaded",
+        "SchemaLoaded"
+      ],
+      "command_count": 13,
+      "event_count": 11,
+      "pattern": "data-grid-cqrs",
+      "extraction_target": "@semcod/contracts-types:cqrs-data-grid",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-data",
+        "connect-workshop"
+      ]
+    },
+    {
+      "module": "connect-devtools",
+      "commands": [
+        "GetRun",
+        "GetRunLogs",
+        "LoadRuns",
+        "LoadScripts",
+        "RunScript",
+        "ScriptRunStarted",
+        "SetDevtoolsLogLevel",
+        "SetDevtoolsPanel"
+      ],
+      "events": [
+        "DevtoolsLogLevelSet",
+        "DevtoolsPanelSet",
+        "RunLogsLoaded",
+        "RunStatusUpdated",
+        "RunsLoaded",
+        "ScriptsLoaded"
+      ],
+      "command_count": 8,
+      "event_count": 6,
+      "pattern": "devtools-ops-cqrs",
+      "extraction_target": "@semcod/contracts-types:devtools-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-devtools"
+      ]
+    },
+    {
+      "module": "connect-id",
+      "commands": [
+        "AddUser",
+        "FilterUsers",
+        "LoadUsers",
+        "RemoveUser",
+        "SetIdMethod",
+        "SetIdSection",
+        "UserAdded",
+        "UserRemoved"
+      ],
+      "events": [
+        "IdMethodSet",
+        "IdSectionSet",
+        "UsersFiltered",
+        "UsersLoaded"
+      ],
+      "command_count": 8,
+      "event_count": 4,
+      "pattern": "id-user-admin-cqrs",
+      "extraction_target": "@semcod/contracts-types:id-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-id"
+      ]
+    },
+    {
+      "module": "connect-manager",
+      "commands": [
+        "ActivityAdded",
+        "AddActivity",
+        "CreateScenario",
+        "DeleteActivity",
+        "DeleteScenario",
+        "DeleteTestTypeAssignment",
+        "LibraryAddItem",
+        "LibraryDeleteItem",
+        "LibraryItemAdded",
+        "LoadActivities",
+        "LoadAssignments",
+        "LoadLibrary",
+        "LoadScenario",
+        "LoadScenarios",
+        "SaveScenario",
+        "SaveTestTypeAssignment",
+        "SetManagerMethod",
+        "SetManagerSection",
+        "UpdateActivity",
+        "UpdateScenario"
+      ],
+      "events": [
+        "ActivitiesLoaded",
+        "ActivityDeleted",
+        "ActivityUpdated",
+        "AssignmentsLoaded",
+        "LibraryItemDeleted",
+        "LibraryLoaded",
+        "ManagerMethodSet",
+        "ManagerSectionSet",
+        "ScenarioCreated",
+        "ScenarioDeleted",
+        "ScenarioLoaded",
+        "ScenarioSaved",
+        "ScenarioUpdated",
+        "ScenariosLoaded",
+        "TestTypeAssignmentDeleted",
+        "TestTypeAssignmentSaved"
+      ],
+      "command_count": 20,
+      "event_count": 16,
+      "pattern": "manager-library-workflow-cqrs",
+      "extraction_target": "@semcod/contracts-types:manager-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-manager"
+      ]
+    },
+    {
+      "module": "connect-menu-editor",
+      "commands": [
+        "ClearAllScreenshots",
+        "DeleteScreenshot",
+        "LoadScreenshots",
+        "SaveScreenshot",
+        "ScreenshotsCleared"
+      ],
+      "events": [
+        "ScreenshotDeleted",
+        "ScreenshotSaved",
+        "ScreenshotsLoaded"
+      ],
+      "command_count": 5,
+      "event_count": 3,
+      "pattern": "menu-editor-snapshots-cqrs",
+      "extraction_target": "@semcod/contracts-types:menu-editor-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-menu-editor"
+      ]
+    },
+    {
+      "module": "connect-menu-tree",
+      "commands": [
+        "AddModulesToMenu",
+        "DeleteItem",
+        "EnsureModulesMenus",
+        "ExportMigration",
+        "ItemUpserted",
+        "LoadMenus",
+        "MenusRequested",
+        "MigrationGenerated",
+        "ModulesAdded",
+        "RouteMapped",
+        "UpsertItem"
+      ],
+      "events": [
+        "ConfigCreated",
+        "ItemDeleted",
+        "MenusLoadFailed",
+        "MenusLoaded"
+      ],
+      "command_count": 11,
+      "event_count": 4,
+      "pattern": "menu-tree-cqrs",
+      "extraction_target": "@semcod/contracts-types:menu-tree-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-menu-tree"
+      ]
+    },
+    {
+      "module": "connect-reports",
+      "commands": [
+        "FilterProtocols",
+        "LoadProtocolById",
+        "LoadProtocols",
+        "SetReportsFilter",
+        "SetReportsView"
+      ],
+      "events": [
+        "ProtocolLoaded",
+        "ProtocolsFiltered",
+        "ProtocolsLoaded",
+        "ReportsFilterSet",
+        "ReportsViewSet"
+      ],
+      "command_count": 5,
+      "event_count": 5,
+      "pattern": "reports-filtering-cqrs",
+      "extraction_target": "@semcod/contracts-types:reports-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-reports"
+      ]
+    },
+    {
+      "module": "connect-scenario",
+      "commands": [
+        "AddGoal",
+        "AddTask",
+        "DeleteGoal",
+        "DeleteTask",
+        "GoalAdded",
+        "GoalsReordered",
+        "LoadScenarioById",
+        "LoadScenarioByTitle",
+        "ReorderGoals",
+        "ReorderTasks",
+        "SaveScenario",
+        "ScenarioRequested",
+        "TaskAdded",
+        "TasksReordered",
+        "UpdateScenarioContent",
+        "UpdateScenarioDEF",
+        "UpdateScenarioDSL",
+        "UpdateScenarioName"
+      ],
+      "events": [
+        "GoalDeleted",
+        "ScenarioContentUpdated",
+        "ScenarioDEFUpdated",
+        "ScenarioDSLUpdated",
+        "ScenarioLoadFailed",
+        "ScenarioLoaded",
+        "ScenarioNameUpdated",
+        "ScenarioSaved",
+        "TaskDeleted"
+      ],
+      "command_count": 18,
+      "event_count": 9,
+      "pattern": "scenario-builder-cqrs",
+      "extraction_target": "@semcod/contracts-types:scenario-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-scenario"
+      ]
+    },
+    {
+      "module": "connect-test",
+      "commands": [
+        "AssignmentsRequested",
+        "CreateAssignment",
+        "CreateCustomer",
+        "CreateScenarioGoalInterval",
+        "CustomerSelected",
+        "CustomersRequested",
+        "DataLoadStarted",
+        "DataLoadSucceeded",
+        "DeleteAssignment",
+        "DeviceSelected",
+        "DevicesRequested",
+        "FinalizeProtocol",
+        "HmiEventLogged",
+        "LoadAssignments",
+        "LoadAuthUsers",
+        "LoadCustomers",
+        "LoadDeviceByFilter",
+        "LoadDevices",
+        "LoadDslParamValues",
+        "LoadProtocols",
+        "LoadScenarioById",
+        "LoadScenarioByTitle",
+        "LoadTestScenarios",
+        "LoadTypeAssignments",
+        "LogDataLoad",
+        "LogHmiEvent",
+        "ProtocolCreateRequested",
+        "ProtocolFinalized",
+        "ProtocolsRequested",
+        "ScenarioRequested",
+        "SelectCustomer",
+        "SelectDevice",
+        "SetTestMethod",
+        "StartProtocol",
+        "UpdateAssignment",
+        "UpdateCustomer",
+        "UpdateProtocol"
+      ],
+      "events": [
+        "AssignmentCreateFailed",
+        "AssignmentCreated",
+        "AssignmentDeleteFailed",
+        "AssignmentDeleted",
+        "AssignmentUpdateFailed",
+        "AssignmentUpdated",
+        "AssignmentsLoadFailed",
+        "AssignmentsLoaded",
+        "AuthUsersLoadFailed",
+        "AuthUsersLoaded",
+        "CustomerCreateFailed",
+        "CustomerCreated",
+        "CustomerUpdateFailed",
+        "CustomerUpdated",
+        "CustomersLoadFailed",
+        "CustomersLoaded",
+        "DataLoadFailed",
+        "DeviceLoadFailed",
+        "DeviceLoaded",
+        "DevicesLoadFailed",
+        "DevicesLoaded",
+        "DslParamValuesLoadFailed",
+        "DslParamValuesLoaded",
+        "ProtocolCreateFailed",
+        "ProtocolCreated",
+        "ProtocolFinalizeFailed",
+        "ProtocolUpdateFailed",
+        "ProtocolUpdated",
+        "ProtocolsLoadFailed",
+        "ProtocolsLoaded",
+        "ScenarioGoalIntervalCreateFailed",
+        "ScenarioGoalIntervalCreated",
+        "ScenarioLoadFailed",
+        "ScenarioLoaded",
+        "TestMethodSet",
+        "TestScenariosLoadFailed",
+        "TestScenariosLoaded",
+        "TypeAssignmentsLoadFailed",
+        "TypeAssignmentsLoaded"
+      ],
+      "command_count": 37,
+      "event_count": 39,
+      "pattern": "test-orchestration-cqrs",
+      "extraction_target": "@semcod/contracts-types:test-orchestration-core",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-test"
+      ]
+    },
+    {
+      "module": "connect-workshop",
+      "commands": [
+        "BulkDelete",
+        "BulkSave",
+        "CreateRow",
+        "DeleteRow",
+        "LoadRows",
+        "LoadSchema",
+        "SaveRow",
+        "SetWorkshopMethod",
+        "SetWorkshopSection"
+      ],
+      "events": [
+        "BulkDeleteCompleted",
+        "BulkSaveCompleted",
+        "RowCreated",
+        "RowDeleted",
+        "RowSaved",
+        "RowsLoaded",
+        "SchemaLoaded",
+        "WorkshopMethodSet",
+        "WorkshopSectionSet"
+      ],
+      "command_count": 9,
+      "event_count": 9,
+      "pattern": "data-grid-cqrs",
+      "extraction_target": "@semcod/contracts-types:cqrs-data-grid",
+      "priority_hint": "later",
+      "score": null,
+      "phase": null,
+      "cluster_members": [
+        "connect-data",
+        "connect-workshop"
+      ]
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": "connect-data",
+      "members": [
+        "connect-data",
+        "connect-workshop"
+      ],
+      "size": 2
+    },
+    {
+      "cluster_id": "connect-config",
+      "members": [
+        "connect-config"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-devtools",
+      "members": [
+        "connect-devtools"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-id",
+      "members": [
+        "connect-id"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-manager",
+      "members": [
+        "connect-manager"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-menu-editor",
+      "members": [
+        "connect-menu-editor"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-menu-tree",
+      "members": [
+        "connect-menu-tree"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-reports",
+      "members": [
+        "connect-reports"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-scenario",
+      "members": [
+        "connect-scenario"
+      ],
+      "size": 1
+    },
+    {
+      "cluster_id": "connect-test",
+      "members": [
+        "connect-test"
+      ],
+      "size": 1
+    }
+  ]
+}

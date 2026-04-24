@@ -1,0 +1,86 @@
+{
+  "generated_at": "2026-04-24T14:06:10.635652+00:00",
+  "repo_root": "/home/tom/github/maskservice/c2004",
+  "profile": {
+    "languages": [
+      {
+        "name": "typescript",
+        "files": 941
+      },
+      {
+        "name": "python",
+        "files": 790
+      },
+      {
+        "name": "javascript",
+        "files": 120
+      },
+      {
+        "name": "protobuf",
+        "files": 6
+      }
+    ],
+    "frameworks": [
+      "fastapi",
+      "vite"
+    ],
+    "architecture_hints": [
+      "frontend-backend-repo",
+      "modular-monolith",
+      "monolith-root-backend",
+      "service-oriented"
+    ]
+  },
+  "counts": {
+    "candidate_modules": 17,
+    "service_boundary_modules": 30,
+    "cqrs_pattern_modules": 11,
+    "cqrs_clusters": 10,
+    "migration_waves": 5,
+    "recommended_services": 4,
+    "delegation_plan_modules": 17
+  },
+  "top_candidates": [
+    "connect-reports-month",
+    "connect-config-network",
+    "connect-manager-library",
+    ".swop",
+    "project"
+  ],
+  "top_service_candidates": [
+    "connect-config",
+    "connect-scenario",
+    "connect-test",
+    "connect-menu"
+  ],
+  "top_cqrs_pattern_candidates": [
+    "connect-config",
+    "connect-data",
+    "connect-devtools",
+    "connect-id",
+    "connect-manager"
+  ],
+  "top_migration_waves": [
+    "CQRS Data-Grid Base Types",
+    "Reports Core Types",
+    "Manager Library Workflow",
+    "Scenario Builder Core",
+    "Menu Tree Contracts"
+  ],
+  "artifacts": {
+    "repository_profile_json": "/home/tom/github/semcod/protos/reports/migration-discovery/repository-profile.json",
+    "repository_profile_md": "/home/tom/github/semcod/protos/reports/migration-discovery/repository-profile.md",
+    "module_candidates_json": "/home/tom/github/semcod/protos/reports/migration-discovery/module-candidates.json",
+    "module_candidates_md": "/home/tom/github/semcod/protos/reports/migration-discovery/module-candidates.md",
+    "service_boundaries_json": "/home/tom/github/semcod/protos/reports/migration-discovery/service-boundaries.json",
+    "service_boundaries_md": "/home/tom/github/semcod/protos/reports/migration-discovery/service-boundaries.md",
+    "cqrs_pattern_clusters_json": "/home/tom/github/semcod/protos/reports/migration-discovery/cqrs-pattern-clusters.json",
+    "cqrs_pattern_clusters_md": "/home/tom/github/semcod/protos/reports/migration-discovery/cqrs-pattern-clusters.md",
+    "migration_wave_plan_json": "/home/tom/github/semcod/protos/reports/migration-discovery/migration-wave-plan.json",
+    "migration_wave_plan_md": "/home/tom/github/semcod/protos/reports/migration-discovery/migration-wave-plan.md",
+    "delegation_plan_json": "/home/tom/github/semcod/protos/reports/migration-discovery/delegation-plan.generated.json",
+    "delegation_plan_md": "/home/tom/github/semcod/protos/reports/migration-discovery/delegation-plan.generated.md",
+    "summary_json": "/home/tom/github/semcod/protos/reports/migration-discovery/migration-discovery.summary.json",
+    "summary_md": "/home/tom/github/semcod/protos/reports/migration-discovery/migration-discovery.summary.md"
+  }
+}

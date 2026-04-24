@@ -5,17 +5,20 @@ Reusable delegation platform for migrating bounded slices from legacy systems wi
 ## Architecture
 
 **Protos owns:**
+
 - Contracts (Protobuf)
 - Commands & Queries (CQRS)
 - Events & Read Models
 - Delegated UI Runtime
 
 **Legacy Host (c2004) owns:**
+
 - Shell & Navigation
 - Auth/Session Bridge
 - Iframe Routing only
 
 Each delegated module follows a vertical-slice template:
+
 - `contracts/{slice}/v1/` - Protobuf contracts
 - `gateway/{slice}_handler.py` - Command/query handlers
 - Event store + read model adapters
@@ -40,7 +43,7 @@ make gateway
 ### Core Endpoints
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+| ------ | -------- | ----------- |
 | GET | `/health` | Platform health + module aggregation |
 | GET | `/health/modules` | All delegated slices status |
 | GET | `/health/modules/{slice}` | Specific slice health |
@@ -50,7 +53,7 @@ make gateway
 ### User Module (Live)
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+| ------ | -------- | ----------- |
 | POST | `/commands/user/create` | Create user |
 | POST | `/commands/user/dual-create` | Dual-write with idempotency |
 | POST | `/commands/user/{id}/change-email` | Change email |
@@ -61,7 +64,7 @@ make gateway
 ### Search Module (Phase-1)
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+| ------ | -------- | ----------- |
 | POST | `/commands/search/index` | Index entry |
 | GET | `/queries/search?q={query}` | Full-text search |
 
@@ -69,19 +72,23 @@ make gateway
 
 1. **Generate candidate report** in c2004 (`detect_migration_candidates.py`)
 2. **Generate delegation plan** in protos:
+
    ```bash
    python scripts/legacy_bridge/generate_delegation_plan.py \
      --input /path/to/c2004/module-candidates.json \
      --clusters /path/to/c2004/cqrs-pattern-clusters.json \
      --output-dir docs
    ```
+
 3. **(Recommended) Run full discovery pipeline** in protos:
+
    ```bash
    python scripts/legacy_bridge/run_arch_migration_discovery.py \
      --repo-root /path/to/c2004 \
      --output-dir reports/migration-discovery \
      --delegation-limit 30
    ```
+
 4. Pick top module from Phase-1
 5. Implement full vertical slice in protos
 6. Switch c2004 route to iframe host
@@ -89,7 +96,7 @@ make gateway
 
 ## Project Structure
 
-```
+```text
 protos/
 ├── contracts/              # Protobuf contracts per slice
 │   ├── user/v{1,2}/
@@ -135,6 +142,7 @@ DelegatedSlice(
 ### Health Checks
 
 Per-slice health validates:
+
 - Contract files exist
 - Read model assets present
 - Frontend assets (if required)

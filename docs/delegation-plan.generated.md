@@ -4,28 +4,28 @@ This file is generated from c2004 migration candidate report.
 
 ## Top modules to delegate first
 
-| module | score | phase | effort | cqrs pattern | shared types package |
-|---|---:|---|---|---|---|
-| connect-template | 98.81 | phase-1 | low | n/a | @semcod/contracts-types:custom-per-module |
-| identification | 98.78 | phase-1 | low | n/a | @semcod/contracts-types:custom-per-module |
-| template | 97.80 | phase-1 | low | n/a | @semcod/contracts-types:custom-per-module |
-| connect-menu-tree | 95.14 | phase-1 | low | menu-tree-cqrs | @semcod/contracts-types:menu-tree-core |
-| connect-live-protocol | 93.91 | phase-1 | low | n/a | @semcod/contracts-types:custom-per-module |
-| connect-scenario | 91.69 | phase-1 | low | scenario-builder-cqrs | @semcod/contracts-types:scenario-core |
-| connect-devtools | 88.01 | phase-1 | low | devtools-ops-cqrs | @semcod/contracts-types:devtools-core |
-| connect-router | 86.75 | phase-1 | low | n/a | @semcod/contracts-types:custom-per-module |
-| connect-reports | 84.82 | phase-1 | low | reports-filtering-cqrs | @semcod/contracts-types:reports-core |
-| connect-manager | 78.38 | phase-1 | low | manager-library-workflow-cqrs | @semcod/contracts-types:manager-core |
-| connect-template2 | 77.30 | phase-1 | low | n/a | @semcod/contracts-types:custom-per-module |
-| connect-id | 74.64 | phase-1 | low | id-user-admin-cqrs | @semcod/contracts-types:id-core |
-| connect-workshop | 60.03 | phase-2 | medium | data-grid-cqrs | @semcod/contracts-types:cqrs-data-grid |
-| connect-menu-editor | 59.33 | phase-2 | medium | menu-editor-snapshots-cqrs | @semcod/contracts-types:menu-editor-core |
-| connect-config | 55.53 | phase-2 | medium | config-admin-cqrs | @semcod/contracts-types:config-admin |
-| connect-data | 0.00 | phase-3 | high | data-grid-cqrs | @semcod/contracts-types:cqrs-data-grid |
-| connect-test | 0.00 | phase-3 | high | test-orchestration-cqrs | @semcod/contracts-types:test-orchestration-core |
-| connect-test-device | 0.00 | phase-3 | high | n/a | @semcod/contracts-types:custom-per-module |
-| connect-test-full | 0.00 | phase-3 | high | n/a | @semcod/contracts-types:custom-per-module |
-| connect-test-protocol | 0.00 | phase-3 | high | n/a | @semcod/contracts-types:custom-per-module |
+| module | score | phase | effort | cqrs pattern | cmds | evts | shared types package |
+|---|---:|---|---|---|---:|---:|---|
+| connect-template | 98.81 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| identification | 98.78 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| template | 97.80 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| connect-menu-tree | 95.14 | phase-1 | low | menu-tree-cqrs | 12 | 3 | @semcod/contracts-types:menu-tree-core |
+| connect-live-protocol | 93.91 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| connect-scenario | 91.69 | phase-1 | low | scenario-builder-cqrs | 19 | 8 | @semcod/contracts-types:scenario-core |
+| connect-devtools | 88.01 | phase-1 | low | devtools-ops-cqrs | 8 | 6 | @semcod/contracts-types:devtools-core |
+| connect-router | 86.75 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| connect-reports | 84.82 | phase-1 | low | reports-filtering-cqrs | 5 | 5 | @semcod/contracts-types:reports-core |
+| connect-manager | 78.38 | phase-1 | low | manager-library-workflow-cqrs | 20 | 16 | @semcod/contracts-types:manager-core |
+| connect-template2 | 77.30 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| connect-id | 74.64 | phase-1 | low | id-user-admin-cqrs | 8 | 4 | @semcod/contracts-types:id-core |
+| connect-workshop | 60.03 | phase-2 | medium | data-grid-cqrs | 9 | 9 | @semcod/contracts-types:cqrs-data-grid |
+| connect-menu-editor | 59.33 | phase-2 | medium | menu-editor-snapshots-cqrs | 5 | 3 | @semcod/contracts-types:menu-editor-core |
+| connect-config | 55.53 | phase-2 | medium | config-admin-cqrs | 31 | 25 | @semcod/contracts-types:config-admin |
+| connect-data | 0.00 | phase-3 | high | data-grid-cqrs | 13 | 11 | @semcod/contracts-types:cqrs-data-grid |
+| connect-test | 0.00 | phase-3 | high | test-orchestration-cqrs | 57 | 19 | @semcod/contracts-types:test-orchestration-core |
+| connect-test-device | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| connect-test-full | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+| connect-test-protocol | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
 
 ## Slice blueprints
 
@@ -39,6 +39,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 0
@@ -58,6 +61,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 0
@@ -77,6 +83,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 0
@@ -96,6 +105,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `menu-tree-cqrs`
+- CQRS command tokens: `12`
+- CQRS event tokens: `3`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:menu-tree-core`
 - Readiness reasons:
   - cross-module imports: 0
@@ -115,6 +127,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 0
@@ -134,6 +149,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `scenario-builder-cqrs`
+- CQRS command tokens: `19`
+- CQRS event tokens: `8`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:scenario-core`
 - Readiness reasons:
   - cross-module imports: 0
@@ -153,6 +171,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `devtools-ops-cqrs`
+- CQRS command tokens: `8`
+- CQRS event tokens: `6`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:devtools-core`
 - Readiness reasons:
   - cross-module imports: 0
@@ -172,6 +193,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 1
@@ -191,6 +215,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `reports-filtering-cqrs`
+- CQRS command tokens: `5`
+- CQRS event tokens: `5`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:reports-core`
 - Readiness reasons:
   - cross-module imports: 1
@@ -210,6 +237,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `manager-library-workflow-cqrs`
+- CQRS command tokens: `20`
+- CQRS event tokens: `16`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:manager-core`
 - Readiness reasons:
   - cross-module imports: 1
@@ -229,6 +259,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 0
@@ -248,6 +281,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `id-user-admin-cqrs`
+- CQRS command tokens: `8`
+- CQRS event tokens: `4`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:id-core`
 - Readiness reasons:
   - cross-module imports: 1
@@ -267,6 +303,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `data-grid-cqrs`
+- CQRS command tokens: `9`
+- CQRS event tokens: `9`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:cqrs-data-grid`
 - Readiness reasons:
   - cross-module imports: 4
@@ -286,6 +325,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `menu-editor-snapshots-cqrs`
+- CQRS command tokens: `5`
+- CQRS event tokens: `3`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:menu-editor-core`
 - Readiness reasons:
   - cross-module imports: 1
@@ -305,6 +347,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `config-admin-cqrs`
+- CQRS command tokens: `31`
+- CQRS event tokens: `25`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:config-admin`
 - Readiness reasons:
   - cross-module imports: 1
@@ -324,6 +369,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `data-grid-cqrs`
+- CQRS command tokens: `13`
+- CQRS event tokens: `11`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:cqrs-data-grid`
 - Readiness reasons:
   - cross-module imports: 14
@@ -343,6 +391,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `test-orchestration-cqrs`
+- CQRS command tokens: `57`
+- CQRS event tokens: `19`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:test-orchestration-core`
 - Readiness reasons:
   - cross-module imports: 16
@@ -362,6 +413,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 21
@@ -381,6 +435,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 18
@@ -400,6 +457,9 @@ This file is generated from c2004 migration candidate report.
 - Frontend strategy: `gateway-static-or-dedicated-frontend-service`
 - Host mode: `iframe`
 - CQRS pattern: `n/a`
+- CQRS command tokens: `0`
+- CQRS event tokens: `0`
+- CQRS cluster size: `1`
 - Shared types package: `@semcod/contracts-types:custom-per-module`
 - Readiness reasons:
   - cross-module imports: 10

@@ -1,0 +1,116 @@
+{
+  "waves": [
+    {
+      "wave_number": 1,
+      "wave_name": "CQRS Data-Grid Base Types",
+      "pattern_type": "data-grid-cqrs",
+      "extraction_target": "@semcod/contracts-types:cqrs-data-grid",
+      "priority_reason": "mature CQRS pattern ready for extraction",
+      "modules": [
+        {
+          "module": "connect-data",
+          "pattern": "data-grid-cqrs",
+          "extraction_target": "@semcod/contracts-types:cqrs-data-grid",
+          "score": null,
+          "phase": null,
+          "cluster_members": [
+            "connect-data",
+            "connect-workshop"
+          ]
+        },
+        {
+          "module": "connect-workshop",
+          "pattern": "data-grid-cqrs",
+          "extraction_target": "@semcod/contracts-types:cqrs-data-grid",
+          "score": null,
+          "phase": null,
+          "cluster_members": [
+            "connect-data",
+            "connect-workshop"
+          ]
+        }
+      ],
+      "estimated_effort": "medium"
+    },
+    {
+      "wave_number": 2,
+      "wave_name": "Reports Core Types",
+      "pattern_type": "reports-filtering-cqrs",
+      "extraction_target": "@semcod/contracts-types:reports-core",
+      "priority_reason": "mature CQRS pattern ready for extraction",
+      "modules": [
+        {
+          "module": "connect-reports",
+          "pattern": "reports-filtering-cqrs",
+          "extraction_target": "@semcod/contracts-types:reports-core",
+          "score": null,
+          "phase": null,
+          "cluster_members": [
+            "connect-reports"
+          ]
+        }
+      ],
+      "estimated_effort": "medium"
+    },
+    {
+      "wave_number": 3,
+      "wave_name": "Manager Library Workflow",
+      "pattern_type": "manager-library-workflow-cqrs",
+      "extraction_target": "@semcod/contracts-types:manager-core",
+      "priority_reason": "pattern-based extraction opportunity",
+      "modules": [
+        {
+          "module": "connect-manager",
+          "pattern": "manager-library-workflow-cqrs",
+          "extraction_target": "@semcod/contracts-types:manager-core",
+          "score": null,
+          "phase": null,
+          "cluster_members": [
+            "connect-manager"
+          ]
+        }
+      ],
+      "estimated_effort": "medium"
+    },
+    {
+      "wave_number": 4,
+      "wave_name": "Scenario Builder Core",
+      "pattern_type": "scenario-builder-cqrs",
+      "extraction_target": "@semcod/contracts-types:scenario-core",
+      "priority_reason": "pattern-based extraction opportunity",
+      "modules": [
+        {
+          "module": "connect-scenario",
+          "pattern": "scenario-builder-cqrs",
+          "extraction_target": "@semcod/contracts-types:scenario-core",
+          "score": null,
+          "phase": null,
+          "cluster_members": [
+            "connect-scenario"
+          ]
+        }
+      ],
+      "estimated_effort": "medium"
+    },
+    {
+      "wave_number": 5,
+      "wave_name": "Menu Tree Contracts",
+      "pattern_type": "menu-tree-cqrs",
+      "extraction_target": "@semcod/contracts-types:menu-tree-core",
+      "priority_reason": "pattern-based extraction opportunity",
+      "modules": [
+        {
+          "module": "connect-menu-tree",
+          "pattern": "menu-tree-cqrs",
+          "extraction_target": "@semcod/contracts-types:menu-tree-core",
+          "score": null,
+          "phase": null,
+          "cluster_members": [
+            "connect-menu-tree"
+          ]
+        }
+      ],
+      "estimated_effort": "medium"
+    }
+  ]
+}
