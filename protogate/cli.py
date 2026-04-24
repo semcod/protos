@@ -3,12 +3,65 @@
 protogate CLI - Migration tool and delegation platform
 """
 import argparse
+import importlib.util
 import subprocess
 import sys
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _load_module_from_path(module_name: str, script_path: Path):
+    spec = importlib.util.spec_from_file_location(module_name, script_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load script: {script_path}")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _resolve_proto_input_dir(input_dir: Path) -> Path:
+    """Resolve an input directory containing .proto files.
+
+    For c2004-like layouts where `contracts/` contains JSON contracts and
+    protobuf definitions live in sibling `proto/`, this function auto-switches
+    to the protobuf directory.
+    """
+    resolved = input_dir.resolve()
+    if not resolved.exists():
+        return resolved
+
+    proto_files = list(resolved.rglob("*.proto"))
+    if proto_files:
+        return resolved
+
+    # Common c2004 layout: contracts/ (json) and sibling proto/ (protobuf)
+    sibling_proto = resolved.parent / "proto"
+    if resolved.name == "contracts" and sibling_proto.is_dir() and list(sibling_proto.rglob("*.proto")):
+        print(
+            f"[INFO] No .proto under {resolved}; using sibling protobuf dir {sibling_proto}",
+            file=sys.stderr,
+        )
+        return sibling_proto
+
+    # Fallback: prefer latest swop proto output if available
+    swop_candidates = sorted((resolved.parent / "reports").glob("**/swop/proto"), reverse=True)
+    for candidate in swop_candidates:
+        if candidate.is_dir() and list(candidate.rglob("*.proto")):
+            print(
+                f"[INFO] No .proto under {resolved}; using swop protobuf dir {candidate}",
+                file=sys.stderr,
+            )
+            return candidate
+
+    return resolved
+
+
+def _load_parse_proto_function():
+    script_path = REPO_ROOT / "scripts" / "parse_proto.py"
+    mod = _load_module_from_path("_parse_proto_mod", script_path)
+    return getattr(mod, "parse_proto")
 
 
 def run_command(cmd: list[str], cwd: Path | None = None) -> int:
@@ -143,10 +196,7 @@ def _proto_to_output_name(proto_path: Path, suffix: str) -> str:
 
 def _batch_generate(args: argparse.Namespace, suffix: str, script_name: str, generate_func_name: str) -> int:
     """Batch-run a generator over every .proto under input_dir."""
-    import importlib.util
-    from pathlib import Path
-
-    input_dir = Path(args.input_dir)
+    input_dir = _resolve_proto_input_dir(Path(args.input_dir))
     output_dir = Path(args.output_dir)
     if not input_dir.exists():
         print(f"Input directory not found: {input_dir}", file=sys.stderr)
@@ -159,17 +209,20 @@ def _batch_generate(args: argparse.Namespace, suffix: str, script_name: str, gen
         return 1
 
     # Load the module dynamically
-    spec = importlib.util.spec_from_file_location("_gen_mod", script_path)
-    if spec is None or spec.loader is None:
-        print(f"Cannot load script: {script_path}", file=sys.stderr)
+    try:
+        mod = _load_module_from_path("_gen_mod", script_path)
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
         return 1
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
     generate_func = getattr(mod, generate_func_name)
+    parse_proto = _load_parse_proto_function()
 
     proto_files = sorted(input_dir.rglob("*.proto"))
     if not proto_files:
-        print(f"No .proto files found under {input_dir}", file=sys.stderr)
+        print(
+            f"No .proto files found under {input_dir}. For c2004, try '<repo>/proto' or '<repo>/reports/.../swop/proto'.",
+            file=sys.stderr,
+        )
         return 1
 
     ok = 0
@@ -179,7 +232,6 @@ def _batch_generate(args: argparse.Namespace, suffix: str, script_name: str, gen
         out_name = _proto_to_output_name(rel, suffix)
         out_path = output_dir / out_name
         try:
-            from parse_proto import parse_proto  # type: ignore
             ast = parse_proto(str(proto_file))
             content = generate_func(ast)
             out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -207,9 +259,8 @@ def cmd_generate_zod(args: argparse.Namespace) -> int:
 def _batch_generate_json_schema(args: argparse.Namespace) -> int:
     """Batch-generate JSON Schema from .proto contracts."""
     import json
-    import importlib.util
 
-    input_dir = Path(args.input_dir)
+    input_dir = _resolve_proto_input_dir(Path(args.input_dir))
     output_dir = Path(args.output_dir)
     if not input_dir.exists():
         print(f"Input directory not found: {input_dir}", file=sys.stderr)
@@ -220,17 +271,20 @@ def _batch_generate_json_schema(args: argparse.Namespace) -> int:
         print(f"Generator script not found: {script_path}", file=sys.stderr)
         return 1
 
-    spec = importlib.util.spec_from_file_location("_gen_mod", script_path)
-    if spec is None or spec.loader is None:
-        print(f"Cannot load script: {script_path}", file=sys.stderr)
+    try:
+        mod = _load_module_from_path("_gen_json_mod", script_path)
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
         return 1
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
     generate_func = getattr(mod, "generate")
+    parse_proto = _load_parse_proto_function()
 
     proto_files = sorted(input_dir.rglob("*.proto"))
     if not proto_files:
-        print(f"No .proto files found under {input_dir}", file=sys.stderr)
+        print(
+            f"No .proto files found under {input_dir}. For c2004, try '<repo>/proto' or '<repo>/reports/.../swop/proto'.",
+            file=sys.stderr,
+        )
         return 1
 
     ok = 0
@@ -240,7 +294,6 @@ def _batch_generate_json_schema(args: argparse.Namespace) -> int:
         out_name = _proto_to_output_name(rel, ".schema.json")
         out_path = output_dir / out_name
         try:
-            from parse_proto import parse_proto  # type: ignore
             ast = parse_proto(str(proto_file))
             content = generate_func(ast)
             out_path.parent.mkdir(parents=True, exist_ok=True)
