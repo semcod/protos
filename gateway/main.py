@@ -40,6 +40,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 from sse_starlette.sse import EventSourceResponse
 
+from .delegation import get_delegated_slice, get_delegation_health, list_delegated_slices
 from .ws import WebSocketDisconnect, manager
 from .sse import event_generator, push_to_subscribers, subscribe, unsubscribe
 from .user_handler import (
@@ -111,8 +112,42 @@ app.add_middleware(
 
 
 @app.get("/health", tags=["meta"])
-async def health() -> dict[str, str]:
-    return {"status": "ok"}
+async def health() -> dict[str, Any]:
+    delegation_health = get_delegation_health()
+    return {
+        "status": delegation_health["status"],
+        "modules": {
+            "total": delegation_health["module_count"],
+            "ok": delegation_health["ok_count"],
+            "degraded": delegation_health["degraded_count"],
+        },
+    }
+
+
+@app.get("/health/modules", tags=["meta", "delegation"])
+async def health_modules() -> dict[str, Any]:
+    return get_delegation_health()
+
+
+@app.get("/health/modules/{slice_name}", tags=["meta", "delegation"])
+async def health_module(slice_name: str) -> dict[str, Any]:
+    delegated_slice = get_delegated_slice(slice_name)
+    if delegated_slice is None:
+        raise HTTPException(status_code=404, detail=f"Delegated slice {slice_name!r} not found")
+    return delegated_slice.health()
+
+
+@app.get("/delegation/slices", tags=["delegation"])
+async def delegation_slices() -> list[dict[str, Any]]:
+    return list_delegated_slices()
+
+
+@app.get("/delegation/slices/{slice_name}", tags=["delegation"])
+async def delegation_slice_detail(slice_name: str) -> dict[str, Any]:
+    delegated_slice = get_delegated_slice(slice_name)
+    if delegated_slice is None:
+        raise HTTPException(status_code=404, detail=f"Delegated slice {slice_name!r} not found")
+    return delegated_slice.detail()
 
 
 # ---------------------------------------------------------------------------

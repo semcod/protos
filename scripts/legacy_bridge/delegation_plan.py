@@ -1,0 +1,118 @@
+from __future__ import annotations
+
+from typing import Any
+
+
+def to_slice_name(module: str) -> str:
+    return module.strip().replace("_", "-").replace(" ", "-").lower()
+
+
+def build_steps(module: str) -> list[str]:
+    slice_name = to_slice_name(module)
+    return [
+        f"Create contract under contracts/{slice_name}/v1",
+        f"Implement gateway handler for {slice_name} commands and queries",
+        f"Add read model storage and replay/bootstrap adapter for {slice_name}",
+        f"Create delegated UI entrypoint for {slice_name}",
+        f"Expose delegated UI through gateway static or dedicated frontend service",
+        f"Switch c2004 route to iframe host for {slice_name}",
+        f"Run data bootstrap and smoke checks",
+        f"Archive legacy {slice_name} implementation in c2004",
+    ]
+
+
+def build_slice_blueprint(module: str) -> dict[str, Any]:
+    slice_name = to_slice_name(module)
+    return {
+        "slice_name": slice_name,
+        "contract_dir": f"contracts/{slice_name}/v1",
+        "gateway": {
+            "commands": f"/commands/{slice_name}/*",
+            "queries": f"/queries/{slice_name}/*",
+            "health": f"/health/modules/{slice_name}",
+        },
+        "frontend": {
+            "strategy": "gateway-static-or-dedicated-frontend-service",
+            "host_mode": "iframe",
+        },
+        "migration": {
+            "legacy_host": "shell-auth-session-iframe-routing-only",
+            "checklist": build_steps(module),
+        },
+    }
+
+
+def build_output_row(row: dict[str, Any], cluster_meta: dict[str, Any] | None = None) -> dict[str, Any]:
+    module = str(row.get("module", "unknown"))
+    cluster_meta = cluster_meta or {}
+    cqrs_pattern = str(cluster_meta.get("pattern", "n/a"))
+    shared_types_package = str(cluster_meta.get("extraction_target", "@semcod/contracts-types:custom-per-module"))
+    return {
+        **row,
+        "module": module,
+        "slice": build_slice_blueprint(module),
+        "cqrs": {
+            "pattern": cqrs_pattern,
+            "shared_types_package": shared_types_package,
+        },
+        "readiness": {
+            "score": float(row.get("score", 0.0)),
+            "phase": str(row.get("phase", "n/a")),
+            "effort": str(row.get("effort", "n/a")),
+            "reasons": [str(reason) for reason in row.get("reasons", [])],
+        },
+    }
+
+
+def render_markdown(rows: list[dict[str, Any]], limit: int, clusters: dict[str, dict[str, Any]] | None = None) -> str:
+    clusters = clusters or {}
+    selected = [build_output_row(row, clusters.get(str(row.get("module", "")), {})) for row in rows[:limit]]
+    lines = [
+        "# Delegation Plan (Generated)",
+        "",
+        "This file is generated from c2004 migration candidate report.",
+        "",
+        "## Top modules to delegate first",
+        "",
+        "| module | score | phase | effort | cqrs pattern | shared types package |",
+        "|---|---:|---|---|---|---|",
+    ]
+
+    for row in selected:
+        lines.append(
+            f"| {row['module']} | {row['readiness']['score']:.2f} | {row['readiness']['phase']} | {row['readiness']['effort']} | {row['cqrs']['pattern']} | {row['cqrs']['shared_types_package']} |"
+        )
+
+    lines.append("")
+    lines.append("## Slice blueprints")
+    lines.append("")
+
+    for row in selected:
+        blueprint = row["slice"]
+        lines.append(f"### {row['module']}")
+        lines.append("")
+        lines.append(f"- Slice: `{blueprint['slice_name']}`")
+        lines.append(f"- Contract dir: `{blueprint['contract_dir']}`")
+        lines.append(f"- Commands: `{blueprint['gateway']['commands']}`")
+        lines.append(f"- Queries: `{blueprint['gateway']['queries']}`")
+        lines.append(f"- Health: `{blueprint['gateway']['health']}`")
+        lines.append(f"- Frontend strategy: `{blueprint['frontend']['strategy']}`")
+        lines.append(f"- Host mode: `{blueprint['frontend']['host_mode']}`")
+        lines.append(f"- CQRS pattern: `{row['cqrs']['pattern']}`")
+        lines.append(f"- Shared types package: `{row['cqrs']['shared_types_package']}`")
+        lines.append("- Readiness reasons:")
+        for reason in row["readiness"]["reasons"]:
+            lines.append(f"  - {reason}")
+        lines.append("")
+
+    lines.append("## Per-module execution checklist")
+    lines.append("")
+
+    for row in selected:
+        lines.append(f"### {row['module']}")
+        lines.append("")
+        for idx, step in enumerate(row["slice"]["migration"]["checklist"], start=1):
+            lines.append(f"{idx}. {step}")
+        lines.append("")
+
+    return "\n".join(lines)

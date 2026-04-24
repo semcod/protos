@@ -1,0 +1,632 @@
+[
+  {
+    "module": "connect-template",
+    "files": 2,
+    "lines": 77,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "score": 98.81,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 2",
+      "lines: 77"
+    ],
+    "slice": {
+      "slice_name": "connect-template",
+      "contract_dir": "contracts/connect-template/v1",
+      "gateway": {
+        "commands": "/commands/connect-template/*",
+        "queries": "/queries/connect-template/*",
+        "health": "/health/modules/connect-template"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-template/v1",
+          "Implement gateway handler for connect-template commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-template",
+          "Create delegated UI entrypoint for connect-template",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-template",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-template implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 98.81,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 2",
+        "lines: 77"
+      ]
+    }
+  },
+  {
+    "module": "identification",
+    "files": 2,
+    "lines": 90,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "score": 98.78,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 2",
+      "lines: 90"
+    ],
+    "slice": {
+      "slice_name": "identification",
+      "contract_dir": "contracts/identification/v1",
+      "gateway": {
+        "commands": "/commands/identification/*",
+        "queries": "/queries/identification/*",
+        "health": "/health/modules/identification"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/identification/v1",
+          "Implement gateway handler for identification commands and queries",
+          "Add read model storage and replay/bootstrap adapter for identification",
+          "Create delegated UI entrypoint for identification",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for identification",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy identification implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 98.78,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 2",
+        "lines: 90"
+      ]
+    }
+  },
+  {
+    "module": "template",
+    "files": 2,
+    "lines": 481,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "score": 97.8,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 2",
+      "lines: 481"
+    ],
+    "slice": {
+      "slice_name": "template",
+      "contract_dir": "contracts/template/v1",
+      "gateway": {
+        "commands": "/commands/template/*",
+        "queries": "/queries/template/*",
+        "health": "/health/modules/template"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/template/v1",
+          "Implement gateway handler for template commands and queries",
+          "Add read model storage and replay/bootstrap adapter for template",
+          "Create delegated UI entrypoint for template",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for template",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy template implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 97.8,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 2",
+        "lines: 481"
+      ]
+    }
+  },
+  {
+    "module": "connect-menu-tree",
+    "files": 6,
+    "lines": 744,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "score": 95.14,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 6",
+      "lines: 744"
+    ],
+    "slice": {
+      "slice_name": "connect-menu-tree",
+      "contract_dir": "contracts/connect-menu-tree/v1",
+      "gateway": {
+        "commands": "/commands/connect-menu-tree/*",
+        "queries": "/queries/connect-menu-tree/*",
+        "health": "/health/modules/connect-menu-tree"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-menu-tree/v1",
+          "Implement gateway handler for connect-menu-tree commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-menu-tree",
+          "Create delegated UI entrypoint for connect-menu-tree",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-menu-tree",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-menu-tree implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "custom-cqrs",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 95.14,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 6",
+        "lines: 744"
+      ]
+    }
+  },
+  {
+    "module": "connect-live-protocol",
+    "files": 5,
+    "lines": 1438,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "score": 93.91,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 5",
+      "lines: 1438"
+    ],
+    "slice": {
+      "slice_name": "connect-live-protocol",
+      "contract_dir": "contracts/connect-live-protocol/v1",
+      "gateway": {
+        "commands": "/commands/connect-live-protocol/*",
+        "queries": "/queries/connect-live-protocol/*",
+        "health": "/health/modules/connect-live-protocol"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-live-protocol/v1",
+          "Implement gateway handler for connect-live-protocol commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-live-protocol",
+          "Create delegated UI entrypoint for connect-live-protocol",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-live-protocol",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-live-protocol implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 93.91,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 5",
+        "lines: 1438"
+      ]
+    }
+  },
+  {
+    "module": "connect-scenario",
+    "files": 11,
+    "lines": 726,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 1,
+    "api_endpoints_used": 0,
+    "score": 91.69,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 1",
+      "api endpoints used: 0",
+      "files: 11",
+      "lines: 726"
+    ],
+    "slice": {
+      "slice_name": "connect-scenario",
+      "contract_dir": "contracts/connect-scenario/v1",
+      "gateway": {
+        "commands": "/commands/connect-scenario/*",
+        "queries": "/queries/connect-scenario/*",
+        "health": "/health/modules/connect-scenario"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-scenario/v1",
+          "Implement gateway handler for connect-scenario commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-scenario",
+          "Create delegated UI entrypoint for connect-scenario",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-scenario",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-scenario implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "custom-cqrs",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 91.69,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 1",
+        "api endpoints used: 0",
+        "files: 11",
+        "lines: 726"
+      ]
+    }
+  },
+  {
+    "module": "connect-devtools",
+    "files": 11,
+    "lines": 1397,
+    "cross_module_imports": 0,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 2,
+    "score": 88.01,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 0",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 2",
+      "files: 11",
+      "lines: 1397"
+    ],
+    "slice": {
+      "slice_name": "connect-devtools",
+      "contract_dir": "contracts/connect-devtools/v1",
+      "gateway": {
+        "commands": "/commands/connect-devtools/*",
+        "queries": "/queries/connect-devtools/*",
+        "health": "/health/modules/connect-devtools"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-devtools/v1",
+          "Implement gateway handler for connect-devtools commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-devtools",
+          "Create delegated UI entrypoint for connect-devtools",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-devtools",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-devtools implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "custom-cqrs",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 88.01,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 0",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 2",
+        "files: 11",
+        "lines: 1397"
+      ]
+    }
+  },
+  {
+    "module": "connect-router",
+    "files": 4,
+    "lines": 699,
+    "cross_module_imports": 1,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 1,
+    "score": 86.75,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 1",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 1",
+      "files: 4",
+      "lines: 699"
+    ],
+    "slice": {
+      "slice_name": "connect-router",
+      "contract_dir": "contracts/connect-router/v1",
+      "gateway": {
+        "commands": "/commands/connect-router/*",
+        "queries": "/queries/connect-router/*",
+        "health": "/health/modules/connect-router"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-router/v1",
+          "Implement gateway handler for connect-router commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-router",
+          "Create delegated UI entrypoint for connect-router",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-router",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-router implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module"
+    },
+    "readiness": {
+      "score": 86.75,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 1",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 1",
+        "files: 4",
+        "lines: 699"
+      ]
+    }
+  },
+  {
+    "module": "connect-reports",
+    "files": 10,
+    "lines": 873,
+    "cross_module_imports": 1,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 0,
+    "score": 84.82,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 1",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 0",
+      "files: 10",
+      "lines: 873"
+    ],
+    "slice": {
+      "slice_name": "connect-reports",
+      "contract_dir": "contracts/connect-reports/v1",
+      "gateway": {
+        "commands": "/commands/connect-reports/*",
+        "queries": "/queries/connect-reports/*",
+        "health": "/health/modules/connect-reports"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-reports/v1",
+          "Implement gateway handler for connect-reports commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-reports",
+          "Create delegated UI entrypoint for connect-reports",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-reports",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-reports implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "reports-filtering-cqrs",
+      "shared_types_package": "@semcod/contracts-types:reports-core"
+    },
+    "readiness": {
+      "score": 84.82,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 1",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 0",
+        "files: 10",
+        "lines: 873"
+      ]
+    }
+  },
+  {
+    "module": "connect-manager",
+    "files": 11,
+    "lines": 1448,
+    "cross_module_imports": 1,
+    "page_imports": 0,
+    "external_imports": 0,
+    "api_endpoints_used": 3,
+    "score": 78.38,
+    "phase": "phase-1",
+    "effort": "low",
+    "reasons": [
+      "cross-module imports: 1",
+      "page imports: 0",
+      "external imports: 0",
+      "api endpoints used: 3",
+      "files: 11",
+      "lines: 1448"
+    ],
+    "slice": {
+      "slice_name": "connect-manager",
+      "contract_dir": "contracts/connect-manager/v1",
+      "gateway": {
+        "commands": "/commands/connect-manager/*",
+        "queries": "/queries/connect-manager/*",
+        "health": "/health/modules/connect-manager"
+      },
+      "frontend": {
+        "strategy": "gateway-static-or-dedicated-frontend-service",
+        "host_mode": "iframe"
+      },
+      "migration": {
+        "legacy_host": "shell-auth-session-iframe-routing-only",
+        "checklist": [
+          "Create contract under contracts/connect-manager/v1",
+          "Implement gateway handler for connect-manager commands and queries",
+          "Add read model storage and replay/bootstrap adapter for connect-manager",
+          "Create delegated UI entrypoint for connect-manager",
+          "Expose delegated UI through gateway static or dedicated frontend service",
+          "Switch c2004 route to iframe host for connect-manager",
+          "Run data bootstrap and smoke checks",
+          "Archive legacy connect-manager implementation in c2004"
+        ]
+      }
+    },
+    "cqrs": {
+      "pattern": "manager-library-workflow-cqrs",
+      "shared_types_package": "@semcod/contracts-types:manager-core"
+    },
+    "readiness": {
+      "score": 78.38,
+      "phase": "phase-1",
+      "effort": "low",
+      "reasons": [
+        "cross-module imports: 1",
+        "page imports: 0",
+        "external imports: 0",
+        "api endpoints used: 3",
+        "files: 11",
+        "lines: 1448"
+      ]
+    }
+  }
+]
