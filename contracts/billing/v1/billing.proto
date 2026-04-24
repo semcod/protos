@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package billing.v1;
+
+// COMMAND
+message CreateInvoiceCommand {
+  string user_id = 1;
+  double amount = 2;
+  string currency = 3;
+}
+
+// COMMAND
+message PayInvoiceCommand {
+  string invoice_id = 1;
+}
+
+// QUERY
+message GetInvoiceQuery {
+  string id = 1;
+}
+
+// DOMAIN MODEL
+message Invoice {
+  string id = 1;
+  string user_id = 2;
+  double amount = 3;
+  string currency = 4;
+  string status = 5;
+}
+
+// EVENT
+message InvoiceCreated {
+  string id = 1;
+  string user_id = 2;
+  double amount = 3;
+}
+
+// EVENT
+message InvoicePaid {
+  string id = 1;
+}

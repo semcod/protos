@@ -32,6 +32,7 @@ from generate_zod import to_zod  # noqa: E402
 from generate_pydantic import generate as gen_pydantic  # noqa: E402
 from generate_json_schema import generate as gen_json_schema  # noqa: E402
 from generate_sql import generate_sql  # noqa: E402
+from generate_dart import generate as gen_dart  # noqa: E402
 
 
 CACHE_PATH = ".proto_cache.json"
@@ -98,6 +99,7 @@ def regenerate(proto_path: str) -> None:
     _write(f"generated/python/{stem}_models.py", gen_pydantic(ast))
     _write(f"generated/schema/{stem}.schema.json", gen_json_schema(ast), json_output=True)
     _write(f"generated/sql/{stem}.sql", generate_sql(ast))
+    _write(f"generated/dart/{stem}_models.dart", gen_dart(ast))
 
 
 # ---------------------------------------------------------------------------

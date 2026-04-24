@@ -1,0 +1,119 @@
+version: "3.9"
+
+services:
+
+  # ── Infrastructure ──────────────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: protos
+      POSTGRES_PASSWORD: protos
+      POSTGRES_DB: protos
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  kafka:
+    image: bitnami/kafka:latest
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+    ports:
+      - "9092:9092"
+
+  # ── Backend services ─────────────────────────────────────────────────────────
+
+  user-service:
+    build: ./backend/user-service
+    environment:
+      DATABASE_URL: postgresql://protos:protos@postgres:5432/protos
+      KAFKA_BOOTSTRAP: kafka:9092
+    ports:
+      - "9001:9000"
+    depends_on:
+      - postgres
+      - kafka
+
+  billing-service:
+    build: ./backend/billing-service
+    environment:
+      DATABASE_URL: postgresql://protos:protos@postgres:5432/protos
+      KAFKA_BOOTSTRAP: kafka:9092
+    ports:
+      - "9002:9000"
+    depends_on:
+      - postgres
+      - kafka
+
+  projections:
+    build: ./backend/projections
+    environment:
+      DATABASE_URL: postgresql://protos:protos@postgres:5432/protos
+      KAFKA_BOOTSTRAP: kafka:9092
+    depends_on:
+      - postgres
+      - kafka
+
+  # ── Gateways ─────────────────────────────────────────────────────────────────
+
+  gateway:
+    build: ./gateway/http-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+      - billing-service
+
+  ws:
+    build: ./gateway/ws-gateway
+    ports:
+      - "8081:8081"
+    depends_on:
+      - kafka
+
+  sse:
+    build: ./gateway/sse-gateway
+    ports:
+      - "8082:8082"
+    depends_on:
+      - kafka
+
+  # ── Frontend apps ─────────────────────────────────────────────────────────────
+
+  web:
+    build: ./apps/web
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://gateway:8080
+      NEXT_PUBLIC_WS_URL: ws://ws:8081
+    depends_on:
+      - gateway
+      - ws
+
+  desktop:
+    build: ./apps/desktop
+    environment:
+      API_URL: http://gateway:8080
+      WS_URL: ws://ws:8081
+    depends_on:
+      - gateway
+      - ws
+
+  mobile:
+    build: ./apps/mobile
+    environment:
+      API_URL: http://gateway:8080
+      WS_URL: ws://ws:8081
+    depends_on:
+      - gateway
+      - ws
+
+volumes:
+  postgres_data:

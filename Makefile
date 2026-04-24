@@ -1,7 +1,7 @@
-.PHONY: all proto zod python json sql clean generate-incremental proto-changed
+.PHONY: all proto zod python json sql dart clean generate-incremental proto-changed
 
 # Default: run all generators (requires buf on PATH for the proto target)
-all: proto zod python json sql
+all: proto zod python json sql dart
 
 # Run buf generate (requires buf CLI: https://buf.build/docs/installation)
 proto:
@@ -22,6 +22,10 @@ json:
 # SQL DDL
 sql:
 	python scripts/generate_sql.py
+
+# Dart/Flutter model classes
+dart:
+	python scripts/generate_dart.py
 
 # Detect changed proto files against main branch
 proto-changed:

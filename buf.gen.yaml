@@ -9,3 +9,10 @@ plugins:
 
   - name: grpc-python
     out: generated/grpc
+
+  - name: go
+    out: generated/go
+    opt: paths=source_relative
+
+  - name: dart
+    out: generated/dart
