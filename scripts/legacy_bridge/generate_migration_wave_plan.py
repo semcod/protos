@@ -231,18 +231,18 @@ def render_markdown(waves: list[MigrationWave]) -> str:
             f"- **Estimated effort:** {wave.estimated_effort}",
             f"- **Modules:** {len(wave.modules)}",
             "",
-            "| Module | Score | Phase | Cluster Size |",
-            "|--------|-------|-------|--------------|",
+            "Modules:",
+            "",
         ])
 
         for m in wave.modules[:10]:  # Show first 10
             score = f"{m.score:.1f}" if m.score else "n/a"
             phase = m.phase or "n/a"
             cluster_size = len(m.cluster_members)
-            lines.append(f"| {m.module} | {score} | {phase} | {cluster_size} |")
+            lines.append(f"{m.module}: score={score}, phase={phase}, cluster_size={cluster_size}")
 
         if len(wave.modules) > 10:
-            lines.append(f"| ... ({len(wave.modules) - 10} more) | | | |")
+            lines.append(f"... ({len(wave.modules) - 10} more)")
 
         lines.append("")
 

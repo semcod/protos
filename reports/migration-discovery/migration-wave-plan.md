@@ -16,10 +16,10 @@ Execute waves in order. Each wave should be completed and validated before start
 - **Estimated effort:** medium
 - **Modules:** 2
 
-| Module | Score | Phase | Cluster Size |
-|--------|-------|-------|--------------|
-| connect-data | n/a | n/a | 2 |
-| connect-workshop | n/a | n/a | 2 |
+Modules:
+
+connect-data: score=n/a, phase=n/a, cluster_size=2
+connect-workshop: score=n/a, phase=n/a, cluster_size=2
 
 ### Wave 2: Reports Core Types
 
@@ -29,9 +29,9 @@ Execute waves in order. Each wave should be completed and validated before start
 - **Estimated effort:** medium
 - **Modules:** 1
 
-| Module | Score | Phase | Cluster Size |
-|--------|-------|-------|--------------|
-| connect-reports | n/a | n/a | 1 |
+Modules:
+
+connect-reports: score=n/a, phase=n/a, cluster_size=1
 
 ### Wave 3: Manager Library Workflow
 
@@ -41,9 +41,9 @@ Execute waves in order. Each wave should be completed and validated before start
 - **Estimated effort:** medium
 - **Modules:** 1
 
-| Module | Score | Phase | Cluster Size |
-|--------|-------|-------|--------------|
-| connect-manager | n/a | n/a | 1 |
+Modules:
+
+connect-manager: score=n/a, phase=n/a, cluster_size=1
 
 ### Wave 4: Scenario Builder Core
 
@@ -53,9 +53,9 @@ Execute waves in order. Each wave should be completed and validated before start
 - **Estimated effort:** medium
 - **Modules:** 1
 
-| Module | Score | Phase | Cluster Size |
-|--------|-------|-------|--------------|
-| connect-scenario | n/a | n/a | 1 |
+Modules:
+
+connect-scenario: score=n/a, phase=n/a, cluster_size=1
 
 ### Wave 5: Menu Tree Contracts
 
@@ -65,9 +65,9 @@ Execute waves in order. Each wave should be completed and validated before start
 - **Estimated effort:** medium
 - **Modules:** 1
 
-| Module | Score | Phase | Cluster Size |
-|--------|-------|-------|--------------|
-| connect-menu-tree | n/a | n/a | 1 |
+Modules:
+
+connect-menu-tree: score=n/a, phase=n/a, cluster_size=1
 
 ## Summary by Pattern Type
 

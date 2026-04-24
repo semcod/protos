@@ -4,29 +4,27 @@ This file is generated from c2004 migration candidate report.
 
 ## Top modules to delegate first
 
-| module | score | phase | effort | cqrs pattern | cmds | evts | shared types package |
-|---|---:|---|---|---|---:|---:|---|
-| connect-reports-month | 82.00 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-config-network | 71.17 | phase-2 | medium | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-manager-library | 67.35 | phase-2 | medium | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| .swop | 55.00 | phase-2 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| project | 55.00 | phase-2 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| testql-scenarios | 55.00 | phase-2 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| site | 46.65 | phase-3 | medium | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-id-user-list | 40.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| env | 40.00 | phase-3 | medium | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| encoder-control | 39.00 | phase-3 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| desktop | 35.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| fleet-workshop-manager | 27.50 | phase-3 | medium | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-template | 7.56 | phase-3 | medium | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-display | 4.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| backend | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| fleet-data-manager | 0.00 | phase-3 | medium | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| frontend | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+- connect-reports-month: score=82.00, phase=phase-1, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-config-network: score=71.17, phase=phase-2, effort=medium, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-manager-library: score=67.35, phase=phase-2, effort=medium, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- .swop: score=55.00, phase=phase-2, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- project: score=55.00, phase=phase-2, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- testql-scenarios: score=55.00, phase=phase-2, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- site: score=46.65, phase=phase-3, effort=medium, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-id-user-list: score=40.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- env: score=40.00, phase=phase-3, effort=medium, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- encoder-control: score=39.00, phase=phase-3, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- desktop: score=35.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- fleet-workshop-manager: score=27.50, phase=phase-3, effort=medium, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-template: score=7.56, phase=phase-3, effort=medium, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-display: score=4.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- backend: score=0.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- fleet-data-manager: score=0.00, phase=phase-3, effort=medium, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- frontend: score=0.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
 
 ## Slice blueprints
 
-### connect-reports-month
+### Slice blueprint: connect-reports-month
 
 - Slice: `connect-reports-month`
 - Contract dir: `contracts/connect-reports-month/v1`
@@ -48,7 +46,7 @@ This file is generated from c2004 migration candidate report.
   - files: 7
   - lines: 380
 
-### connect-config-network
+### Slice blueprint: connect-config-network
 
 - Slice: `connect-config-network`
 - Contract dir: `contracts/connect-config-network/v1`
@@ -70,7 +68,7 @@ This file is generated from c2004 migration candidate report.
   - files: 17
   - lines: 2259
 
-### connect-manager-library
+### Slice blueprint: connect-manager-library
 
 - Slice: `connect-manager-library`
 - Contract dir: `contracts/connect-manager-library/v1`
@@ -92,7 +90,7 @@ This file is generated from c2004 migration candidate report.
   - files: 10
   - lines: 1518
 
-### .swop
+### Slice blueprint: .swop
 
 - Slice: `.swop`
 - Contract dir: `contracts/.swop/v1`
@@ -114,7 +112,7 @@ This file is generated from c2004 migration candidate report.
   - files: 1
   - lines: 114
 
-### project
+### Slice blueprint: project
 
 - Slice: `project`
 - Contract dir: `contracts/project/v1`
@@ -136,7 +134,7 @@ This file is generated from c2004 migration candidate report.
   - files: 0
   - lines: 0
 
-### testql-scenarios
+### Slice blueprint: testql-scenarios
 
 - Slice: `testql-scenarios`
 - Contract dir: `contracts/testql-scenarios/v1`
@@ -158,7 +156,7 @@ This file is generated from c2004 migration candidate report.
   - files: 1
   - lines: 17
 
-### site
+### Slice blueprint: site
 
 - Slice: `site`
 - Contract dir: `contracts/site/v1`
@@ -180,7 +178,7 @@ This file is generated from c2004 migration candidate report.
   - files: 8
   - lines: 2022
 
-### connect-id-user-list
+### Slice blueprint: connect-id-user-list
 
 - Slice: `connect-id-user-list`
 - Contract dir: `contracts/connect-id-user-list/v1`
@@ -202,7 +200,7 @@ This file is generated from c2004 migration candidate report.
   - files: 21
   - lines: 4508
 
-### env
+### Slice blueprint: env
 
 - Slice: `env`
 - Contract dir: `contracts/env/v1`
@@ -224,7 +222,7 @@ This file is generated from c2004 migration candidate report.
   - files: 1
   - lines: 255
 
-### encoder-control
+### Slice blueprint: encoder-control
 
 - Slice: `encoder-control`
 - Contract dir: `contracts/encoder-control/v1`
@@ -246,7 +244,7 @@ This file is generated from c2004 migration candidate report.
   - files: 11
   - lines: 1027
 
-### desktop
+### Slice blueprint: desktop
 
 - Slice: `desktop`
 - Contract dir: `contracts/desktop/v1`
@@ -268,7 +266,7 @@ This file is generated from c2004 migration candidate report.
   - files: 8
   - lines: 4729
 
-### fleet-workshop-manager
+### Slice blueprint: fleet-workshop-manager
 
 - Slice: `fleet-workshop-manager`
 - Contract dir: `contracts/fleet-workshop-manager/v1`
@@ -290,7 +288,7 @@ This file is generated from c2004 migration candidate report.
   - files: 7
   - lines: 353
 
-### connect-template
+### Slice blueprint: connect-template
 
 - Slice: `connect-template`
 - Contract dir: `contracts/connect-template/v1`
@@ -312,7 +310,7 @@ This file is generated from c2004 migration candidate report.
   - files: 27
   - lines: 1493
 
-### connect-display
+### Slice blueprint: connect-display
 
 - Slice: `connect-display`
 - Contract dir: `contracts/connect-display/v1`
@@ -334,7 +332,7 @@ This file is generated from c2004 migration candidate report.
   - files: 23
   - lines: 4284
 
-### backend
+### Slice blueprint: backend
 
 - Slice: `backend`
 - Contract dir: `contracts/backend/v1`
@@ -351,12 +349,12 @@ This file is generated from c2004 migration candidate report.
 - Readiness reasons:
   - cross-module imports: 10
   - page imports: 0
-  - external imports: 1326
+  - external imports: 1336
   - api endpoints used: 36
-  - files: 586
-  - lines: 90307
+  - files: 592
+  - lines: 90810
 
-### fleet-data-manager
+### Slice blueprint: fleet-data-manager
 
 - Slice: `fleet-data-manager`
 - Contract dir: `contracts/fleet-data-manager/v1`
@@ -378,7 +376,7 @@ This file is generated from c2004 migration candidate report.
   - files: 22
   - lines: 892
 
-### frontend
+### Slice blueprint: frontend
 
 - Slice: `frontend`
 - Contract dir: `contracts/frontend/v1`
@@ -402,7 +400,7 @@ This file is generated from c2004 migration candidate report.
 
 ## Per-module execution checklist
 
-### connect-reports-month
+### Checklist: connect-reports-month
 
 1. Create contract under contracts/connect-reports-month/v1
 2. Implement gateway handler for connect-reports-month commands and queries
@@ -413,7 +411,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-reports-month implementation in c2004
 
-### connect-config-network
+### Checklist: connect-config-network
 
 1. Create contract under contracts/connect-config-network/v1
 2. Implement gateway handler for connect-config-network commands and queries
@@ -424,7 +422,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-config-network implementation in c2004
 
-### connect-manager-library
+### Checklist: connect-manager-library
 
 1. Create contract under contracts/connect-manager-library/v1
 2. Implement gateway handler for connect-manager-library commands and queries
@@ -435,7 +433,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-manager-library implementation in c2004
 
-### .swop
+### Checklist: .swop
 
 1. Create contract under contracts/.swop/v1
 2. Implement gateway handler for .swop commands and queries
@@ -446,7 +444,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy .swop implementation in c2004
 
-### project
+### Checklist: project
 
 1. Create contract under contracts/project/v1
 2. Implement gateway handler for project commands and queries
@@ -457,7 +455,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy project implementation in c2004
 
-### testql-scenarios
+### Checklist: testql-scenarios
 
 1. Create contract under contracts/testql-scenarios/v1
 2. Implement gateway handler for testql-scenarios commands and queries
@@ -468,7 +466,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy testql-scenarios implementation in c2004
 
-### site
+### Checklist: site
 
 1. Create contract under contracts/site/v1
 2. Implement gateway handler for site commands and queries
@@ -479,7 +477,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy site implementation in c2004
 
-### connect-id-user-list
+### Checklist: connect-id-user-list
 
 1. Create contract under contracts/connect-id-user-list/v1
 2. Implement gateway handler for connect-id-user-list commands and queries
@@ -490,7 +488,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-id-user-list implementation in c2004
 
-### env
+### Checklist: env
 
 1. Create contract under contracts/env/v1
 2. Implement gateway handler for env commands and queries
@@ -501,7 +499,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy env implementation in c2004
 
-### encoder-control
+### Checklist: encoder-control
 
 1. Create contract under contracts/encoder-control/v1
 2. Implement gateway handler for encoder-control commands and queries
@@ -512,7 +510,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy encoder-control implementation in c2004
 
-### desktop
+### Checklist: desktop
 
 1. Create contract under contracts/desktop/v1
 2. Implement gateway handler for desktop commands and queries
@@ -523,7 +521,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy desktop implementation in c2004
 
-### fleet-workshop-manager
+### Checklist: fleet-workshop-manager
 
 1. Create contract under contracts/fleet-workshop-manager/v1
 2. Implement gateway handler for fleet-workshop-manager commands and queries
@@ -534,7 +532,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy fleet-workshop-manager implementation in c2004
 
-### connect-template
+### Checklist: connect-template
 
 1. Create contract under contracts/connect-template/v1
 2. Implement gateway handler for connect-template commands and queries
@@ -545,7 +543,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-template implementation in c2004
 
-### connect-display
+### Checklist: connect-display
 
 1. Create contract under contracts/connect-display/v1
 2. Implement gateway handler for connect-display commands and queries
@@ -556,7 +554,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-display implementation in c2004
 
-### backend
+### Checklist: backend
 
 1. Create contract under contracts/backend/v1
 2. Implement gateway handler for backend commands and queries
@@ -567,7 +565,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy backend implementation in c2004
 
-### fleet-data-manager
+### Checklist: fleet-data-manager
 
 1. Create contract under contracts/fleet-data-manager/v1
 2. Implement gateway handler for fleet-data-manager commands and queries
@@ -578,7 +576,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy fleet-data-manager implementation in c2004
 
-### frontend
+### Checklist: frontend
 
 1. Create contract under contracts/frontend/v1
 2. Implement gateway handler for frontend commands and queries

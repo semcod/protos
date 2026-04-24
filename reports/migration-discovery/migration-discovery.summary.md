@@ -1,6 +1,6 @@
 # Migration Discovery Summary
 
-Generated at: 2026-04-24T14:06:10.635652+00:00
+Generated at: 2026-04-24T14:14:19.751554+00:00
 
 - Repository root: `/home/tom/github/maskservice/c2004`
 - Languages: `typescript, python, javascript, protobuf`

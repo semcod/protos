@@ -4,32 +4,30 @@ This file is generated from c2004 migration candidate report.
 
 ## Top modules to delegate first
 
-| module | score | phase | effort | cqrs pattern | cmds | evts | shared types package |
-|---|---:|---|---|---|---:|---:|---|
-| connect-template | 98.81 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| identification | 98.78 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| template | 97.80 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-menu-tree | 95.14 | phase-1 | low | menu-tree-cqrs | 12 | 3 | @semcod/contracts-types:menu-tree-core |
-| connect-live-protocol | 93.91 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-scenario | 91.69 | phase-1 | low | scenario-builder-cqrs | 19 | 8 | @semcod/contracts-types:scenario-core |
-| connect-devtools | 88.01 | phase-1 | low | devtools-ops-cqrs | 8 | 6 | @semcod/contracts-types:devtools-core |
-| connect-router | 86.75 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-reports | 84.82 | phase-1 | low | reports-filtering-cqrs | 5 | 5 | @semcod/contracts-types:reports-core |
-| connect-manager | 78.38 | phase-1 | low | manager-library-workflow-cqrs | 20 | 16 | @semcod/contracts-types:manager-core |
-| connect-template2 | 77.30 | phase-1 | low | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-id | 74.64 | phase-1 | low | id-user-admin-cqrs | 8 | 4 | @semcod/contracts-types:id-core |
-| connect-workshop | 60.03 | phase-2 | medium | data-grid-cqrs | 9 | 9 | @semcod/contracts-types:cqrs-data-grid |
-| connect-menu-editor | 59.33 | phase-2 | medium | menu-editor-snapshots-cqrs | 5 | 3 | @semcod/contracts-types:menu-editor-core |
-| connect-config | 55.53 | phase-2 | medium | config-admin-cqrs | 31 | 25 | @semcod/contracts-types:config-admin |
-| connect-data | 0.00 | phase-3 | high | data-grid-cqrs | 13 | 11 | @semcod/contracts-types:cqrs-data-grid |
-| connect-test | 0.00 | phase-3 | high | test-orchestration-cqrs | 57 | 19 | @semcod/contracts-types:test-orchestration-core |
-| connect-test-device | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-test-full | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
-| connect-test-protocol | 0.00 | phase-3 | high | n/a | 0 | 0 | @semcod/contracts-types:custom-per-module |
+- connect-template: score=98.81, phase=phase-1, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- identification: score=98.78, phase=phase-1, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- template: score=97.80, phase=phase-1, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-menu-tree: score=95.14, phase=phase-1, effort=low, pattern=menu-tree-cqrs, cmds=12, evts=3, shared=@semcod/contracts-types:menu-tree-core
+- connect-live-protocol: score=93.91, phase=phase-1, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-scenario: score=91.69, phase=phase-1, effort=low, pattern=scenario-builder-cqrs, cmds=19, evts=8, shared=@semcod/contracts-types:scenario-core
+- connect-devtools: score=88.01, phase=phase-1, effort=low, pattern=devtools-ops-cqrs, cmds=8, evts=6, shared=@semcod/contracts-types:devtools-core
+- connect-router: score=86.75, phase=phase-1, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-reports: score=84.82, phase=phase-1, effort=low, pattern=reports-filtering-cqrs, cmds=5, evts=5, shared=@semcod/contracts-types:reports-core
+- connect-manager: score=78.38, phase=phase-1, effort=low, pattern=manager-library-workflow-cqrs, cmds=20, evts=16, shared=@semcod/contracts-types:manager-core
+- connect-template2: score=77.30, phase=phase-1, effort=low, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-id: score=74.64, phase=phase-1, effort=low, pattern=id-user-admin-cqrs, cmds=8, evts=4, shared=@semcod/contracts-types:id-core
+- connect-workshop: score=60.03, phase=phase-2, effort=medium, pattern=data-grid-cqrs, cmds=9, evts=9, shared=@semcod/contracts-types:cqrs-data-grid
+- connect-menu-editor: score=59.33, phase=phase-2, effort=medium, pattern=menu-editor-snapshots-cqrs, cmds=5, evts=3, shared=@semcod/contracts-types:menu-editor-core
+- connect-config: score=55.53, phase=phase-2, effort=medium, pattern=config-admin-cqrs, cmds=31, evts=25, shared=@semcod/contracts-types:config-admin
+- connect-data: score=0.00, phase=phase-3, effort=high, pattern=data-grid-cqrs, cmds=13, evts=11, shared=@semcod/contracts-types:cqrs-data-grid
+- connect-test: score=0.00, phase=phase-3, effort=high, pattern=test-orchestration-cqrs, cmds=57, evts=19, shared=@semcod/contracts-types:test-orchestration-core
+- connect-test-device: score=0.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-test-full: score=0.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
+- connect-test-protocol: score=0.00, phase=phase-3, effort=high, pattern=n/a, cmds=0, evts=0, shared=@semcod/contracts-types:custom-per-module
 
 ## Slice blueprints
 
-### connect-template
+### Slice blueprint: connect-template
 
 - Slice: `connect-template`
 - Contract dir: `contracts/connect-template/v1`
@@ -51,7 +49,7 @@ This file is generated from c2004 migration candidate report.
   - files: 2
   - lines: 77
 
-### identification
+### Slice blueprint: identification
 
 - Slice: `identification`
 - Contract dir: `contracts/identification/v1`
@@ -73,7 +71,7 @@ This file is generated from c2004 migration candidate report.
   - files: 2
   - lines: 90
 
-### template
+### Slice blueprint: template
 
 - Slice: `template`
 - Contract dir: `contracts/template/v1`
@@ -95,7 +93,7 @@ This file is generated from c2004 migration candidate report.
   - files: 2
   - lines: 481
 
-### connect-menu-tree
+### Slice blueprint: connect-menu-tree
 
 - Slice: `connect-menu-tree`
 - Contract dir: `contracts/connect-menu-tree/v1`
@@ -117,7 +115,7 @@ This file is generated from c2004 migration candidate report.
   - files: 6
   - lines: 744
 
-### connect-live-protocol
+### Slice blueprint: connect-live-protocol
 
 - Slice: `connect-live-protocol`
 - Contract dir: `contracts/connect-live-protocol/v1`
@@ -139,7 +137,7 @@ This file is generated from c2004 migration candidate report.
   - files: 5
   - lines: 1438
 
-### connect-scenario
+### Slice blueprint: connect-scenario
 
 - Slice: `connect-scenario`
 - Contract dir: `contracts/connect-scenario/v1`
@@ -161,7 +159,7 @@ This file is generated from c2004 migration candidate report.
   - files: 11
   - lines: 726
 
-### connect-devtools
+### Slice blueprint: connect-devtools
 
 - Slice: `connect-devtools`
 - Contract dir: `contracts/connect-devtools/v1`
@@ -183,7 +181,7 @@ This file is generated from c2004 migration candidate report.
   - files: 11
   - lines: 1397
 
-### connect-router
+### Slice blueprint: connect-router
 
 - Slice: `connect-router`
 - Contract dir: `contracts/connect-router/v1`
@@ -205,7 +203,7 @@ This file is generated from c2004 migration candidate report.
   - files: 4
   - lines: 699
 
-### connect-reports
+### Slice blueprint: connect-reports
 
 - Slice: `connect-reports`
 - Contract dir: `contracts/connect-reports/v1`
@@ -227,7 +225,7 @@ This file is generated from c2004 migration candidate report.
   - files: 10
   - lines: 873
 
-### connect-manager
+### Slice blueprint: connect-manager
 
 - Slice: `connect-manager`
 - Contract dir: `contracts/connect-manager/v1`
@@ -249,7 +247,7 @@ This file is generated from c2004 migration candidate report.
   - files: 11
   - lines: 1448
 
-### connect-template2
+### Slice blueprint: connect-template2
 
 - Slice: `connect-template2`
 - Contract dir: `contracts/connect-template2/v1`
@@ -271,7 +269,7 @@ This file is generated from c2004 migration candidate report.
   - files: 15
   - lines: 3881
 
-### connect-id
+### Slice blueprint: connect-id
 
 - Slice: `connect-id`
 - Contract dir: `contracts/connect-id/v1`
@@ -293,7 +291,7 @@ This file is generated from c2004 migration candidate report.
   - files: 15
   - lines: 2146
 
-### connect-workshop
+### Slice blueprint: connect-workshop
 
 - Slice: `connect-workshop`
 - Contract dir: `contracts/connect-workshop/v1`
@@ -315,7 +313,7 @@ This file is generated from c2004 migration candidate report.
   - files: 9
   - lines: 989
 
-### connect-menu-editor
+### Slice blueprint: connect-menu-editor
 
 - Slice: `connect-menu-editor`
 - Contract dir: `contracts/connect-menu-editor/v1`
@@ -337,7 +335,7 @@ This file is generated from c2004 migration candidate report.
   - files: 28
   - lines: 5069
 
-### connect-config
+### Slice blueprint: connect-config
 
 - Slice: `connect-config`
 - Contract dir: `contracts/connect-config/v1`
@@ -359,7 +357,7 @@ This file is generated from c2004 migration candidate report.
   - files: 13
   - lines: 1586
 
-### connect-data
+### Slice blueprint: connect-data
 
 - Slice: `connect-data`
 - Contract dir: `contracts/connect-data/v1`
@@ -381,7 +379,7 @@ This file is generated from c2004 migration candidate report.
   - files: 17
   - lines: 2404
 
-### connect-test
+### Slice blueprint: connect-test
 
 - Slice: `connect-test`
 - Contract dir: `contracts/connect-test/v1`
@@ -403,7 +401,7 @@ This file is generated from c2004 migration candidate report.
   - files: 56
   - lines: 9977
 
-### connect-test-device
+### Slice blueprint: connect-test-device
 
 - Slice: `connect-test-device`
 - Contract dir: `contracts/connect-test-device/v1`
@@ -425,7 +423,7 @@ This file is generated from c2004 migration candidate report.
   - files: 20
   - lines: 3590
 
-### connect-test-full
+### Slice blueprint: connect-test-full
 
 - Slice: `connect-test-full`
 - Contract dir: `contracts/connect-test-full/v1`
@@ -447,7 +445,7 @@ This file is generated from c2004 migration candidate report.
   - files: 26
   - lines: 3326
 
-### connect-test-protocol
+### Slice blueprint: connect-test-protocol
 
 - Slice: `connect-test-protocol`
 - Contract dir: `contracts/connect-test-protocol/v1`
@@ -471,7 +469,7 @@ This file is generated from c2004 migration candidate report.
 
 ## Per-module execution checklist
 
-### connect-template
+### Checklist: connect-template
 
 1. Create contract under contracts/connect-template/v1
 2. Implement gateway handler for connect-template commands and queries
@@ -482,7 +480,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-template implementation in c2004
 
-### identification
+### Checklist: identification
 
 1. Create contract under contracts/identification/v1
 2. Implement gateway handler for identification commands and queries
@@ -493,7 +491,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy identification implementation in c2004
 
-### template
+### Checklist: template
 
 1. Create contract under contracts/template/v1
 2. Implement gateway handler for template commands and queries
@@ -504,7 +502,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy template implementation in c2004
 
-### connect-menu-tree
+### Checklist: connect-menu-tree
 
 1. Create contract under contracts/connect-menu-tree/v1
 2. Implement gateway handler for connect-menu-tree commands and queries
@@ -515,7 +513,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-menu-tree implementation in c2004
 
-### connect-live-protocol
+### Checklist: connect-live-protocol
 
 1. Create contract under contracts/connect-live-protocol/v1
 2. Implement gateway handler for connect-live-protocol commands and queries
@@ -526,7 +524,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-live-protocol implementation in c2004
 
-### connect-scenario
+### Checklist: connect-scenario
 
 1. Create contract under contracts/connect-scenario/v1
 2. Implement gateway handler for connect-scenario commands and queries
@@ -537,7 +535,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-scenario implementation in c2004
 
-### connect-devtools
+### Checklist: connect-devtools
 
 1. Create contract under contracts/connect-devtools/v1
 2. Implement gateway handler for connect-devtools commands and queries
@@ -548,7 +546,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-devtools implementation in c2004
 
-### connect-router
+### Checklist: connect-router
 
 1. Create contract under contracts/connect-router/v1
 2. Implement gateway handler for connect-router commands and queries
@@ -559,7 +557,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-router implementation in c2004
 
-### connect-reports
+### Checklist: connect-reports
 
 1. Create contract under contracts/connect-reports/v1
 2. Implement gateway handler for connect-reports commands and queries
@@ -570,7 +568,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-reports implementation in c2004
 
-### connect-manager
+### Checklist: connect-manager
 
 1. Create contract under contracts/connect-manager/v1
 2. Implement gateway handler for connect-manager commands and queries
@@ -581,7 +579,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-manager implementation in c2004
 
-### connect-template2
+### Checklist: connect-template2
 
 1. Create contract under contracts/connect-template2/v1
 2. Implement gateway handler for connect-template2 commands and queries
@@ -592,7 +590,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-template2 implementation in c2004
 
-### connect-id
+### Checklist: connect-id
 
 1. Create contract under contracts/connect-id/v1
 2. Implement gateway handler for connect-id commands and queries
@@ -603,7 +601,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-id implementation in c2004
 
-### connect-workshop
+### Checklist: connect-workshop
 
 1. Create contract under contracts/connect-workshop/v1
 2. Implement gateway handler for connect-workshop commands and queries
@@ -614,7 +612,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-workshop implementation in c2004
 
-### connect-menu-editor
+### Checklist: connect-menu-editor
 
 1. Create contract under contracts/connect-menu-editor/v1
 2. Implement gateway handler for connect-menu-editor commands and queries
@@ -625,7 +623,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-menu-editor implementation in c2004
 
-### connect-config
+### Checklist: connect-config
 
 1. Create contract under contracts/connect-config/v1
 2. Implement gateway handler for connect-config commands and queries
@@ -636,7 +634,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-config implementation in c2004
 
-### connect-data
+### Checklist: connect-data
 
 1. Create contract under contracts/connect-data/v1
 2. Implement gateway handler for connect-data commands and queries
@@ -647,7 +645,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-data implementation in c2004
 
-### connect-test
+### Checklist: connect-test
 
 1. Create contract under contracts/connect-test/v1
 2. Implement gateway handler for connect-test commands and queries
@@ -658,7 +656,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-test implementation in c2004
 
-### connect-test-device
+### Checklist: connect-test-device
 
 1. Create contract under contracts/connect-test-device/v1
 2. Implement gateway handler for connect-test-device commands and queries
@@ -669,7 +667,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-test-device implementation in c2004
 
-### connect-test-full
+### Checklist: connect-test-full
 
 1. Create contract under contracts/connect-test-full/v1
 2. Implement gateway handler for connect-test-full commands and queries
@@ -680,7 +678,7 @@ This file is generated from c2004 migration candidate report.
 7. Run data bootstrap and smoke checks
 8. Archive legacy connect-test-full implementation in c2004
 
-### connect-test-protocol
+### Checklist: connect-test-protocol
 
 1. Create contract under contracts/connect-test-protocol/v1
 2. Implement gateway handler for connect-test-protocol commands and queries

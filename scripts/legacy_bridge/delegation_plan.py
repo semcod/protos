@@ -107,14 +107,10 @@ def render_markdown(rows: list[dict[str, Any]], limit: int, clusters: dict[str, 
         "",
         "## Top modules to delegate first",
         "",
-        "| module | score | phase | effort | cqrs pattern | cmds | evts | shared types package |",
-        "|---|---:|---|---|---|---:|---:|---|",
     ]
 
     for row in selected:
-        lines.append(
-            f"| {row['module']} | {row['readiness']['score']:.2f} | {row['readiness']['phase']} | {row['readiness']['effort']} | {row['cqrs']['pattern']} | {row['cqrs']['command_count']} | {row['cqrs']['event_count']} | {row['cqrs']['shared_types_package']} |"
-        )
+        lines.append(f"- {row['module']}: score={row['readiness']['score']:.2f}, phase={row['readiness']['phase']}, effort={row['readiness']['effort']}, pattern={row['cqrs']['pattern']}, cmds={row['cqrs']['command_count']}, evts={row['cqrs']['event_count']}, shared={row['cqrs']['shared_types_package']}")
 
     lines.append("")
     lines.append("## Slice blueprints")
@@ -122,7 +118,7 @@ def render_markdown(rows: list[dict[str, Any]], limit: int, clusters: dict[str, 
 
     for row in selected:
         blueprint = row["slice"]
-        lines.append(f"### {row['module']}")
+        lines.append(f"### Slice blueprint: {row['module']}")
         lines.append("")
         lines.append(f"- Slice: `{blueprint['slice_name']}`")
         lines.append(f"- Contract dir: `{blueprint['contract_dir']}`")
@@ -145,7 +141,7 @@ def render_markdown(rows: list[dict[str, Any]], limit: int, clusters: dict[str, 
     lines.append("")
 
     for row in selected:
-        lines.append(f"### {row['module']}")
+        lines.append(f"### Checklist: {row['module']}")
         lines.append("")
         for idx, step in enumerate(row["slice"]["migration"]["checklist"], start=1):
             lines.append(f"{idx}. {step}")
