@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2026-04-24
+
+### Docs
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+
+### Other
+- Update event_store.db-shm
+- Update event_store.db-wal
+- Update idempotency.db
+- Update legacy.db
+- Update scratch/smoke_test_dual_write.py
+
 ## [0.0.1] - 2026-04-24
 
 ### Docs
