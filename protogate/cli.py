@@ -507,6 +507,7 @@ def cmd_codegen_registry(args: argparse.Namespace) -> int:
         output_dir=output_dir,
         layers_root=layers_root,
         check_only=args.check,
+        cross_check_pydantic=getattr(args, "cross_check_pydantic", False),
         verbose=not args.quiet,
     )
 
@@ -664,6 +665,15 @@ def main() -> int:
         "--check",
         action="store_true",
         help="Validate only, do not write output files",
+    )
+    codegen_registry.add_argument(
+        "--cross-check-pydantic",
+        action="store_true",
+        help=(
+            "Cross-check every contract's enum values against Literal[...] "
+            "annotations in layers.python. Catches drift between contract JSON "
+            "and Pydantic models (ADR-012 Wave 2 regression)."
+        ),
     )
     codegen_registry.add_argument(
         "--quiet",

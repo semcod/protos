@@ -380,11 +380,17 @@ def run_cli(
     output_dir: Path | None = None,
     layers_root: Path | None = None,
     check_only: bool = False,
+    cross_check_pydantic: bool = False,
     verbose: bool = True,
 ) -> int:
     """CLI entry point used by ``protogate codegen registry``.
 
     Returns 0 on success, 1 on validation failure.
+
+    When *cross_check_pydantic* is ``True`` every contract's enum values are
+    additionally cross-checked against ``Literal[...]`` annotations found in
+    the Pydantic module referenced by ``layers.python``. See
+    :mod:`protogate.codegen.pydantic_cross_check`.
     """
     if output_dir is None:
         output_dir = contracts_dir
@@ -415,6 +421,26 @@ def run_cli(
         for c in result.contracts:
             name = c.get("command") or c.get("query") or c.get("event") or c["_file"]
             print(f"  ✅ {name}")
+
+    if cross_check_pydantic:
+        from protogate.codegen.pydantic_cross_check import cross_check_contracts
+        cross_root = layers_root if layers_root is not None else contracts_dir.parent
+        pairs = cross_check_contracts(result.contracts, layers_root=cross_root)
+        failures = [(c, r) for c, r in pairs if not r.ok]
+        if failures:
+            print(
+                "\n❌ Cross-check failed (contract enum vs Pydantic Literal):",
+                file=sys.stderr,
+            )
+            for _contract, cross_result in failures:
+                for err in cross_result.errors:
+                    print(f"  ❌ {err}", file=sys.stderr)
+            return 1
+        if verbose:
+            print(
+                "\n🔗 Cross-check passed "
+                "(contract enums match Pydantic Literal[...] annotations)"
+            )
 
     if check_only:
         if verbose:
