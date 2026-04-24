@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.14] - 2026-04-24
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+- Update tests/test_analyze_service_boundaries.py
+
+### Other
+- Update app.doql.less
+
 ## [0.1.13] - 2026-04-24
 
 ### Docs
