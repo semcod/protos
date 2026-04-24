@@ -31,12 +31,33 @@ _JSON_SCHEMA_TYPE_MAP: dict[str, dict] = {
 }
 
 
-def generate(ast: dict) -> dict:
-    """Convert a proto AST to a JSON Schema definitions object."""
+def generate(
+    ast: dict,
+    registry_id: str | None = None,
+    registry_version: int | None = None,
+) -> dict:
+    """Convert a proto AST to a JSON Schema definitions object.
+
+    Parameters
+    ----------
+    ast:
+        Parsed proto AST from :func:`parse_proto`.
+    registry_id:
+        Optional schema registry entry identifier (e.g. SHA-256 prefix).
+        When provided, embedded as ``x-registry-id`` at the root level.
+    registry_version:
+        Optional schema registry version number.
+        When provided, embedded as ``x-proto-version`` at the root level.
+    """
     schemas: dict = {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "definitions": {},
     }
+
+    if registry_id is not None:
+        schemas["x-registry-id"] = registry_id
+    if registry_version is not None:
+        schemas["x-proto-version"] = registry_version
 
     for msg in ast["messages"]:
         properties: dict = {}

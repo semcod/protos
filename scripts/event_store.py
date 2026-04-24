@@ -14,12 +14,19 @@ PostgreSQL / EventStoreDB / Kafka etc.
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
+import sys
 import time
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Iterator
+
+# Allow importing sibling scripts regardless of working directory.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from conflict_resolver import ConflictResolver  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -202,6 +209,69 @@ class EventStore:
             state=json.loads(row["state"]),
             version=row["version"],
             timestamp=row["timestamp"],
+        )
+
+    # ------------------------------------------------------------------
+    # Merge / conflict reconciliation
+    # ------------------------------------------------------------------
+
+    def merge_streams(
+        self,
+        aggregate_id: str,
+        branch_events: list[StoredEvent],
+        strategy: str = "LWW",
+        fork_version: int = 0,
+    ) -> list[StoredEvent]:
+        """Merge *branch_events* from a disconnected client with the server stream.
+
+        This method implements offline-first event reconciliation.  When a
+        client was disconnected it may have appended events locally (the
+        *branch*).  On reconnect those branch events need to be reconciled with
+        any events the server received concurrently (after the fork point).
+
+        Parameters
+        ----------
+        aggregate_id:
+            The aggregate whose event stream should be merged.
+        branch_events:
+            Events produced by the offline/disconnected client.  These are
+            ``StoredEvent``-like objects; they do *not* need to be persisted
+            to this store beforehand.
+        strategy:
+            ``"LWW"`` – last-write-wins (timestamp ordering; never raises).
+            ``"MERGE"`` – field-level merge; raises
+            :class:`~conflict_resolver.UnresolvableConflictError` on true
+            conflicts.
+        fork_version:
+            The server version the branch client last saw before going offline.
+            Only server events *after* this version are considered concurrent
+            with the branch events.
+
+        Returns
+        -------
+        list[StoredEvent]
+            A merged, chronologically ordered list of events representing the
+            reconciled stream.  The caller is responsible for re-appending
+            these to the store if desired (using :meth:`append` with
+            ``expected_version=None``).
+
+        Raises
+        ------
+        UnresolvableConflictError
+            When ``strategy="MERGE"`` and the streams contain irreconcilable
+            concurrent changes.
+        ValueError
+            When an unknown *strategy* is supplied.
+        """
+        server_events = self.get_stream(aggregate_id, from_version=fork_version)
+        resolver = ConflictResolver()
+
+        if strategy == "LWW":
+            return resolver.resolve_lww(server_events, branch_events)
+        if strategy == "MERGE":
+            return resolver.resolve_merge(server_events, branch_events)
+        raise ValueError(
+            f"Unknown merge strategy {strategy!r}. Valid values: 'LWW', 'MERGE'."
         )
 
     # ------------------------------------------------------------------
