@@ -228,34 +228,55 @@ def extract_api_groups(source: str, api_pattern: re.Pattern[str], group_depth: i
     return {normalize_api_group(match, group_depth) for match in api_pattern.findall(source)}
 
 
+def _is_test_file(rel_to_root: str) -> bool:
+    return rel_to_root.endswith((".test.ts", ".spec.ts", ".test.tsx", ".spec.tsx", ".test.js", ".spec.js"))
+
+
+def _build_single_ts_file(
+    path: Path,
+    root: Path,
+    workspace_root: Path,
+    frontend_roots: list[Path],
+    alias_roots: dict[str, str],
+    api_pattern: re.Pattern[str],
+    group_depth: int,
+    config: dict[str, Any],
+) -> TsFile | None:
+    """Parse one TypeScript source file into a TsFile, or return None to skip it."""
+    rel_to_root = path.relative_to(root).as_posix()
+    if _is_test_file(rel_to_root):
+        return None
+    source = read_text(path)
+    imports = [
+        target.relative_to(workspace_root).as_posix()
+        for spec in parse_ts_import_specs(source)
+        if (target := resolve_ts_import(path, spec, workspace_root, frontend_roots, alias_roots)) is not None
+    ]
+    rel = path.relative_to(workspace_root).as_posix()
+    return TsFile(
+        path=path,
+        rel=rel,
+        module=detect_frontend_module(path, root, config),
+        is_page=matches_page_pattern(rel_to_root, config["frontend"]["page_patterns"]),
+        imports=tuple(sorted(set(imports))),
+        api_groups=tuple(sorted(extract_api_groups(source, api_pattern, group_depth))),
+    )
+
+
 def build_ts_index(workspace_root: Path, config: dict[str, Any], api_pattern: re.Pattern[str]) -> dict[str, TsFile]:
     frontend_roots = [(workspace_root / root).resolve() for root in config["frontend"]["roots"]]
     frontend_roots = [root for root in frontend_roots if root.exists()]
     ignored_names = set(config["ignore_dirs"])
     suffixes = tuple(config["frontend"]["extensions"])
     alias_roots = {str(alias): str(target) for alias, target in config["frontend"].get("alias_roots", {}).items()}
+    group_depth = int(config["api"]["group_depth"])
     result: dict[str, TsFile] = {}
 
     for root in frontend_roots:
         for path in iter_files(root, suffixes, ignored_names):
-            rel_to_root = path.relative_to(root).as_posix()
-            if rel_to_root.endswith((".test.ts", ".spec.ts", ".test.tsx", ".spec.tsx", ".test.js", ".spec.js")):
-                continue
-            source = read_text(path)
-            imports = []
-            for spec in parse_ts_import_specs(source):
-                target = resolve_ts_import(path, spec, workspace_root, frontend_roots, alias_roots)
-                if target is not None:
-                    imports.append(target.relative_to(workspace_root).as_posix())
-            rel = path.relative_to(workspace_root).as_posix()
-            result[rel] = TsFile(
-                path=path,
-                rel=rel,
-                module=detect_frontend_module(path, root, config),
-                is_page=matches_page_pattern(rel_to_root, config["frontend"]["page_patterns"]),
-                imports=tuple(sorted(set(imports))),
-                api_groups=tuple(sorted(extract_api_groups(source, api_pattern, int(config["api"]["group_depth"])))),
-            )
+            ts_file = _build_single_ts_file(path, root, workspace_root, frontend_roots, alias_roots, api_pattern, group_depth, config)
+            if ts_file is not None:
+                result[ts_file.rel] = ts_file
     return result
 
 
@@ -686,6 +707,59 @@ def _build_module_index(ts_index: dict[str, TsFile]) -> tuple[dict[str, list[str
     return files_by_module, cross_edges
 
 
+def _compute_cross_stats(
+    module: str,
+    owned_files: list[str],
+    ts_index: dict[str, TsFile],
+    cross_edges: Counter[tuple[str, str]],
+    shared_modules: set[str],
+) -> tuple[set[str], list[str], int, int]:
+    """Return (closure, cross_targets, shared_count, cross_outgoing)."""
+    closure = transitive_closure(owned_files, ts_index)
+    reached_modules = Counter(ts_index[path].module for path in closure if ts_index[path].module != module)
+    cross_targets = sorted(name for name in reached_modules if name not in shared_modules)
+    shared_count = sum(count for name, count in reached_modules.items() if name in shared_modules)
+    cross_outgoing = sum(cross_edges[(module, target)] for target in cross_targets)
+    return closure, cross_targets, shared_count, cross_outgoing
+
+
+def _compute_api_coverage(
+    closure: set[str],
+    owned_files: list[str],
+    ts_index: dict[str, TsFile],
+    backend_groups: dict[str, dict[str, Any]],
+) -> tuple[list[str], list[str], list[str], list[dict[str, Any]]]:
+    """Return (api_groups, direct_api_groups, route_group_hits, matched_backend_groups)."""
+    api_groups = sorted({group for path in closure for group in ts_index[path].api_groups if group.startswith("/api/")})
+    direct_api_groups = sorted({group for path in owned_files for group in ts_index[path].api_groups if group.startswith("/api/")})
+    route_group_hits = sorted({group for api_group in api_groups if (group := route_group_from_api_group(api_group))})
+    matched_backend_groups = [backend_groups[group] for group in route_group_hits if group in backend_groups]
+    return api_groups, direct_api_groups, route_group_hits, matched_backend_groups
+
+
+def _compute_iframe_score(
+    page_count: int,
+    api_groups: list[str],
+    cross_targets: list[str],
+    cross_outgoing: int,
+    shared_count: int,
+) -> int:
+    """Compute clamped [0, 100] iframe readiness score."""
+    raw = (
+        62
+        + page_count * 3
+        + min(12, len(api_groups) * 4)
+        - len(cross_targets) * 12
+        - cross_outgoing * 2
+        - max(0, shared_count - 20)
+    )
+    return max(0, min(100, raw))
+
+
+def _is_iframe_candidate(iframe_score: int, cross_targets: list[str], route_group_hits: list[str]) -> bool:
+    return iframe_score >= 60 and len(cross_targets) <= 2 and len(route_group_hits) <= 3
+
+
 def _calculate_module_stats(
     module: str,
     owned_files: list[str],
@@ -695,23 +769,14 @@ def _calculate_module_stats(
     shared_modules: set[str],
 ) -> dict[str, Any]:
     """Calculate statistics for a single module."""
-    closure = transitive_closure(owned_files, ts_index)
-    reached_modules = Counter(ts_index[path].module for path in closure if ts_index[path].module != module)
-    cross_targets = sorted(name for name in reached_modules if name not in shared_modules)
-    shared_count = sum(count for name, count in reached_modules.items() if name in shared_modules)
-    api_groups = sorted({group for path in closure for group in ts_index[path].api_groups if group.startswith("/api/")})
-    direct_api_groups = sorted({group for path in owned_files for group in ts_index[path].api_groups if group.startswith("/api/")})
-    route_group_hits = sorted({group for api_group in api_groups if (group := route_group_from_api_group(api_group))})
-    matched_backend_groups = [backend_groups[group] for group in route_group_hits if group in backend_groups]
-    page_count = sum(1 for path in owned_files if ts_index[path].is_page)
-    cross_outgoing = sum(cross_edges[(module, target)] for target in cross_targets)
-    iframe_score = max(
-        0,
-        min(
-            100,
-            62 + page_count * 3 + min(12, len(api_groups) * 4) - len(cross_targets) * 12 - cross_outgoing * 2 - max(0, shared_count - 20),
-        ),
+    closure, cross_targets, shared_count, cross_outgoing = _compute_cross_stats(
+        module, owned_files, ts_index, cross_edges, shared_modules
     )
+    api_groups, direct_api_groups, route_group_hits, matched_backend_groups = _compute_api_coverage(
+        closure, owned_files, ts_index, backend_groups
+    )
+    page_count = sum(1 for path in owned_files if ts_index[path].is_page)
+    iframe_score = _compute_iframe_score(page_count, api_groups, cross_targets, cross_outgoing, shared_count)
     extraction_priority = max(0, page_count * 8 + len(route_group_hits) * 6 + iframe_score - len(cross_targets) * 10)
     delivery = classify_delivery(iframe_score, len(cross_targets), len(route_group_hits))
     return {
@@ -729,7 +794,7 @@ def _calculate_module_stats(
         "cross_module_outgoing_edges": cross_outgoing,
         "shared_shell_dependency_count": shared_count,
         "iframe_score": iframe_score,
-        "iframe_candidate": iframe_score >= 60 and len(cross_targets) <= 2 and len(route_group_hits) <= 3,
+        "iframe_candidate": _is_iframe_candidate(iframe_score, cross_targets, route_group_hits),
         "delivery_mode": delivery,
         "extraction_priority": extraction_priority,
         "owned_files": sorted(owned_files),

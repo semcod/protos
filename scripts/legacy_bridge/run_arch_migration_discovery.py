@@ -264,6 +264,62 @@ def _parse_score(row: dict[str, Any]) -> float:
     return parse_score(row)
 
 
+def _is_migrated_module(module: str, migrated_patterns: set[str]) -> bool:
+    candidate = module.strip().lower()
+    for pattern in migrated_patterns:
+        token = pattern.strip().lower()
+        if not token:
+            continue
+        if token.endswith("*"):
+            if candidate.startswith(token[:-1]):
+                return True
+            continue
+        if candidate == token:
+            return True
+    return False
+
+
+def _apply_migrated_filter(
+    candidate_rows: list[dict[str, Any]],
+    service_boundary_payload: dict[str, Any],
+    config: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    migrated_raw = config.get("analysis", {}).get("migrated_modules", [])
+    if not isinstance(migrated_raw, list):
+        return candidate_rows, service_boundary_payload
+
+    migrated_patterns = {
+        str(item).strip()
+        for item in migrated_raw
+        if isinstance(item, str) and str(item).strip()
+    }
+    if not migrated_patterns:
+        return candidate_rows, service_boundary_payload
+
+    filtered_candidates = [
+        row for row in candidate_rows if not _is_migrated_module(str(row.get("module", "")), migrated_patterns)
+    ]
+
+    filtered_payload = dict(service_boundary_payload)
+    filtered_payload["frontend_modules"] = [
+        row
+        for row in service_boundary_payload.get("frontend_modules", [])
+        if not _is_migrated_module(str(row.get("module", "")), migrated_patterns)
+    ]
+    filtered_payload["recommended_service_candidates"] = [
+        row
+        for row in service_boundary_payload.get("recommended_service_candidates", [])
+        if not _is_migrated_module(str(row.get("module", "")), migrated_patterns)
+    ]
+    filtered_payload["execution_plan"] = [
+        row
+        for row in service_boundary_payload.get("execution_plan", [])
+        if not _is_migrated_module(str(row.get("service_slug", "")), migrated_patterns)
+    ]
+
+    return filtered_candidates, filtered_payload
+
+
 def build_excluded_candidates_report(rows: list[dict[str, Any]]) -> dict[str, Any]:
     excluded_rows: list[dict[str, Any]] = []
     reason_counts: Counter[str] = Counter()
@@ -515,8 +571,9 @@ def run_discovery(
 
     profile = profile_repository(repo_root, config)
     candidate_rows = analyze_repository(repo_root)
-    excluded_candidates_payload = build_excluded_candidates_report(candidate_rows)
     service_boundary_payload = analyze_service_boundaries(repo_root, config, top_services=top_services)
+    candidate_rows, service_boundary_payload = _apply_migrated_filter(candidate_rows, service_boundary_payload, config)
+    excluded_candidates_payload = build_excluded_candidates_report(candidate_rows)
     cqrs_pattern_payload = analyze_cqrs_pattern_clusters(
         repo_root,
         config,

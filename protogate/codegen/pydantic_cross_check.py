@@ -46,9 +46,15 @@ from typing import Any
 class CrossCheckResult:
     ok: bool = True
     errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
     def format(self) -> str:
-        return "; ".join(self.errors) if self.errors else "ok"
+        parts: list[str] = []
+        if self.errors:
+            parts.append("errors: " + "; ".join(self.errors))
+        if self.warnings:
+            parts.append("warnings: " + "; ".join(self.warnings))
+        return " | ".join(parts) if parts else "ok"
 
 
 # ---------------------------------------------------------------------------
@@ -145,13 +151,79 @@ def _iter_enum_fields(
     return results
 
 
-def _contract_schemas(contract: dict) -> list[dict]:
-    blocks: list[dict] = []
+def _contract_schemas(contract: dict) -> list[tuple[str, dict]]:
+    """Return ``(block_kind, schema)`` pairs for every block present.
+
+    *block_kind* is one of ``"input"``, ``"output"``, ``"payload"``. The kind
+    determines the direction of the subset check (see
+    :func:`_classify_drift`).
+    """
+    blocks: list[tuple[str, dict]] = []
     for key in ("input", "output", "payload"):
         block = contract.get(key)
         if isinstance(block, dict):
-            blocks.append(block)
+            blocks.append((key, block))
     return blocks
+
+
+def _classify_drift(
+    block_kind: str,
+    contract_set: set[str],
+    pydantic_set: set[str],
+) -> tuple[str, str] | None:
+    """Return ``(severity, detail)`` for a drift between *contract_set* and
+    *pydantic_set*, or ``None`` if the two are compatible.
+
+    Directional rules (ADR-012 Wave 2 post-mortem):
+
+    * ``output`` / ``payload`` (server -> client):
+      - ``pydantic ⊆ contract``     -> compatible (no error)
+      - ``pydantic ⊈ contract``     -> ERROR  (server may produce a value
+        the contract does not advertise; runtime break on the client)
+      - ``contract ⊇ pydantic``     -> WARNING (contract promises values
+        the server will never produce; dead code paths on the client)
+
+    * ``input`` (client -> server):
+      - ``contract ⊆ pydantic``     -> compatible (no error)
+      - ``contract ⊈ pydantic``     -> ERROR  (contract advertises values
+        Pydantic will reject with HTTP 422)
+      - ``pydantic ⊇ contract``     -> compatible (server intentionally
+        tolerates more; contract is an explicit API restriction)
+    """
+    if contract_set == pydantic_set:
+        return None
+
+    extra_in_pydantic = pydantic_set - contract_set
+    extra_in_contract = contract_set - pydantic_set
+
+    if block_kind in ("output", "payload"):
+        if extra_in_pydantic:
+            detail = (
+                "Pydantic Literal has extra values the contract does not "
+                "advertise (server may return values the client cannot "
+                "decode): " + ", ".join(sorted(extra_in_pydantic))
+            )
+            return ("error", detail)
+        if extra_in_contract:
+            detail = (
+                "Contract advertises values Pydantic will never return "
+                "(dead code paths on the client): "
+                + ", ".join(sorted(extra_in_contract))
+            )
+            return ("warning", detail)
+        return None
+
+    # input (or any other block kind): contract is the client-facing
+    # surface; Pydantic defines what the server actually accepts.
+    if extra_in_contract:
+        detail = (
+            "Contract advertises values Pydantic will reject at runtime "
+            "(HTTP 422 for client): "
+            + ", ".join(sorted(extra_in_contract))
+        )
+        return ("error", detail)
+    # pydantic ⊇ contract on input is intentional narrowing, not a drift.
+    return None
 
 
 def _parse_layer_path(raw_layer: Any) -> str | None:
@@ -193,35 +265,30 @@ def cross_check_contract(
         return result
 
     contract_file = contract.get("_file", "<unknown>")
-    seen: set[str] = set()
-    for block in _contract_schemas(contract):
+    seen: set[tuple[str, str]] = set()
+    for block_kind, block in _contract_schemas(contract):
         for field_name, enum_values in _iter_enum_fields(block):
-            if field_name in seen:
+            key = (block_kind, field_name)
+            if key in seen:
                 continue
-            seen.add(field_name)
+            seen.add(key)
             base_name = field_name.rsplit(".", 1)[-1]
             pydantic_values = literal_fields.get(base_name)
             if pydantic_values is None:
                 continue
             contract_set = set(enum_values)
-            if contract_set != pydantic_values:
-                missing_in_contract = sorted(pydantic_values - contract_set)
-                missing_in_pydantic = sorted(contract_set - pydantic_values)
-                parts: list[str] = []
-                if missing_in_contract:
-                    parts.append(
-                        "Pydantic Literal has extra values not in contract enum: "
-                        + ", ".join(missing_in_contract)
-                    )
-                if missing_in_pydantic:
-                    parts.append(
-                        "Contract enum has extra values not in Pydantic Literal: "
-                        + ", ".join(missing_in_pydantic)
-                    )
-                result.errors.append(
-                    f"field {field_name!r} enum drift in {contract_file}: "
-                    + " / ".join(parts)
-                )
+            verdict = _classify_drift(block_kind, contract_set, pydantic_values)
+            if verdict is None:
+                continue
+            severity, detail = verdict
+            message = (
+                f"{block_kind} field {field_name!r} enum drift in "
+                f"{contract_file}: {detail}"
+            )
+            if severity == "error":
+                result.errors.append(message)
+            else:
+                result.warnings.append(message)
 
     if result.errors:
         result.ok = False
