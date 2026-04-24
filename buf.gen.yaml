@@ -1,11 +1,25 @@
 version: v1
 
 plugins:
+  # TypeScript / web
   - name: ts
     out: generated/ts
 
+  # Python + gRPC stubs
   - name: python
     out: generated/python
-
   - name: grpc-python
     out: generated/grpc
+
+  # Go — backend gateway
+  - plugin: buf.build/protocolbuffers/go
+    out: generated/go
+    opt: paths=source_relative
+  - plugin: buf.build/grpc/go
+    out: generated/go
+    opt: paths=source_relative
+
+  # Dart — mobile (Flutter); wymaga `dart pub global activate protoc_plugin`
+  # Odkomentuj gdy zaczniesz pracę nad mobile:
+  # - name: dart
+  #   out: generated/dart

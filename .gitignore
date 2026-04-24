@@ -1,4 +1,8 @@
 # Byte-compiled / optimized / DLL files
+.idea/
+data
+logs
+.env.example
 __pycache__/
 *.py[codz]
 *$py.class
@@ -205,15 +209,3 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-
-# Generated artefacts (keep directory skeletons via .gitkeep)
-generated/**
-!generated/**/
-!generated/**/.gitkeep
-
-# Incremental generation helpers
-changed.txt
-.proto_cache.json
-
-# Event Store DB (runtime artefact)
-event_store.db

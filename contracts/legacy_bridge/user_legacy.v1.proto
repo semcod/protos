@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package legacy.user.v1;
+
+message LegacyUser {
+  string id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+  int32 age = 5;
+  bool is_active = 6;
+  repeated string tags = 7;
+  // This message is a direct bridge for the legacy system
+}

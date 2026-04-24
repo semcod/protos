@@ -1,0 +1,69 @@
+version: "3.9"
+
+# =============================================================================
+#  semcod/protos — full platform ecosystem
+# =============================================================================
+#
+#  Services
+#  --------
+#  generator   one-shot: runs buf generate + all custom generators, then exits
+#  gateway     FastAPI HTTP / WebSocket / SSE gateway (port 8080)
+#
+#  Usage
+#  -----
+#    docker compose up generator   # (re)generate all SDK artefacts
+#    docker compose up gateway     # run the platform gateway
+#    docker compose up             # run everything
+#
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # generator – one-shot proto → SDK generation
+  # ---------------------------------------------------------------------------
+  generator:
+    build:
+      context: .
+      dockerfile: Dockerfile.generator
+    volumes:
+      # Mount generated/ so artefacts land on the host filesystem
+      - ./generated:/app/generated
+      - ./contracts:/app/contracts
+    command: make proto-all
+    environment:
+      - PYTHONPATH=/app
+
+  # ---------------------------------------------------------------------------
+  # gateway – FastAPI HTTP / WS / SSE platform gateway
+  # ---------------------------------------------------------------------------
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      # Persist the event store and schema registry DBs on the host
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+      - EVENT_STORE_PATH=/app/data/event_store.db
+      - SCHEMA_REGISTRY_PATH=/app/data/schema_registry.db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # (Optional) schema-registry HTTP API – uncomment when needed
+  # ---------------------------------------------------------------------------
+  # registry-api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.generator
+  #   command: python scripts/schema_registry.py list
+  #   depends_on:
+  #     - gateway
