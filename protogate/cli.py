@@ -4,6 +4,7 @@ protogate CLI - Migration tool and delegation platform
 """
 import argparse
 import importlib.util
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -169,6 +170,116 @@ def cmd_discovery(args: argparse.Namespace) -> int:
         cmd.extend(["--swop-cqrs-root", args.swop_cqrs_root])
     for context in args.swop_contexts:
         cmd.extend(["--swop-context", context])
+    if args.stdout:
+        cmd.append("--stdout")
+    return run_command(cmd)
+
+
+def cmd_service_boundaries(args: argparse.Namespace) -> int:
+    """Run service boundary analyzer only."""
+    script = str(REPO_ROOT / "scripts" / "legacy_bridge" / "analyze_service_boundaries.py")
+    cmd = [
+        sys.executable,
+        script,
+        "--repo-root",
+        args.repo_root,
+        "--output-dir",
+        args.output_dir,
+        "--basename",
+        args.basename,
+    ]
+    if args.config:
+        cmd.extend(["--config", args.config])
+    if args.top_services is not None:
+        cmd.extend(["--top-services", str(args.top_services)])
+    if args.stdout:
+        cmd.append("--stdout")
+    return run_command(cmd)
+
+
+def cmd_cqrs_clusters(args: argparse.Namespace) -> int:
+    """Run CQRS pattern cluster analysis only."""
+    script = str(REPO_ROOT / "scripts" / "legacy_bridge" / "detect_cqrs_pattern_clusters.py")
+    cmd = [
+        sys.executable,
+        script,
+        "--repo-root",
+        args.repo_root,
+        "--output-dir",
+        args.output_dir,
+        "--basename",
+        args.basename,
+    ]
+    if args.config:
+        cmd.extend(["--config", args.config])
+    if args.candidates:
+        cmd.extend(["--candidates", args.candidates])
+    if args.stdout:
+        cmd.append("--stdout")
+    return run_command(cmd)
+
+
+def cmd_migration_candidates(args: argparse.Namespace) -> int:
+    """Run migration candidate detection and optionally emit markdown report."""
+    script = str(REPO_ROOT / "scripts" / "detect_migration_candidates.py")
+    cmd = [
+        sys.executable,
+        script,
+        "--repo-root",
+        args.repo_root,
+        "--output",
+        args.output,
+        "--limit",
+        str(args.limit),
+    ]
+    if args.services_only:
+        cmd.append("--services-only")
+    exit_code = run_command(cmd)
+    if exit_code != 0:
+        return exit_code
+
+    if args.output == "-" or not args.with_markdown:
+        return 0
+
+    output_path = Path(args.output)
+    if not output_path.exists():
+        return 0
+
+    try:
+        rows = json.loads(output_path.read_text(encoding="utf-8"))
+        if not isinstance(rows, list):
+            return 0
+        run_arch_module = _load_module_from_path(
+            "_run_arch_discovery_mod",
+            REPO_ROOT / "scripts" / "legacy_bridge" / "run_arch_migration_discovery.py",
+        )
+        render_markdown = getattr(run_arch_module, "render_module_candidates_markdown")
+        markdown = render_markdown(rows)
+        output_md = output_path.with_suffix(".md")
+        output_md.write_text(markdown, encoding="utf-8")
+        print(f"[INFO] wrote {output_md}")
+    except Exception as exc:
+        print(f"[WARN] could not generate markdown report: {exc}", file=sys.stderr)
+    return 0
+
+
+def cmd_shared_ts_candidates(args: argparse.Namespace) -> int:
+    """Run shared TypeScript package candidate detection."""
+    script = str(REPO_ROOT / "scripts" / "legacy_bridge" / "detect_shared_ts_packages.py")
+    cmd = [
+        sys.executable,
+        script,
+        "--repo-root",
+        args.repo_root,
+        "--output-dir",
+        args.output_dir,
+        "--basename",
+        args.basename,
+        "--min-occurrences",
+        str(args.min_occurrences),
+        "--min-modules-by-name",
+        str(args.min_modules_by_name),
+    ]
     if args.stdout:
         cmd.append("--stdout")
     return run_command(cmd)
@@ -377,6 +488,45 @@ def main() -> int:
     discovery_parser.add_argument("--swop-context", action="append", dest="swop_contexts", default=[], help="Explicit CQRS context for swop; can be passed multiple times")
     discovery_parser.add_argument("--stdout", action="store_true", help="Print discovery summary JSON to stdout")
     discovery_parser.set_defaults(func=cmd_discovery)
+
+    # service-boundaries command
+    sb_parser = subparsers.add_parser("service-boundaries", help="Run service boundary analyzer")
+    sb_parser.add_argument("--repo-root", required=True, help="Path to repository root")
+    sb_parser.add_argument("--config", help="Optional config path")
+    sb_parser.add_argument("--output-dir", default="reports/service-boundaries", help="Output directory, relative to repo root if not absolute")
+    sb_parser.add_argument("--basename", default="service-boundaries", help="Basename for output files")
+    sb_parser.add_argument("--top-services", type=int, help="Number of top service candidates")
+    sb_parser.add_argument("--stdout", action="store_true", help="Print JSON payload to stdout")
+    sb_parser.set_defaults(func=cmd_service_boundaries)
+
+    # cqrs-clusters command
+    cqrs_parser = subparsers.add_parser("cqrs-clusters", help="Run CQRS pattern cluster analysis")
+    cqrs_parser.add_argument("--repo-root", required=True, help="Path to repository root")
+    cqrs_parser.add_argument("--config", help="Optional config path")
+    cqrs_parser.add_argument("--output-dir", default="reports/cqrs-pattern-clusters", help="Output directory, relative to repo root if not absolute")
+    cqrs_parser.add_argument("--basename", default="cqrs-pattern-clusters", help="Basename for output files")
+    cqrs_parser.add_argument("--candidates", help="Optional path to module-candidates.json")
+    cqrs_parser.add_argument("--stdout", action="store_true", help="Print JSON payload to stdout")
+    cqrs_parser.set_defaults(func=cmd_cqrs_clusters)
+
+    # migration-candidates command
+    mc_parser = subparsers.add_parser("migration-candidates", help="Run migration candidate detection")
+    mc_parser.add_argument("--repo-root", required=True, help="Path to repository root")
+    mc_parser.add_argument("--output", default="-", help="Output JSON path or '-' for stdout")
+    mc_parser.add_argument("--limit", type=int, default=20, help="Limit number of candidates")
+    mc_parser.add_argument("--services-only", action="store_true", help="Only return service candidates")
+    mc_parser.add_argument("--with-markdown", action="store_true", default=True, help="Also write markdown report when output is a file")
+    mc_parser.set_defaults(func=cmd_migration_candidates)
+
+    # shared-ts-candidates command
+    sts_parser = subparsers.add_parser("shared-ts-candidates", help="Detect shared TypeScript package candidates")
+    sts_parser.add_argument("--repo-root", required=True, help="Path to repository root")
+    sts_parser.add_argument("--output-dir", default="migration", help="Output directory, relative to repo root if not absolute")
+    sts_parser.add_argument("--basename", default="shared-ts-candidates", help="Basename for output files")
+    sts_parser.add_argument("--min-occurrences", type=int, default=2, help="Minimum duplicate count")
+    sts_parser.add_argument("--min-modules-by-name", type=int, default=3, help="Minimum module count for filename-pattern candidates")
+    sts_parser.add_argument("--stdout", action="store_true", help="Print JSON payload to stdout")
+    sts_parser.set_defaults(func=cmd_shared_ts_candidates)
 
     # clean command
     clean_parser = subparsers.add_parser("clean", help="Clean generated artifacts")
