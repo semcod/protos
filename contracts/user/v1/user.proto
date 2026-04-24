@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package user.v1;
+
+// COMMAND
+message CreateUserCommand {
+  string email = 1;
+  string password = 2;
+}
+
+// QUERY
+message GetUserQuery {
+  string id = 1;
+}
+
+// DOMAIN MODEL
+message User {
+  string id = 1;
+  string email = 2;
+}

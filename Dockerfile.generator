@@ -1,0 +1,23 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system deps required by buf (if you want buf generate inside Docker)
+# buf binary is downloaded separately; this image focuses on Python generators.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        make \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install buf CLI
+RUN curl -sSL https://github.com/bufbuild/buf/releases/latest/download/buf-Linux-x86_64 \
+        -o /usr/local/bin/buf \
+    && chmod +x /usr/local/bin/buf
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# By default run all generators; override with docker run … make <target>
+CMD ["make", "all"]
