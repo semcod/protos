@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.11] - 2026-04-24
+
+### Docs
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+- Update tests/test_protogate_cli.py
+
+### Other
+- Update protogate/cli.py
+- Update protogate/codegen/__init__.py
+- Update protogate/codegen/jsonschema_zod.py
+- Update protogate/codegen/pydantic_json_schema.py
+
 ## [0.1.10] - 2026-04-24
 
 ### Docs

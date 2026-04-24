@@ -47,14 +47,18 @@ def _resolve_proto_input_dir(input_dir: Path) -> Path:
         return sibling_proto
 
     # Fallback: prefer latest swop proto output if available
-    swop_candidates = sorted((resolved.parent / "reports").glob("**/swop/proto"), reverse=True)
-    for candidate in swop_candidates:
-        if candidate.is_dir() and list(candidate.rglob("*.proto")):
-            print(
-                f"[INFO] No .proto under {resolved}; using swop protobuf dir {candidate}",
-                file=sys.stderr,
-            )
-            return candidate
+    swop_candidates = [
+        candidate
+        for candidate in (resolved.parent / "reports").glob("**/swop/proto")
+        if candidate.is_dir() and list(candidate.rglob("*.proto"))
+    ]
+    if swop_candidates:
+        selected = max(swop_candidates, key=lambda candidate: candidate.stat().st_mtime)
+        print(
+            f"[INFO] No .proto under {resolved}; using swop protobuf dir {selected}",
+            file=sys.stderr,
+        )
+        return selected
 
     return resolved
 
@@ -431,6 +435,52 @@ def cmd_generate_sql(args: argparse.Namespace) -> int:
     return _batch_generate(args, ".sql", "generate_sql.py", "generate_sql")
 
 
+def cmd_codegen_json_schema(args: argparse.Namespace) -> int:
+    """Generate JSON Schema files from Pydantic models.
+
+    Replaces ``c2004/scripts/generate_json_schemas.py`` per ADR-010 Sprint C.
+    """
+    from protogate.codegen import pydantic_json_schema as _pjs
+
+    if not args.module:
+        print("At least one --module is required", file=sys.stderr)
+        return 1
+
+    output_dir = Path(args.output_dir).resolve()
+    project_root = Path(args.project_root).resolve() if args.project_root else None
+
+    class_filters: dict[str, list[str]] = {}
+    for raw in args.include or []:
+        if "=" not in raw:
+            print(f"--include expects MODULE=Class1,Class2 (got: {raw})", file=sys.stderr)
+            return 1
+        mod, classes = raw.split("=", 1)
+        class_filters[mod] = [c.strip() for c in classes.split(",") if c.strip()]
+
+    return _pjs.run_cli(
+        modules=args.module,
+        output_dir=output_dir,
+        class_filters=class_filters,
+        project_root=project_root,
+        verbose=not args.quiet,
+    )
+
+
+def cmd_codegen_zod(args: argparse.Namespace) -> int:
+    """Generate Zod TypeScript validators from JSON Schema files.
+
+    Replaces ``c2004/scripts/generate_zod_validators.mjs`` per ADR-010 Sprint C.
+    """
+    from protogate.codegen import jsonschema_zod as _jz
+
+    input_dir = Path(args.input_dir).resolve()
+    output_dir = Path(args.output_dir).resolve()
+    if not input_dir.exists():
+        print(f"Input directory not found: {input_dir}", file=sys.stderr)
+        return 1
+    return _jz.run_cli(input_dir=input_dir, output_dir=output_dir, verbose=not args.quiet)
+
+
 def cmd_codegen_registry(args: argparse.Namespace) -> int:
     """Generate contract registry (registry.json + REGISTRY.md) from JSON contracts.
 
@@ -617,6 +667,59 @@ def main() -> int:
         help="Suppress per-contract progress output",
     )
     codegen_registry.set_defaults(func=cmd_codegen_registry)
+
+    # codegen json-schema (from Pydantic models)
+    codegen_json = codegen_sub.add_parser(
+        "json-schema",
+        help="Generate JSON Schema files from Pydantic models (replaces generate_json_schemas.py)",
+    )
+    codegen_json.add_argument(
+        "--module",
+        action="append",
+        default=[],
+        help="Dotted Python module containing Pydantic BaseModel subclasses (repeatable)",
+    )
+    codegen_json.add_argument(
+        "--include",
+        action="append",
+        default=[],
+        help="Pin specific classes per module: MODULE=Class1,Class2 (repeatable)",
+    )
+    codegen_json.add_argument(
+        "--output-dir",
+        required=True,
+        help="Directory to write *.schema.json and _index.json",
+    )
+    codegen_json.add_argument(
+        "--project-root",
+        help="Project root prepended to sys.path for module import resolution",
+    )
+    codegen_json.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress per-file progress output",
+    )
+    codegen_json.set_defaults(func=cmd_codegen_json_schema)
+
+    # codegen zod (from JSON Schema files)
+    codegen_zod = codegen_sub.add_parser(
+        "zod",
+        help="Generate Zod TypeScript validators from JSON Schema (replaces generate_zod_validators.mjs)",
+    )
+    codegen_zod.add_argument(
+        "input_dir",
+        help="Directory containing *.schema.json files",
+    )
+    codegen_zod.add_argument(
+        "output_dir",
+        help="Output directory for generated *.validator.ts + index.ts",
+    )
+    codegen_zod.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress per-file progress output",
+    )
+    codegen_zod.set_defaults(func=cmd_codegen_zod)
 
     args = parser.parse_args()
     
