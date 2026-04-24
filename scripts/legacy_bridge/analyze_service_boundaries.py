@@ -177,14 +177,14 @@ def read_text(path: Path) -> str:
 def resolve_candidate_file(path: Path, allowed_roots: list[Path]) -> Path | None:
     candidates = [
         path,
+        Path(f"{path}.ts"),
+        Path(f"{path}.tsx"),
+        Path(f"{path}.js"),
+        Path(f"{path}.jsx"),
         path.with_suffix(".ts"),
         path.with_suffix(".tsx"),
         path.with_suffix(".js"),
         path.with_suffix(".jsx"),
-        Path(str(path) + ".ts"),
-        Path(str(path) + ".tsx"),
-        Path(str(path) + ".js"),
-        Path(str(path) + ".jsx"),
         path / "index.ts",
         path / "index.tsx",
         path / "index.js",

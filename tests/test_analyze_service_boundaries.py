@@ -16,8 +16,11 @@ from legacy_bridge.analyze_service_boundaries import (
     _build_component_row,
     analyze,
     build_markdown,
+    iter_files,
     load_config,
+    resolve_ts_import,
     TsFile,
+    DEFAULT_CONFIG,
 )
 
 
@@ -167,3 +170,57 @@ def test_determine_component_action():
     # extract-service case
     action = _determine_component_action([], 50, ["other"], [])
     assert action == "extract-service"
+
+
+def test_default_ignore_dirs_include_reports_and_coverage():
+    ignored = set(DEFAULT_CONFIG["ignore_dirs"])
+
+    assert "reports" in ignored
+    assert "coverage" in ignored
+
+
+def test_resolve_ts_import_supports_dotted_basenames(tmp_path: Path):
+    workspace_root = tmp_path / "repo"
+    frontend_root = workspace_root / "frontend" / "src"
+    pages_dir = frontend_root / "pages"
+    services_dir = frontend_root / "services"
+    pages_dir.mkdir(parents=True)
+    services_dir.mkdir(parents=True)
+
+    current_file = pages_dir / "home.page.ts"
+    current_file.write_text("export {}\n", encoding="utf-8")
+    target_file = services_dir / "id.service.ts"
+    target_file.write_text("export const getUsers = () => [];\n", encoding="utf-8")
+
+    resolved = resolve_ts_import(
+        current=current_file,
+        spec="../services/id.service",
+        workspace_root=workspace_root,
+        allowed_roots=[frontend_root],
+        alias_roots={},
+    )
+
+    assert resolved == target_file
+
+
+def test_iter_files_ignores_reports_and_coverage_dirs(tmp_path: Path):
+    root = tmp_path / "frontend" / "src"
+    reports_dir = root / "reports"
+    coverage_dir = root / "coverage"
+    feature_dir = root / "features"
+    reports_dir.mkdir(parents=True)
+    coverage_dir.mkdir(parents=True)
+    feature_dir.mkdir(parents=True)
+
+    ignored_report = reports_dir / "report.page.ts"
+    ignored_cov = coverage_dir / "coverage.page.ts"
+    kept_file = feature_dir / "home.page.ts"
+    ignored_report.write_text("export {}\n", encoding="utf-8")
+    ignored_cov.write_text("export {}\n", encoding="utf-8")
+    kept_file.write_text("export {}\n", encoding="utf-8")
+
+    files = iter_files(root, suffixes=(".ts",), ignored_names=set(DEFAULT_CONFIG["ignore_dirs"]))
+
+    assert kept_file in files
+    assert ignored_report not in files
+    assert ignored_cov not in files

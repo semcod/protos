@@ -4,18 +4,21 @@ Migration tool and delegation platform for extracting bounded slices from legacy
 
 ## Architecture
 
-**Protogate owns:**
+**c2004 owns (c2004-first):**
 
 - Contracts (Protobuf)
-- Commands & Queries (CQRS)
-- Events & Read Models
-- Delegated UI Runtime
+- Generators and schema registry
+- Commands & Queries (CQRS) handlers
+- Migration discovery and planning artifacts
+- Shell, navigation, auth/session bridge, iframe routing
 
-**Legacy Host (c2004) owns:**
+**protogate owns:**
 
-- Shell & Navigation
-- Auth/Session Bridge
-- Iframe Routing only
+- Delegation/execution tooling layer
+- Runtime bridge for invoking migration tooling from c2004
+- Gateway runtime and health endpoints
+
+protogate is not the source-of-truth for migration contracts, discovery logic, or planning artifacts.
 
 Each delegated module follows a vertical-slice template:
 
@@ -354,11 +357,11 @@ pytest tests/test_event_store.py -v
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.9-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$2.85-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-10.2h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.10-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$3.00-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-10.5h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $2.8500 (19 commits)
-- 👤 **Human dev:** ~$1018 (10.2h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $3.0000 (20 commits)
+- 👤 **Human dev:** ~$1045 (10.5h @ $100/h, 30min dedup)
 
 Generated on 2026-04-24 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 

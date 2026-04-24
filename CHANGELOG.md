@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.10] - 2026-04-24
+
+### Docs
+- Update README.md
+- Update todo3.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+- Update tests/test_analyze_service_boundaries.py
+
+### Other
+- Update .gitignore
+- Update gateway/requirements.txt
+- Update generated/sql_cli/examples_identification_v1_identification.sql
+- Update generated/sql_cli/legacy_bridge_user_legacy.v1.sql
+- Update generated/sql_cli/search_v1_search.sql
+- Update generated/sql_cli/user_v1_user.sql
+- Update generated/sql_cli/user_v2_user.sql
+- Update protogate/cli.py
+- Update protogate/codegen/__init__.py
+- Update protogate/codegen/registry.py
+- ... and 3 more files
+
 ## [0.1.9] - 2026-04-24
 
 ### Docs

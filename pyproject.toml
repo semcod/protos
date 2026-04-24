@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=82.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "protogate"
-version = "0.1.9"
+version = "0.1.10"
 description = "Migration tool and delegation platform for extracting bounded slices from legacy systems"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -36,15 +36,15 @@ dependencies = [
 
 [project.optional-dependencies]
 gateway = [
-    "fastapi>=0.111.0",
-    "uvicorn[standard]>=0.29.0",
-    "sse-starlette>=2.1.0",
+    "fastapi>=0.136.0",
+    "uvicorn[standard]>=0.46.0",
+    "sse-starlette>=3.3.0",
 ]
 dev = [
-    "pytest>=7.0.0",
-    "pytest-cov>=4.0.0",
-    "black>=23.0.0",
-    "ruff>=0.1.0",
+    "pytest>=9.0.0",
+    "pytest-cov>=7.0.0",
+    "black>=26.0.0",
+    "ruff>=0.15.0",
     "goal>=2.1.0",
     "costs>=0.1.20",
     "pfix>=0.1.60",

@@ -431,6 +431,32 @@ def cmd_generate_sql(args: argparse.Namespace) -> int:
     return _batch_generate(args, ".sql", "generate_sql.py", "generate_sql")
 
 
+def cmd_codegen_registry(args: argparse.Namespace) -> int:
+    """Generate contract registry (registry.json + REGISTRY.md) from JSON contracts.
+
+    Replaces the legacy ``c2004/scripts/generate-registry.py`` per ADR-010
+    Sprint B. Input directory is scanned for ``*.command.json``,
+    ``*.query.json`` and ``*.event.json`` files.
+    """
+    from protogate.codegen import registry as _reg
+
+    contracts_dir = Path(args.contracts_dir).resolve()
+    if not contracts_dir.exists():
+        print(f"Contracts directory not found: {contracts_dir}", file=sys.stderr)
+        return 1
+
+    output_dir = Path(args.output_dir).resolve() if args.output_dir else contracts_dir
+    layers_root = Path(args.layers_root).resolve() if args.layers_root else None
+
+    return _reg.run_cli(
+        contracts_dir=contracts_dir,
+        output_dir=output_dir,
+        layers_root=layers_root,
+        check_only=args.check,
+        verbose=not args.quiet,
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="protogate",
@@ -555,6 +581,42 @@ def main() -> int:
     sql_parser.add_argument("input_dir", help="Directory containing .proto files")
     sql_parser.add_argument("output_dir", help="Output directory for generated .sql files")
     sql_parser.set_defaults(func=cmd_generate_sql)
+
+    # codegen (meta-command) — non-proto code generators (ADR-010 Sprint B)
+    codegen_parser = subparsers.add_parser(
+        "codegen",
+        help="Non-proto code generators (registry, ts-from-python, ...)",
+    )
+    codegen_sub = codegen_parser.add_subparsers(dest="codegen_command", required=True)
+
+    # codegen registry
+    codegen_registry = codegen_sub.add_parser(
+        "registry",
+        help="Generate contract registry (registry.json + REGISTRY.md) from JSON contracts",
+    )
+    codegen_registry.add_argument(
+        "contracts_dir",
+        help="Directory containing *.command.json, *.query.json, *.event.json files",
+    )
+    codegen_registry.add_argument(
+        "--output-dir",
+        help="Output directory (default: same as contracts_dir)",
+    )
+    codegen_registry.add_argument(
+        "--layers-root",
+        help="Repository root used to validate 'layers' paths (default: contracts_dir parent)",
+    )
+    codegen_registry.add_argument(
+        "--check",
+        action="store_true",
+        help="Validate only, do not write output files",
+    )
+    codegen_registry.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress per-contract progress output",
+    )
+    codegen_registry.set_defaults(func=cmd_codegen_registry)
 
     args = parser.parse_args()
     
