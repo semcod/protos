@@ -47,6 +47,17 @@ decode", "dead code paths on the client", "HTTP 422 for client").
 See [docs/contract-cross-check.md](docs/contract-cross-check.md) for the
 full reference and c2004 integration.
 
+## [0.1.18] - 2026-04-24
+
+### Docs
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+
 ## [0.1.17] - 2026-04-24
 
 ### Docs
