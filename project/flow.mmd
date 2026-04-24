@@ -4,21 +4,21 @@ flowchart TD
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
 
     subgraph CLI
-        generated__ts_cli__user_v2_user__CreateUserCommandSchema["CreateUserCommandSchema"]
-        generated__ts_cli__user_v2_user__GetUserQuerySchema["GetUserQuerySchema"]
-        generated__ts_cli__user_v2_user__UserSchema["UserSchema"]
         generated__ts_cli__legacy_bridge_user_legacy__v1__LegacyUserSchema["LegacyUserSchema"]
-        generated__ts_cli__search_v1_search__IndexEntryCommandSchema["IndexEntryCommandSchema"]
-        generated__ts_cli__search_v1_search__EntryIndexedSchema["EntryIndexedSchema"]
-        generated__ts_cli__search_v1_search__SearchRequestSchema["SearchRequestSchema"]
-        generated__ts_cli__search_v1_search__SearchResponseSchema["SearchResponseSchema"]
-        generated__ts_cli__search_v1_search__ResultSchema["ResultSchema"]
-        generated__ts_cli__user_v1_user__CreateUserCommandSchema["CreateUserCommandSchema"]
-        generated__ts_cli__user_v1_user__GetUserQuerySchema["GetUserQuerySchema"]
-        generated__ts_cli__user_v1_user__UserSchema["UserSchema"]
-        generated__ts_cli__examples_identification_v1_identification__IdentifyUserCommandSchema["IdentifyUserCommandSchema"]
-        generated__ts_cli__examples_identification_v1_identification__UserIdentificationReadModelSchema["UserIdentificationReadModelSch"]
-        generated__ts_cli__examples_identification_v1_identification__UserIdentifiedEventSchema["UserIdentifiedEventSchema"]
+        protogate__cli___swop_candidate_sort_key["_swop_candidate_sort_key"]
+        protogate__cli___load_module_from_path["_load_module_from_path"]
+        protogate__cli___resolve_proto_input_dir["_resolve_proto_input_dir"]
+        protogate__cli___load_parse_proto_function["_load_parse_proto_function"]
+        protogate__cli__run_command["run_command"]
+        protogate__cli__cmd_generate["cmd_generate"]
+        protogate__cli__cmd_registry["cmd_registry"]
+        protogate__cli__cmd_legacy["cmd_legacy"]
+        protogate__cli__cmd_gateway["cmd_gateway"]
+        protogate__cli__cmd_ci["cmd_ci"]
+        protogate__cli__cmd_discovery["cmd_discovery"]
+        protogate__cli__cmd_service_boundaries["cmd_service_boundaries"]
+        protogate__cli__cmd_cqrs_clusters["cmd_cqrs_clusters"]
+        protogate__cli__cmd_migration_candidates["cmd_migration_candidates"]
         ...["+13 more"]
     end
 
@@ -37,8 +37,8 @@ flowchart TD
         generated__ts__zod__identification_v1__IdentifyUserCommandSchema["IdentifyUserCommandSchema"]
         generated__ts__zod__identification_v1__UserIdentificationReadModelSchema["UserIdentificationReadModelSch"]
         generated__ts__zod__identification_v1__UserIdentifiedEventSchema["UserIdentifiedEventSchema"]
-        gateway__ws__ConnectionManager__connect["connect"]
-        ...["+509 more"]
+        docs__protogate_integration__Klient["Klient"]
+        ...["+747 more"]
     end
 
     class generated__ts__zod__user_v1__CreateUserCommandSchema,generated__ts__zod__user_v1__GetUserQuerySchema,generated__ts__zod__user_v1__UserSchema,generated__ts__zod__user_v2__CreateUserCommandSchema,generated__ts__zod__user_v2__GetUserQuerySchema,generated__ts__zod__user_v2__UserSchema,generated__ts__zod__search_v1__IndexEntryCommandSchema,generated__ts__zod__search_v1__EntryIndexedSchema,generated__ts__zod__search_v1__SearchRequestSchema,generated__ts__zod__search_v1__SearchResponseSchema entry

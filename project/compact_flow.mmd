@@ -1,28 +1,32 @@
 flowchart TD
-    SUMD["SUMD<br/>244 funcs"]
     gateway__delegation["gateway.delegation<br/>7 funcs"]
     gateway__main["gateway.main<br/>16 funcs"]
     gateway__search_handler["gateway.search_handler<br/>2 funcs"]
     gateway__sse["gateway.sse<br/>4 funcs"]
     gateway__user_handler["gateway.user_handler<br/>6 funcs"]
-    protogate__cli["protogate.cli<br/>13 funcs"]
+    project__map["project.map<br/>352 funcs"]
+    protogate__cli["protogate.cli<br/>27 funcs"]
+    protogate__codegen["protogate.codegen<br/>42 funcs"]
+    scripts__detect_migration_candidates["scripts.detect_migration_candidates<br/>21 funcs"]
     scripts__event_store["scripts.event_store<br/>13 funcs"]
     scripts__generate_incremental["scripts.generate_incremental<br/>8 funcs"]
     scripts__generate_json_schema["scripts.generate_json_schema<br/>2 funcs"]
     scripts__generate_pydantic["scripts.generate_pydantic<br/>5 funcs"]
     scripts__generate_sql["scripts.generate_sql<br/>3 funcs"]
     scripts__generate_zod["scripts.generate_zod<br/>5 funcs"]
-    scripts__legacy_bridge["scripts.legacy_bridge<br/>142 funcs"]
+    scripts__legacy_bridge["scripts.legacy_bridge<br/>161 funcs"]
     scripts__legacy_registry["scripts.legacy_registry<br/>8 funcs"]
     scripts__parse_proto["scripts.parse_proto<br/>9 funcs"]
     scripts__schema_registry["scripts.schema_registry<br/>16 funcs"]
     scripts__legacy_registry ==>|9| scripts__legacy_bridge
-    scripts__legacy_bridge ==>|6| SUMD
     gateway__main ==>|6| gateway__sse
     gateway__main ==>|6| gateway__user_handler
     gateway__main ==>|5| gateway__delegation
-    scripts__schema_registry -->|2| scripts__parse_proto
+    scripts__legacy_bridge -->|3| scripts__detect_migration_candidates
     gateway__main -->|2| gateway__search_handler
+    protogate__cli -->|2| scripts__parse_proto
+    scripts__schema_registry -->|2| scripts__parse_proto
+    protogate__cli -->|1| scripts__legacy_bridge
     scripts__legacy_registry -->|1| scripts__parse_proto
     scripts__generate_incremental -->|1| scripts__parse_proto
     scripts__generate_incremental -->|1| scripts__generate_zod
@@ -32,4 +36,4 @@ flowchart TD
     scripts__generate_pydantic -->|1| scripts__parse_proto
     scripts__event_store -->|1| scripts__schema_registry
     scripts__generate_zod -->|1| scripts__parse_proto
-    protogate__cli -->|1| scripts__parse_proto
+    protogate__codegen -->|1| project__map

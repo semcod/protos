@@ -1,51 +1,51 @@
-# protos | 843 func | 53f | 43706L | python | 2026-04-24
+# protos | 1120 func | 55f | 48742L | python | 2026-04-24
 
 HEALTH:
-  CC̄=1.8  critical=37 (limit:10)  dup=12  cycles=0
+  CC̄=1.8  critical=51 (limit:10)  dup=3  cycles=0
 
 ALERTS[20]:
-  !!! high_fan_out     run_discovery = 42 (limit:10)
+  !!! high_fan_out     run_discovery = 43 (limit:10)
+  !!! high_fan_out     main = 42 (limit:10)
+  !!! cc_exceeded      json_schema_to_zod = 38 (limit:15)
+  !!! cc_exceeded      run_cli = 38 (limit:15)
+  !!! cc_exceeded      generate_registry_markdown = 37 (limit:15)
+  !!! cc_exceeded      select_execution_plan = 27 (limit:15)
   !!! high_fan_out     analyze_repository = 27 (limit:10)
-  !!! cc_exceeded      _calculate_module_stats = 26 (limit:15)
+  !!! high_fan_out     analyze = 26 (limit:10)
   !!! high_fan_out     main = 24 (limit:10)
   !!! high_fan_out     main = 23 (limit:10)
-  !!! high_fan_out     profile_repository = 23 (limit:10)
-  !!! high_fan_out     main = 22 (limit:10)
-  !!! high_fan_out     main = 22 (limit:10)
-  !!! high_fan_out     build_ts_index = 22 (limit:10)
-  !!! high_fan_out     build_waves = 20 (limit:10)
 
-MODULES[112] (top by size):
-  M[reports/migration-discovery/service-boundaries.json] 16058L C:0 F:0 CC↑0 D:0 (json)
-  M[project/calls.yaml] 2648L C:0 F:0 CC↑0 D:0 (yaml)
-  M[scripts/legacy_bridge/analyze_service_boundaries.py] 1344L C:2 F:56 CC↑26 D:1 (python)
-  M[SUMD.md] 1236L C:0 F:244 CC↑0 D:1 (md)
-  M[SUMR.md] 1215L C:0 F:0 CC↑0 D:0 (md)
+MODULES[117] (top by size):
+  M[project/calls.yaml] 3721L C:0 F:0 CC↑0 D:0 (yaml)
+  M[SUMD.md] 1474L C:0 F:352 CC↑0 D:0 (md)
+  M[scripts/legacy_bridge/analyze_service_boundaries.py] 1471L C:2 F:63 CC↑27 D:1 (python)
+  M[SUMR.md] 1386L C:0 F:0 CC↑0 D:0 (md)
   M[reports/migration-discovery/cqrs-pattern-clusters.json] 888L C:0 F:0 CC↑0 D:0 (json)
-  M[scripts/legacy_bridge/run_arch_migration_discovery.py] 699L C:0 F:17 CC↑21 D:0 (python)
+  M[project/map.toon.yaml] 758L C:0 F:352 CC↑0 D:1 (yaml)
+  M[scripts/legacy_bridge/run_arch_migration_discovery.py] 756L C:0 F:19 CC↑21 D:0 (python)
+  M[protogate/cli.py] 748L C:0 F:27 CC↑10 D:0 (python)
   M[reports/migration-discovery/module-candidates.json] 676L C:0 F:0 CC↑0 D:0 (json)
   M[docs/migration-orchestrator-strategy.md] 626L C:0 F:0 CC↑0 D:0 (md)
-  M[project/context.md] 573L C:0 F:0 CC↑0 D:0 (md)
-  M[project/map.toon.yaml] 573L C:0 F:244 CC↑0 D:0 (yaml)
-  M[scripts/detect_migration_candidates.py] 546L C:2 F:21 CC↑20 D:0 (python)
+  M[project/context.md] 612L C:0 F:0 CC↑0 D:0 (md)
+  M[scripts/detect_migration_candidates.py] 546L C:2 F:21 CC↑20 D:2 (python)
   M[scripts/schema_registry.py] 543L C:3 F:16 CC↑19 D:1 (python)
   M[docs/delegation-plan.generated.json] 526L C:0 F:0 CC↑0 D:0 (json)
-  M[reports/migration-discovery/delegation-plan.generated.json] 526L C:0 F:0 CC↑0 D:0 (json)
-  LANGS: python:54/md:14/yaml:11/typescript:9/json:8/proto:5/txt:4/other:2/generator:1/yml:1/shell:1/toml:1/ini:1
+  M[goal.yaml] 508L C:0 F:0 CC↑0 D:0 (yaml)
+  LANGS: python:58/md:16/yaml:11/json:11/typescript:5/proto:5/txt:4/other:2/generator:1/yml:1/shell:1/toml:1/ini:1
 
 HOTSPOTS[10]:
-  ★ run_discovery fan=42  // Orchestrates 42 calls
+  ★ run_discovery fan=43  // Orchestrates 43 calls
+  ★ main fan=42  // Orchestrates 42 calls
   ★ analyze_repository fan=27  // Analysis pipeline, 27 stages
+  ★ analyze fan=26  // Analysis pipeline, 26 stages
   ★ main fan=24  // Orchestrates 24 calls
-  ★ main fan=23  // Orchestrates 23 calls
-  ★ profile_repository fan=23  // Orchestrates 23 calls
 
 REFACTOR[15]:
-  [1] H/L Split _calculate_module_stats (CC=26)
-  [2] H/H Split god module scripts/legacy_bridge/analyze_service_boundaries.py (1344L, 2 classes)
-  [3] H/H Split god module scripts/legacy_bridge/run_arch_migration_discovery.py (699L, 0 classes)
-  [4] H/H Split god module scripts/detect_migration_candidates.py (546L, 2 classes)
-  [5] H/H Split god module scripts/schema_registry.py (543L, 3 classes)
+  [1] H/L Split json_schema_to_zod (CC=38)
+  [2] H/L Split select_execution_plan (CC=27)
+  [3] H/L Split generate_registry_markdown (CC=37)
+  [4] H/L Split run_cli (CC=38)
+  [5] H/H Split god module scripts/legacy_bridge/analyze_service_boundaries.py (1471L, 2 classes)
 
 EVOLUTION:
-  2026-04-24 CC̄=1.8 crit=37 43706L // Automated analysis
+  2026-04-24 CC̄=1.8 crit=51 48742L // Automated analysis

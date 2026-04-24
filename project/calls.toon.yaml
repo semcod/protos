@@ -1,48 +1,48 @@
 # code2llm call graph | /home/tom/github/semcod/protos
-# nodes: 210 | edges: 188 | modules: 31
+# nodes: 266 | edges: 239 | modules: 38
 # CC̄=1.8
 
 HUBS[20]:
+  protogate.codegen.registry.generate_registry_markdown
+    CC=37  in:1  out:90  total:91
   scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
-    CC=12  in:1  out:77  total:78
+    CC=12  in:1  out:78  total:79
   scratch.swop_scan_c2004.main
     CC=17  in:0  out:53  total:53
+  scripts.legacy_bridge.detect_shared_ts_packages.analyze
+    CC=19  in:1  out:46  total:47
   scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report
     CC=19  in:1  out:43  total:44
+  protogate.codegen.jsonschema_zod.json_schema_to_zod
+    CC=38  in:7  out:31  total:38
   scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
-    CC=20  in:2  out:37  total:39
-  scripts.legacy_bridge.analyze_service_boundaries._calculate_module_stats
-    CC=26  in:1  out:35  total:36
+    CC=20  in:1  out:37  total:38
+  scripts.legacy_bridge.delegation_plan.render_markdown
+    CC=8  in:2  out:33  total:35
   scripts.legacy_bridge.candidate_selection.get_candidate_exclusion_reasons
     CC=14  in:2  out:33  total:35
-  scripts.legacy_bridge.delegation_plan.render_markdown
-    CC=8  in:1  out:33  total:34
-  scripts.detect_migration_candidates.discover_candidate_paths
-    CC=20  in:1  out:33  total:34
+  protogate.codegen.registry.generate_registry_json
+    CC=4  in:1  out:34  total:35
   scripts.legacy_bridge.run_arch_migration_discovery.profile_repository
     CC=18  in:1  out:33  total:34
-  scripts.legacy_bridge.generate_migration_wave_plan.main
-    CC=8  in:0  out:33  total:33
+  scripts.detect_migration_candidates.discover_candidate_paths
+    CC=20  in:1  out:33  total:34
   scripts.legacy_bridge.generate_migration_wave_plan.build_waves
     CC=15  in:2  out:31  total:33
-  scripts.legacy_bridge.analyze_service_boundaries.build_ts_index
-    CC=10  in:1  out:30  total:31
+  scripts.legacy_bridge.generate_migration_wave_plan.main
+    CC=8  in:0  out:33  total:33
+  protogate.codegen.registry.run_cli
+    CC=38  in:0  out:33  total:33
   scripts.legacy_bridge.detect_cqrs_pattern_clusters.main
     CC=10  in:0  out:31  total:31
+  protogate.codegen.pydantic_json_schema.run_cli
+    CC=13  in:0  out:30  total:30
   scripts.legacy_bridge.generate_delegation_plan.main
     CC=6  in:0  out:29  total:29
   scripts.legacy_bridge.run_arch_migration_discovery.main
     CC=8  in:0  out:29  total:29
-  scripts.legacy_bridge.analyze_service_boundaries.build_service_blueprint_markdown
-    CC=11  in:2  out:26  total:28
   protogate.cli._batch_generate
-    CC=9  in:2  out:24  total:26
-  scripts.legacy_bridge.swop_integration.run_swop_pipeline
-    CC=13  in:0  out:25  total:25
-  scripts.legacy_bridge.delegation_plan.build_output_row
-    CC=6  in:3  out:22  total:25
-  scripts.generate_incremental.main
-    CC=11  in:0  out:24  total:24
+    CC=8  in:3  out:25  total:28
 
 MODULES:
   adapters.legacy_to_proto.user_adapter  [2 funcs]
@@ -78,17 +78,52 @@ MODULES:
     handle_dual_write_user  CC=1  out:4
     handle_get_user  CC=2  out:2
     handle_list_events  CC=3  out:3
-  protogate.cli  [11 funcs]
-    _batch_generate  CC=9  out:24
+  project.map.toon  [1 funcs]
+    cross_check_contracts  CC=0  out:0
+  protogate.cli  [21 funcs]
+    _batch_generate  CC=8  out:25
+    _batch_generate_json_schema  CC=8  out:27
+    _load_module_from_path  CC=3  out:4
+    _load_parse_proto_function  CC=1  out:2
+    _resolve_proto_input_dir  CC=10  out:14
     cmd_ci  CC=1  out:1
     cmd_clean  CC=1  out:1
+    cmd_cqrs_clusters  CC=4  out:5
     cmd_discovery  CC=7  out:10
     cmd_gateway  CC=2  out:1
-    cmd_generate  CC=8  out:2
-    cmd_generate_pydantic  CC=1  out:1
-    cmd_generate_zod  CC=1  out:1
-    cmd_legacy  CC=7  out:2
-    cmd_registry  CC=6  out:3
+  protogate.codegen.jsonschema_zod  [5 funcs]
+    _collect_refs  CC=7  out:9
+    _pascal_from_kebab  CC=3  out:3
+    _topo_sort_defs  CC=2  out:7
+    json_schema_to_zod  CC=38  out:31
+    schema_file_to_zod  CC=4  out:19
+  protogate.codegen.pydantic_cross_check  [9 funcs]
+    _collect_literal_fields  CC=7  out:5
+    _contract_schemas  CC=3  out:3
+    _extract_literal_values  CC=7  out:8
+    _literal_slice_values  CC=6  out:6
+    _load_literal_fields  CC=3  out:3
+    _node_name  CC=4  out:3
+    _parse_layer_path  CC=3  out:2
+    cross_check_contract  CC=14  out:19
+    cross_check_contracts  CC=2  out:1
+  protogate.codegen.pydantic_json_schema  [2 funcs]
+    generate_schema  CC=1  out:1
+    run_cli  CC=13  out:30
+  protogate.codegen.registry  [7 funcs]
+    _check_layer_paths  CC=5  out:6
+    build  CC=4  out:6
+    generate_registry_json  CC=4  out:34
+    generate_registry_markdown  CC=37  out:90
+    load_contracts  CC=4  out:6
+    run_cli  CC=38  out:33
+    validate_contract  CC=13  out:10
+  protogate.codegen.typescript  [5 funcs]
+    add_enum  CC=1  out:3
+    add_interface  CC=2  out:3
+    generate_enum  CC=2  out:3
+    generate_interface  CC=10  out:12
+    python_type_to_typescript  CC=20  out:18
   scratch.swop_scan_c2004  [6 funcs]
     _base_names  CC=7  out:9
     _kind_by_base  CC=3  out:0
@@ -138,14 +173,14 @@ MODULES:
     _flatten_messages  CC=1  out:5
     main  CC=3  out:9
     to_zod  CC=7  out:15
-  scripts.legacy_bridge.analyze_service_boundaries  [46 funcs]
+  scripts.legacy_bridge.analyze_service_boundaries  [55 funcs]
     _append_execution_plan_section  CC=4  out:6
     _append_frontend_modules_section  CC=4  out:6
     _append_merge_hints_section  CC=3  out:3
     _append_recommended_candidates_section  CC=4  out:5
     _append_service_components_section  CC=4  out:6
     _apply_merge_hints  CC=8  out:7
-    _build_component_row  CC=18  out:21
+    _build_component_row  CC=20  out:24
     _build_cqrs_endpoint_templates  CC=6  out:9
     _build_eligible_modules  CC=4  out:0
     _build_module_index  CC=5  out:4
@@ -171,6 +206,14 @@ MODULES:
     parse_args  CC=1  out:8
     read_text  CC=3  out:2
     shared_tokens_for_module  CC=4  out:5
+  scripts.legacy_bridge.detect_shared_ts_packages  [7 funcs]
+    analyze  CC=19  out:46
+    count_lines  CC=1  out:2
+    iter_ts_files  CC=7  out:4
+    main  CC=7  out:22
+    normalize_code  CC=3  out:6
+    parse_args  CC=1  out:8
+    read_text  CC=2  out:2
   scripts.legacy_bridge.diff_engine  [1 funcs]
     diff_fields  CC=12  out:19
   scripts.legacy_bridge.generate_delegation_plan  [4 funcs]
@@ -200,7 +243,8 @@ MODULES:
     render_excluded_candidates_markdown  CC=2  out:5
     render_service_boundary_decisions_markdown  CC=1  out:5
     render_summary_markdown  CC=6  out:20
-  scripts.legacy_bridge.run_arch_migration_discovery  [11 funcs]
+  scripts.legacy_bridge.run_arch_migration_discovery  [12 funcs]
+    _apply_migrated_filter  CC=14  out:24
     _parse_score  CC=1  out:1
     build_delegation_decision_report  CC=19  out:43
     build_delegation_plan  CC=5  out:7
@@ -209,8 +253,7 @@ MODULES:
     parse_args  CC=1  out:11
     profile_repository  CC=18  out:33
     resolve_output_dir  CC=2  out:2
-    run_discovery  CC=12  out:77
-    write_json  CC=1  out:2
+    run_discovery  CC=12  out:78
   scripts.legacy_bridge.swop_integration  [7 funcs]
     _context_score  CC=18  out:19
     _eligible_groups  CC=6  out:5
@@ -240,50 +283,50 @@ EDGES:
   gateway.sse.push_to_subscribers → gateway.sse.unsubscribe
   gateway.sse.event_generator → gateway.sse.unsubscribe
   gateway.delegation.get_delegation_health → gateway.delegation.list_delegated_slices
-  scripts.parse_proto._handle_block_end → scripts.parse_proto._to_dict
-  scripts.parse_proto.parse_proto → scripts.parse_proto._handle_message_start
-  scripts.parse_proto.parse_proto → scripts.parse_proto._handle_enum_start
-  scripts.parse_proto.parse_proto → scripts.parse_proto._handle_block_end
-  scripts.parse_proto.parse_proto → scripts.parse_proto._to_dict
-  scripts.parse_proto.parse_proto → scripts.parse_proto._parse_top_level_declarations
-  scripts.generate_incremental.should_regenerate → scripts.generate_incremental.file_hash
-  scripts.generate_incremental.regenerate → scripts.generate_incremental._stem
-  scripts.generate_incremental.regenerate → scripts.parse_proto.parse_proto
-  scripts.generate_incremental.regenerate → scripts.generate_incremental._write
-  scripts.generate_incremental.regenerate → scripts.generate_zod.to_zod
-  scripts.generate_incremental.main → scripts.generate_incremental.load_cache
-  scripts.generate_incremental.main → scripts.generate_incremental.should_regenerate
-  scripts.generate_incremental.main → scripts.generate_incremental.save_cache
-  scripts.generate_sql.generate_sql → scripts.generate_sql._table_name
-  scripts.generate_sql.main → scripts.parse_proto.parse_proto
-  scripts.generate_sql.main → scripts.generate_sql.generate_sql
-  scripts.schema_registry.check_compatibility → scripts.schema_registry._diff_messages
-  scripts.schema_registry.SchemaRegistry.__init__ → scripts.schema_registry._connect
-  scripts.schema_registry.SchemaRegistry.register → scripts.parse_proto.parse_proto
-  scripts.schema_registry.SchemaRegistry.register → scripts.schema_registry._sha256_file
-  scripts.generate_json_schema.main → scripts.parse_proto.parse_proto
-  scripts.generate_json_schema.main → scripts.generate_json_schema.generate
-  scripts.generate_pydantic.generate → scripts.generate_pydantic._flatten_enums
-  scripts.generate_pydantic.generate → scripts.generate_pydantic._flatten_messages
-  scripts.generate_pydantic.main → scripts.parse_proto.parse_proto
-  scripts.generate_pydantic.main → scripts.generate_pydantic.generate
-  scripts.conflict_resolver.ConflictResolver._check_field_conflicts → scripts.conflict_resolver._field_effects
-  scripts.event_store.EventStore.__init__ → scripts.schema_registry._connect
-  scripts.generate_zod.to_zod → scripts.generate_zod._flatten_enums
-  scripts.generate_zod.to_zod → scripts.generate_zod._flatten_messages
-  scripts.generate_zod.main → scripts.parse_proto.parse_proto
-  scripts.generate_zod.main → scripts.generate_zod.to_zod
-  scripts.legacy_bridge.delegation_plan.build_steps → scripts.legacy_bridge.delegation_plan.to_slice_name
-  scripts.legacy_bridge.delegation_plan.build_slice_blueprint → scripts.legacy_bridge.delegation_plan.to_slice_name
-  scripts.legacy_bridge.delegation_plan.build_slice_blueprint → scripts.legacy_bridge.delegation_plan.build_steps
-  scripts.legacy_bridge.delegation_plan.build_output_row → scripts.legacy_bridge.delegation_plan._normalize_shared_types_package
-  scripts.legacy_bridge.delegation_plan.build_output_row → scripts.legacy_bridge.delegation_plan._to_float
-  scripts.legacy_bridge.delegation_plan.render_markdown → scripts.legacy_bridge.delegation_plan.build_output_row
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.load_config → scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config → scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.shared_tokens_for_module → scripts.legacy_bridge.detect_cqrs_pattern_clusters.read_text
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository → scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository → scripts.legacy_bridge.detect_cqrs_pattern_clusters.assign_clusters
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.main → scripts.legacy_bridge.detect_cqrs_pattern_clusters.parse_args
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.main → scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
-  scripts.legacy_bridge.sync_check.main → scripts.legacy_bridge.normalizer.normalize_json_schema
+  gateway.main.health → gateway.delegation.get_delegation_health
+  gateway.main.health_modules → gateway.delegation.get_delegation_health
+  gateway.main.health_module → gateway.delegation.get_delegated_slice
+  gateway.main.delegation_slices → gateway.delegation.list_delegated_slices
+  gateway.main.delegation_slice_detail → gateway.delegation.get_delegated_slice
+  gateway.main.sse_stream → gateway.sse.subscribe
+  gateway.main.sse_stream → gateway.sse.event_generator
+  gateway.main.cmd_create_user → gateway.user_handler.handle_create_user
+  gateway.main.cmd_create_user → gateway.sse.push_to_subscribers
+  gateway.main.cmd_dual_create_user → gateway.user_handler.handle_dual_write_user
+  gateway.main.cmd_dual_create_user → gateway.sse.push_to_subscribers
+  gateway.main.cmd_change_email → gateway.user_handler.handle_change_email
+  gateway.main.cmd_change_email → gateway.sse.push_to_subscribers
+  gateway.main.cmd_deactivate_user → gateway.user_handler.handle_deactivate_user
+  gateway.main.cmd_deactivate_user → gateway.sse.push_to_subscribers
+  gateway.main.query_get_user → gateway.user_handler.handle_get_user
+  gateway.main.list_events → gateway.user_handler.handle_list_events
+  gateway.main.cmd_index_search_entry → gateway.search_handler.handle_index_entry
+  gateway.main.query_search → gateway.search_handler.handle_search
+  scratch.swop_scan_c2004.collect_ground_truth → scratch.swop_scan_c2004._base_names
+  scratch.swop_scan_c2004.collect_ground_truth → scratch.swop_scan_c2004._kind_by_suffix
+  scratch.swop_scan_c2004.collect_ground_truth → scratch.swop_scan_c2004._kind_by_base
+  scratch.swop_scan_c2004.main → scratch.swop_scan_c2004.collect_ground_truth
+  scratch.swop_scan_c2004.main → scratch.swop_scan_c2004.run_swop_scan
+  protogate.cli._load_parse_proto_function → protogate.cli._load_module_from_path
+  protogate.cli.cmd_generate → protogate.cli.run_command
+  protogate.cli.cmd_registry → protogate.cli.run_command
+  protogate.cli.cmd_legacy → protogate.cli.run_command
+  protogate.cli.cmd_gateway → protogate.cli.run_command
+  protogate.cli.cmd_ci → protogate.cli.run_command
+  protogate.cli.cmd_discovery → protogate.cli.run_command
+  protogate.cli.cmd_service_boundaries → protogate.cli.run_command
+  protogate.cli.cmd_cqrs_clusters → protogate.cli.run_command
+  protogate.cli.cmd_migration_candidates → protogate.cli.run_command
+  protogate.cli.cmd_migration_candidates → protogate.cli._load_module_from_path
+  protogate.cli.cmd_migration_candidates → scripts.legacy_bridge.delegation_plan.render_markdown
+  protogate.cli.cmd_shared_ts_candidates → protogate.cli.run_command
+  protogate.cli.cmd_clean → protogate.cli.run_command
+  protogate.cli._batch_generate → protogate.cli._resolve_proto_input_dir
+  protogate.cli._batch_generate → protogate.cli._load_parse_proto_function
+  protogate.cli.cmd_generate_pydantic → protogate.cli._batch_generate
+  protogate.cli.cmd_generate_zod → protogate.cli._batch_generate
+  protogate.cli._batch_generate_json_schema → protogate.cli._resolve_proto_input_dir
+  protogate.cli._batch_generate_json_schema → protogate.cli._load_parse_proto_function
+  protogate.cli.cmd_generate_json_schema → protogate.cli._batch_generate_json_schema
+  protogate.cli.cmd_generate_sql → protogate.cli._batch_generate
+  protogate.codegen.jsonschema_zod._topo_sort_defs → protogate.codegen.jsonschema_zod._collect_refs

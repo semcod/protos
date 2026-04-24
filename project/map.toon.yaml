@@ -1,10 +1,10 @@
-# protos | 87f 12368L | python:75,typescript:9,shell:2,less:1 | 2026-04-24
-# stats: 313 func | 95 cls | 87 mod | CC̄=5.0 | critical:39 | cycles:0
-# alerts[5]: CC _calculate_module_stats=26; CC build_service_boundary_decision_report=21; CC discover_candidate_paths=20; CC select_execution_plan=20; CC analyze_repository=20
-# hotspots[5]: run_discovery fan=37; analyze_repository fan=26; build_ts_index fan=21; main fan=21; main fan=20
+# protos | 95f 14991L | python:83,typescript:9,shell:2,less:1 | 2026-04-24
+# stats: 399 func | 99 cls | 95 mod | CC̄=5.2 | critical:53 | cycles:0
+# alerts[5]: CC json_schema_to_zod=38; CC run_cli=38; CC generate_registry_markdown=37; CC select_execution_plan=27; CC build_service_boundary_decision_report=21
+# hotspots[5]: run_discovery fan=38; analyze_repository fan=26; analyze fan=22; main fan=21; main fan=20
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[87]:
+M[95]:
   adapters/legacy_to_proto/user_adapter.py,37
   adapters/proto_to_legacy/user_adapter.py,22
   app.doql.less,159
@@ -36,7 +36,13 @@ M[87]:
   generated/ts_cli/user_v2_user.ts,22
   project.sh,48
   protogate/__init__.py,9
-  protogate/cli.py,292
+  protogate/cli.py,749
+  protogate/codegen/__init__.py,13
+  protogate/codegen/jsonschema_zod.py,253
+  protogate/codegen/pydantic_cross_check.py,307
+  protogate/codegen/pydantic_json_schema.py,166
+  protogate/codegen/registry.py,477
+  protogate/codegen/typescript.py,224
   scratch/smoke_test_dual_write.py,28
   scratch/smoke_test_search.py,31
   scratch/swop_pipeline_service_id.py,90
@@ -53,10 +59,11 @@ M[87]:
   scripts/generate_zod.py,130
   scripts/idempotency_store.py,42
   scripts/legacy_bridge/__init__.py,1
-  scripts/legacy_bridge/analyze_service_boundaries.py,1345
+  scripts/legacy_bridge/analyze_service_boundaries.py,1472
   scripts/legacy_bridge/candidate_selection.py,57
   scripts/legacy_bridge/delegation_plan.py,151
   scripts/legacy_bridge/detect_cqrs_pattern_clusters.py,477
+  scripts/legacy_bridge/detect_shared_ts_packages.py,226
   scripts/legacy_bridge/diff_engine.py,110
   scripts/legacy_bridge/generate_delegation_plan.py,117
   scripts/legacy_bridge/generate_migration_wave_plan.py,339
@@ -65,7 +72,7 @@ M[87]:
   scripts/legacy_bridge/normalizer.py,99
   scripts/legacy_bridge/report_generator.py,57
   scripts/legacy_bridge/report_rendering.py,208
-  scripts/legacy_bridge/run_arch_migration_discovery.py,700
+  scripts/legacy_bridge/run_arch_migration_discovery.py,757
   scripts/legacy_bridge/swop_integration.py,373
   scripts/legacy_bridge/sync_check.py,40
   scripts/legacy_registry.py,246
@@ -74,7 +81,7 @@ M[87]:
   scripts/search_index.py,62
   scripts/vector_clock.py,113
   tests/conftest.py,3
-  tests/test_analyze_service_boundaries.py,170
+  tests/test_analyze_service_boundaries.py,401
   tests/test_conflict_resolver.py,371
   tests/test_delegation_plan.py,54
   tests/test_delegation_registry.py,54
@@ -88,6 +95,7 @@ M[87]:
   tests/test_incremental.py,81
   tests/test_legacy_registry.py,55
   tests/test_migrator.py,49
+  tests/test_protogate_cli.py,85
   tests/test_report_rendering.py,103
   tests/test_run_arch_migration_discovery.py,427
   tests/test_schema_registry.py,428
@@ -205,7 +213,11 @@ D:
     User:
   protogate/__init__.py:
   protogate/cli.py:
-    e: run_command,cmd_generate,cmd_registry,cmd_legacy,cmd_gateway,cmd_ci,cmd_discovery,cmd_clean,_proto_to_output_name,_batch_generate,cmd_generate_pydantic,cmd_generate_zod,main
+    e: _swop_candidate_sort_key,_load_module_from_path,_resolve_proto_input_dir,_load_parse_proto_function,run_command,cmd_generate,cmd_registry,cmd_legacy,cmd_gateway,cmd_ci,cmd_discovery,cmd_service_boundaries,cmd_cqrs_clusters,cmd_migration_candidates,cmd_shared_ts_candidates,cmd_clean,_proto_to_output_name,_batch_generate,cmd_generate_pydantic,cmd_generate_zod,_batch_generate_json_schema,cmd_generate_json_schema,cmd_generate_sql,cmd_codegen_json_schema,cmd_codegen_zod,cmd_codegen_registry,main
+    _swop_candidate_sort_key(candidate)
+    _load_module_from_path(module_name;script_path)
+    _resolve_proto_input_dir(input_dir)
+    _load_parse_proto_function()
     run_command(cmd;cwd)
     cmd_generate(args)
     cmd_registry(args)
@@ -213,12 +225,67 @@ D:
     cmd_gateway(args)
     cmd_ci(args)
     cmd_discovery(args)
+    cmd_service_boundaries(args)
+    cmd_cqrs_clusters(args)
+    cmd_migration_candidates(args)
+    cmd_shared_ts_candidates(args)
     cmd_clean(args)
     _proto_to_output_name(proto_path;suffix)
     _batch_generate(args;suffix;script_name;generate_func_name)
     cmd_generate_pydantic(args)
     cmd_generate_zod(args)
+    _batch_generate_json_schema(args)
+    cmd_generate_json_schema(args)
+    cmd_generate_sql(args)
+    cmd_codegen_json_schema(args)
+    cmd_codegen_zod(args)
+    cmd_codegen_registry(args)
     main()
+  protogate/codegen/__init__.py:
+  protogate/codegen/jsonschema_zod.py:
+    e: json_schema_to_zod,_collect_refs,_topo_sort_defs,_pascal_from_kebab,schema_file_to_zod,run_cli
+    json_schema_to_zod(schema)
+    _collect_refs(schema)
+    _topo_sort_defs(defs)
+    _pascal_from_kebab(name)
+    schema_file_to_zod(schema_path)
+    run_cli(input_dir;output_dir)
+  protogate/codegen/pydantic_cross_check.py:
+    e: _node_name,_literal_slice_values,_extract_literal_values,_collect_literal_fields,_load_literal_fields,_iter_enum_fields,_contract_schemas,_classify_drift,_parse_layer_path,cross_check_contract,cross_check_contracts,CrossCheckResult
+    CrossCheckResult: format(0)
+    _node_name(node)
+    _literal_slice_values(slice_node)
+    _extract_literal_values(annotation)
+    _collect_literal_fields(tree)
+    _load_literal_fields(python_path)
+    _iter_enum_fields(schema;prefix)
+    _contract_schemas(contract)
+    _classify_drift(block_kind;contract_set;pydantic_set)
+    _parse_layer_path(raw_layer)
+    cross_check_contract(contract;layers_root)
+    cross_check_contracts(contracts;layers_root)
+  protogate/codegen/pydantic_json_schema.py:
+    e: camel_to_kebab,discover_pydantic_models,generate_schema,run_cli
+    camel_to_kebab(name)
+    discover_pydantic_models(module_name)
+    generate_schema(model_class)
+    run_cli(modules;output_dir)
+  protogate/codegen/registry.py:
+    e: load_contracts,_check_layer_paths,validate_contract,generate_registry_json,generate_registry_markdown,build,run_cli,RegistryResult
+    RegistryResult: ok(0)
+    load_contracts(contracts_dir)
+    _check_layer_paths(contract;root;errors)
+    validate_contract(contract;layers_root)
+    generate_registry_json(contracts)
+    generate_registry_markdown(contracts)
+    build(contracts_dir;layers_root)
+    run_cli(contracts_dir;output_dir;layers_root;check_only;cross_check_pydantic;verbose)
+  protogate/codegen/typescript.py:
+    e: python_type_to_typescript,generate_enum,generate_interface,TypeScriptEmitter
+    TypeScriptEmitter: __init__(0),with_entity_id_base(1),add_raw(1),add_section(1),add_enum(1),add_enums(1),add_interface(1),add_interfaces(1),header(0),render(0)  # Fluent builder for a single generated TypeScript file.
+    python_type_to_typescript(py_type)
+    generate_enum(enum_class)
+    generate_interface(dataclass_type)
   scratch/smoke_test_dual_write.py:
   scratch/smoke_test_search.py:
   scratch/swop_pipeline_service_id.py:
@@ -313,7 +380,7 @@ D:
     IdempotencyStore: __init__(1),_init_db(0),is_processed(1),mark_processed(2),get_response(1)
   scripts/legacy_bridge/__init__.py:
   scripts/legacy_bridge/analyze_service_boundaries.py:
-    e: deep_merge,load_config,parse_args,is_ignored,iter_files,strip_source_suffix,extract_prefixed_module,matches_page_pattern,detect_frontend_module,read_text,resolve_candidate_file,resolve_ts_import,parse_ts_import_specs,normalize_api_group,extract_api_groups,build_ts_index,const_str,parse_router_prefixes,parse_python_imports,route_group_from_prefixes,counter_rows,merge_named_rows,build_backend_index,backend_group_summary,transitive_closure,route_group_from_api_group,service_slug,classify_delivery,choose_component_anchor,_build_eligible_modules,_apply_merge_hints,_determine_component_action,_build_component_row,build_service_components,select_execution_plan,build_target_structure,build_cleanup_checklist,_build_module_index,_calculate_module_stats,_generate_merge_hints,analyze_frontend_modules,_append_execution_plan_section,_append_service_components_section,_append_recommended_candidates_section,_append_merge_hints_section,_append_frontend_modules_section,build_markdown,build_execution_plan_markdown,build_target_structure_markdown,build_cleanup_markdown,_build_cqrs_endpoint_templates,build_service_blueprint_markdown,build_cqrs_model_boundaries_markdown,analyze,write_outputs,main,TsFile,PyRouteFile
+    e: deep_merge,load_config,parse_args,is_ignored,iter_files,strip_source_suffix,extract_prefixed_module,matches_page_pattern,detect_frontend_module,read_text,resolve_candidate_file,resolve_ts_import,parse_ts_import_specs,normalize_api_group,extract_api_groups,_is_test_file,_build_single_ts_file,build_ts_index,const_str,parse_router_prefixes,parse_python_imports,route_group_from_prefixes,counter_rows,merge_named_rows,build_backend_index,backend_group_summary,transitive_closure,route_group_from_api_group,service_slug,classify_delivery,companion_modules,choose_component_anchor,_build_eligible_modules,_apply_merge_hints,_determine_component_action,_build_component_row,build_service_components,select_execution_plan,build_target_structure,build_cleanup_checklist,_build_module_index,_compute_cross_stats,_compute_api_coverage,_compute_iframe_score,_is_iframe_candidate,_calculate_module_stats,_generate_merge_hints,analyze_frontend_modules,_append_execution_plan_section,_append_service_components_section,_append_recommended_candidates_section,_append_merge_hints_section,_append_frontend_modules_section,build_markdown,build_execution_plan_markdown,build_target_structure_markdown,build_cleanup_markdown,_build_cqrs_endpoint_templates,build_service_blueprint_markdown,build_cqrs_model_boundaries_markdown,analyze,write_outputs,main,TsFile,PyRouteFile
     TsFile:
     PyRouteFile:
     deep_merge(base;override)
@@ -331,6 +398,8 @@ D:
     parse_ts_import_specs(source)
     normalize_api_group(path;group_depth)
     extract_api_groups(source;api_pattern;group_depth)
+    _is_test_file(rel_to_root)
+    _build_single_ts_file(path;root;workspace_root;frontend_roots;alias_roots;api_pattern;group_depth;config)
     build_ts_index(workspace_root;config;api_pattern)
     const_str(node)
     parse_router_prefixes(tree)
@@ -344,16 +413,21 @@ D:
     route_group_from_api_group(api_group)
     service_slug(module)
     classify_delivery(iframe_score;cross_targets;backend_groups)
+    companion_modules(module;module_rows)
     choose_component_anchor(component_rows)
     _build_eligible_modules(module_rows)
     _apply_merge_hints(eligible;merge_hints)
     _determine_component_action(rows;avg_iframe_score;cross_targets;route_groups)
-    _build_component_row(rows;backend_groups)
+    _build_component_row(rows;backend_groups;module_rows)
     build_service_components(module_rows;merge_hints;backend_groups)
     select_execution_plan(service_components;top_services)
     build_target_structure(execution_plan)
     build_cleanup_checklist(execution_plan)
     _build_module_index(ts_index)
+    _compute_cross_stats(module;owned_files;ts_index;cross_edges;shared_modules)
+    _compute_api_coverage(closure;owned_files;ts_index;backend_groups)
+    _compute_iframe_score(page_count;api_groups;cross_targets;cross_outgoing;shared_count)
+    _is_iframe_candidate(iframe_score;cross_targets;route_group_hits)
     _calculate_module_stats(module;owned_files;ts_index;backend_groups;cross_edges;shared_modules)
     _generate_merge_hints(ranked;cross_edges)
     analyze_frontend_modules(ts_index;backend_index;top_services;shared_modules)
@@ -404,6 +478,19 @@ D:
     shared_tokens_for_module(repo_root;module)
     analyze_repository(repo_root;config;candidate_scores)
     render_markdown(payload)
+    main()
+  scripts/legacy_bridge/detect_shared_ts_packages.py:
+    e: read_text,normalize_code,module_from_path,suggest_package,count_lines,iter_ts_files,render_markdown,parse_args,analyze,main,DupGroup
+    DupGroup:
+    read_text(path)
+    normalize_code(content)
+    module_from_path(path;src_root)
+    suggest_package(paths)
+    count_lines(path)
+    iter_ts_files(src_root)
+    render_markdown(groups)
+    parse_args()
+    analyze(repo_root;min_occurrences;min_modules_by_name)
     main()
   scripts/legacy_bridge/diff_engine.py:
     e: diff_fields,DiffKind,DiffEntry,DiffReport
@@ -458,7 +545,7 @@ D:
     render_delegation_decisions_markdown(payload)
     render_service_boundary_decisions_markdown(payload)
   scripts/legacy_bridge/run_arch_migration_discovery.py:
-    e: parse_args,read_text,resolve_output_dir,profile_repository,render_repository_profile_markdown,render_module_candidates_markdown,_parse_score,build_excluded_candidates_report,build_service_boundary_decision_report,build_delegation_decision_report,build_delegation_plan,build_summary,write_text,write_json,relative_artifact_path,run_discovery,main
+    e: parse_args,read_text,resolve_output_dir,profile_repository,render_repository_profile_markdown,render_module_candidates_markdown,_parse_score,_is_migrated_module,_apply_migrated_filter,build_excluded_candidates_report,build_service_boundary_decision_report,build_delegation_decision_report,build_delegation_plan,build_summary,write_text,write_json,relative_artifact_path,run_discovery,main
     parse_args()
     read_text(path)
     resolve_output_dir(repo_root;raw_output_dir)
@@ -466,6 +553,8 @@ D:
     render_repository_profile_markdown(profile)
     render_module_candidates_markdown(rows)
     _parse_score(row)
+    _is_migrated_module(module;migrated_patterns)
+    _apply_migrated_filter(candidate_rows;service_boundary_payload;config)
     build_excluded_candidates_report(rows)
     build_service_boundary_decision_report(payload)
     build_delegation_decision_report(rows)
@@ -531,11 +620,27 @@ D:
     VectorClock: increment(1),merge(1),happened_before(1),concurrent_with(1),dominates(1),to_dict(0),from_dict(2),__eq__(1),__repr__(0)  # Immutable vector clock.
   tests/conftest.py:
   tests/test_analyze_service_boundaries.py:
-    e: test_analyze_service_boundaries_detects_iframe_candidates,test_build_markdown_contains_expected_sections,test_build_module_index_creates_correct_structure,test_determine_component_action
+    e: test_analyze_service_boundaries_detects_iframe_candidates,test_build_markdown_contains_expected_sections,test_build_module_index_creates_correct_structure,test_determine_component_action,test_default_ignore_dirs_include_reports_and_coverage,test_resolve_ts_import_supports_dotted_basenames,test_iter_files_ignores_reports_and_coverage_dirs,_make_ts_file,test_compute_iframe_score_clamped_at_100,test_compute_iframe_score_clamped_at_0,test_compute_iframe_score_midrange,test_is_iframe_candidate_true,test_is_iframe_candidate_false_when_too_many_cross_targets,test_is_iframe_candidate_false_when_score_low,test_compute_cross_stats_counts_correctly,test_compute_api_coverage_extracts_groups,test_is_test_file_detects_spec_and_test_suffixes,test_is_test_file_passes_normal_files,test_build_single_ts_file_skips_test_files,test_build_single_ts_file_parses_page
     test_analyze_service_boundaries_detects_iframe_candidates(tmp_path)
     test_build_markdown_contains_expected_sections(tmp_path)
     test_build_module_index_creates_correct_structure()
     test_determine_component_action()
+    test_default_ignore_dirs_include_reports_and_coverage()
+    test_resolve_ts_import_supports_dotted_basenames(tmp_path)
+    test_iter_files_ignores_reports_and_coverage_dirs(tmp_path)
+    _make_ts_file(path;workspace_root;module;is_page;api_groups;imports)
+    test_compute_iframe_score_clamped_at_100()
+    test_compute_iframe_score_clamped_at_0()
+    test_compute_iframe_score_midrange()
+    test_is_iframe_candidate_true()
+    test_is_iframe_candidate_false_when_too_many_cross_targets()
+    test_is_iframe_candidate_false_when_score_low()
+    test_compute_cross_stats_counts_correctly(tmp_path)
+    test_compute_api_coverage_extracts_groups(tmp_path)
+    test_is_test_file_detects_spec_and_test_suffixes()
+    test_is_test_file_passes_normal_files()
+    test_build_single_ts_file_skips_test_files(tmp_path)
+    test_build_single_ts_file_parses_page(tmp_path)
   tests/test_conflict_resolver.py:
     e: _event,store,resolver,TestVectorClock,TestLWWStrategy,TestMergeNonConflicting,TestMergeConflicts,TestEventStoreMergeStreams,TestConflictResolverHelpers
     TestVectorClock: test_increment_creates_new_instance(0),test_increment_increases_counter(0),test_merge_takes_element_wise_max(0),test_merge_includes_missing_keys(0),test_happened_before_simple(0),test_concurrent_when_neither_dominates(0),test_not_concurrent_when_one_dominates(0),test_equal_clocks_not_happened_before(0),test_dominates_is_reverse_happened_before(0),test_to_dict_and_from_dict_round_trip(0),test_equality(0),test_missing_key_treated_as_zero(0)
@@ -613,6 +718,14 @@ D:
     e: dbs,test_migration_bootstrap
     dbs()
     test_migration_bootstrap(dbs)
+  tests/test_protogate_cli.py:
+    e: _write,test_resolve_proto_input_dir_keeps_path_with_proto,test_resolve_proto_input_dir_switches_contracts_to_sibling_proto,test_resolve_proto_input_dir_falls_back_to_swop_proto,test_resolve_proto_input_dir_prefers_latest_swop_proto,test_resolve_proto_input_dir_prefers_deterministic_candidate_on_equal_mtime
+    _write(path;content)
+    test_resolve_proto_input_dir_keeps_path_with_proto(tmp_path)
+    test_resolve_proto_input_dir_switches_contracts_to_sibling_proto(tmp_path)
+    test_resolve_proto_input_dir_falls_back_to_swop_proto(tmp_path)
+    test_resolve_proto_input_dir_prefers_latest_swop_proto(tmp_path)
+    test_resolve_proto_input_dir_prefers_deterministic_candidate_on_equal_mtime(tmp_path)
   tests/test_report_rendering.py:
     e: test_render_summary_markdown_contains_required_sections,test_render_excluded_candidates_markdown_formats_details,test_render_delegation_markdown_empty_rows_message,test_render_service_boundary_markdown_empty_rows_message
     test_render_summary_markdown_contains_required_sections()

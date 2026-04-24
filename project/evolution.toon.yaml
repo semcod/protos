@@ -1,18 +1,43 @@
-# code2llm/evolution | 580 func | 23f | 2026-04-24
+# code2llm/evolution | 838 func | 24f | 2026-04-24
 
-NEXT[1] (ranked by impact):
-  [1] !  SPLIT-FUNC      main  CC=17  fan=23
+NEXT[7] (ranked by impact):
+  [1] !! SPLIT           protogate/cli.py
+      WHY: 748L, 0 classes, max CC=10
+      EFFORT: ~4h  IMPACT: 7480
+
+  [2] !! SPLIT-FUNC      generate_registry_markdown  CC=37  fan=15
+      WHY: CC=37 exceeds 15
+      EFFORT: ~1h  IMPACT: 555
+
+  [3] !! SPLIT-FUNC      json_schema_to_zod  CC=38  fan=12
+      WHY: CC=38 exceeds 15
+      EFFORT: ~1h  IMPACT: 456
+
+  [4] !! SPLIT-FUNC      run_cli  CC=38  fan=11
+      WHY: CC=38 exceeds 15
+      EFFORT: ~1h  IMPACT: 418
+
+  [5] !  SPLIT-FUNC      main  CC=17  fan=23
       WHY: CC=17 exceeds 15
       EFFORT: ~1h  IMPACT: 391
 
+  [6] !  SPLIT-FUNC      run_cli  CC=16  fan=17
+      WHY: CC=16 exceeds 15
+      EFFORT: ~1h  IMPACT: 272
 
-RISKS[0]: none
+  [7] !  SPLIT-FUNC      python_type_to_typescript  CC=20  fan=9
+      WHY: CC=20 exceeds 15
+      EFFORT: ~1h  IMPACT: 180
+
+
+RISKS[1]:
+  ⚠ Splitting protogate/cli.py may break 27 import paths
 
 METRICS-TARGET:
-  CC̄:          0.3 → ≤0.2
-  max-CC:      17 → ≤8
-  god-modules: 0 → 0
-  high-CC(≥15): 1 → ≤0
+  CC̄:          0.7 → ≤0.5
+  max-CC:      38 → ≤19
+  god-modules: 1 → 0
+  high-CC(≥15): 6 → ≤3
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -40,4 +65,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=0.4 → now CC̄=0.3
+  prev CC̄=0.7 → now CC̄=0.7
