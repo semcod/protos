@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-04-24
+
+### Docs
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update docs/delegation-plan.generated.json
+- Update docs/delegation-plan.generated.md
+- Update docs/protos-integration.md
+- Update project/README.md
+- Update project/context.md
+- Update reports/migration-discovery/delegation-decisions.md
+- Update reports/migration-discovery/delegation-plan.generated.md
+- ... and 5 more files
+
+### Other
+- Update VERSION
+- Update contracts/examples/identification/v1/identification.proto
+- Update generated/python/identification_v1_models.py
+- Update generated/python/search_v1_models.py
+- Update generated/python/user_v1_models.py
+- Update generated/python/user_v2_models.py
+- Update generated/ts/zod/identification_v1.ts
+- Update generated/ts/zod/search_v1.ts
+- Update generated/ts/zod/user_v1.ts
+- Update generated/ts/zod/user_v2.ts
+- ... and 35 more files
+
 ## [0.0.4] - 2026-04-24
 
 ### Docs

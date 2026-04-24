@@ -18,8 +18,10 @@ from pathlib import Path
 from typing import Any
 
 try:
+    from legacy_bridge.candidate_selection import is_delegable_candidate, parse_score
     from legacy_bridge.delegation_plan import build_output_row, render_markdown
 except ModuleNotFoundError:
+    from candidate_selection import is_delegable_candidate, parse_score
     from delegation_plan import build_output_row, render_markdown
 
 
@@ -50,13 +52,6 @@ def load_clusters(path: Path | None) -> dict[str, dict[str, Any]]:
         if isinstance(module, str):
             out[module] = row
     return out
-
-
-def parse_score(row: dict[str, Any]) -> float:
-    try:
-        return float(row.get("score", 0.0))
-    except (TypeError, ValueError):
-        return 0.0
 
 
 def dedupe_candidates(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -97,7 +92,7 @@ def main() -> int:
         print(f"[ERROR] input not found: {input_path}")
         return 1
 
-    rows = dedupe_candidates(load_candidates(input_path))
+    rows = [row for row in dedupe_candidates(load_candidates(input_path)) if is_delegable_candidate(row)]
     cluster_path = Path(args.clusters).resolve() if args.clusters else None
     clusters = load_clusters(cluster_path)
     rows.sort(key=parse_score, reverse=True)

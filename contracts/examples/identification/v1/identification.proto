@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package c2004.examples.identification.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Command: intent
+message IdentifyUserCommand {
+  string command_id = 1;
+  string identifier = 2;  // RFID/QR/barcode/manual
+  IdentifierType type = 3;
+}
+
+enum IdentifierType {
+  IDENTIFIER_TYPE_UNSPECIFIED = 0;
+  IDENTIFIER_TYPE_RFID = 1;
+  IDENTIFIER_TYPE_QR = 2;
+  IDENTIFIER_TYPE_BARCODE = 3;
+  IDENTIFIER_TYPE_MANUAL = 4;
+}
+
+// Read model: response shape
+message UserIdentificationReadModel {
+  string user_id = 1;
+  string display_name = 2;
+  repeated string roles = 3;
+  google.protobuf.Timestamp identified_at = 4;
+}
+
+// Event: what happened
+message UserIdentifiedEvent {
+  string event_id = 1;
+  string user_id = 2;
+  IdentifierType type = 3;
+  google.protobuf.Timestamp occurred_at = 4;
+}

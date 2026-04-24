@@ -1,5 +1,5 @@
 # goal.yaml - Goal configuration file
-# Generated: 2026-04-24 12:11:07
+# Generated: 2026-04-24 16:45:46
 # Documentation: https://github.com/wronai/goal#configuration
 #
 # This file configures Goal's behavior for:
@@ -13,7 +13,7 @@
 
 version: '1.0'
 project:
-  name: protos
+  name: protogate
   type:
   - python
   description: ''
@@ -21,7 +21,8 @@ versioning:
   strategy: semver
   files:
   - VERSION
-  - .venv/lib/python3.13/site-packages/httpcore/__init__.py:__version__
+  - pyproject.toml:version
+  - protogate/__init__.py:__version__
   bump_rules:
     patch: 10
     minor: 50
@@ -223,7 +224,7 @@ strategies:
   python:
     test: pytest tests/ -v
     build: python -m build
-    publish: twine upload dist/protos-{version}*
+    publish: twine upload dist/protogate-{version}*
     publish_enabled: true
     dependencies:
       file: requirements.txt
@@ -231,7 +232,7 @@ strategies:
   nodejs:
     test: npm test
     build: npm run build
-    publish: npm publish
+    publish: twine upload dist/protogate-{version}*
     publish_enabled: true
     dependencies:
       file: package-lock.json
@@ -239,7 +240,7 @@ strategies:
   rust:
     test: cargo test
     build: cargo build --release
-    publish: cargo publish
+    publish: twine upload dist/protogate-{version}*
     publish_enabled: true
     dependencies:
       file: Cargo.lock

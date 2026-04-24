@@ -1,34 +1,40 @@
-# redup/duplication | 10 groups | 38f 6436L | 2026-04-24
+# redup/duplication | 14 groups | 41f 7603L | 2026-04-24
 
 SUMMARY:
-  files_scanned: 38
-  total_lines:   6436
-  dup_groups:    10
-  dup_fragments: 23
-  saved_lines:   83
-  scan_ms:       5903
+  files_scanned: 41
+  total_lines:   7603
+  dup_groups:    14
+  dup_fragments: 31
+  saved_lines:   113
+  scan_ms:       6459
 
 HOTSPOTS[7] (files with most duplication):
-  scripts/legacy_bridge/analyze_service_boundaries.py  dup=30L  groups=5  frags=5  (0.5%)
-  scripts/legacy_bridge/detect_cqrs_pattern_clusters.py  dup=25L  groups=4  frags=4  (0.4%)
-  scripts/generate_pydantic.py  dup=12L  groups=1  frags=1  (0.2%)
+  scripts/generate_pydantic.py  dup=42L  groups=5  frags=5  (0.6%)
+  scripts/generate_zod.py  dup=42L  groups=5  frags=5  (0.6%)
+  scripts/legacy_bridge/analyze_service_boundaries.py  dup=30L  groups=5  frags=5  (0.4%)
+  scripts/legacy_bridge/detect_cqrs_pattern_clusters.py  dup=25L  groups=4  frags=4  (0.3%)
   scripts/generate_sql.py  dup=12L  groups=1  frags=1  (0.2%)
-  scripts/generate_zod.py  dup=12L  groups=1  frags=1  (0.2%)
-  gateway/main.py  dup=10L  groups=1  frags=2  (0.2%)
+  gateway/main.py  dup=10L  groups=1  frags=2  (0.1%)
   scripts/legacy_bridge/run_arch_migration_discovery.py  dup=8L  groups=2  frags=2  (0.1%)
 
-DUPLICATES[10] (ranked by impact):
+DUPLICATES[14] (ranked by impact):
   [1a1a5665e06d1f8a]   STRU  main  L=12 N=3 saved=24 sim=1.00
-      scripts/generate_pydantic.py:59-70  (main)
+      scripts/generate_pydantic.py:131-142  (main)
       scripts/generate_sql.py:82-93  (main)
-      scripts/generate_zod.py:52-63  (main)
+      scripts/generate_zod.py:114-125  (main)
+  [61fb05c14ef39274]   EXAC  _flatten_messages  L=11 N=2 saved=11 sim=1.00
+      scripts/generate_pydantic.py:35-45  (_flatten_messages)
+      scripts/generate_zod.py:36-46  (_flatten_messages)
+  [2a4922ec3dfa1bef]   EXAC  _flatten_enums  L=11 N=2 saved=11 sim=1.00
+      scripts/generate_pydantic.py:48-58  (_flatten_enums)
+      scripts/generate_zod.py:49-59  (_flatten_enums)
   [e140be6cf51d2681]   EXAC  read_text  L=5 N=3 saved=10 sim=1.00
       scripts/detect_migration_candidates.py:189-193  (read_text)
       scripts/legacy_bridge/analyze_service_boundaries.py:170-174  (read_text)
-      scripts/legacy_bridge/run_arch_migration_discovery.py:113-117  (read_text)
+      scripts/legacy_bridge/run_arch_migration_discovery.py:115-119  (read_text)
   [42491376f509549f]   EXAC  deep_merge  L=8 N=2 saved=8 sim=1.00
       scripts/legacy_bridge/analyze_service_boundaries.py:82-89  (deep_merge)
-      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:84-91  (deep_merge)
+      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:163-170  (deep_merge)
   [2b4dc3f0af97a67d]   STRU  __init__  L=4 N=3 saved=8 sim=1.00
       scripts/dual_writer.py:24-27  (__init__)
       scripts/idempotency_store.py:11-14  (__init__)
@@ -38,68 +44,92 @@ DUPLICATES[10] (ranked by impact):
       scripts/schema_registry.py:114-121  (_connect)
   [2bf86c6a91094d26]   EXAC  load_config  L=7 N=2 saved=7 sim=1.00
       scripts/legacy_bridge/analyze_service_boundaries.py:92-98  (load_config)
-      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:94-100  (load_config)
+      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:173-179  (load_config)
   [56a0a4b947778620]   EXAC  find  L=5 N=2 saved=5 sim=1.00
       scripts/legacy_bridge/analyze_service_boundaries.py:431-435  (find)
-      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:186-190  (find)
+      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:275-279  (find)
   [1c853fca582fc078]   EXAC  union  L=5 N=2 saved=5 sim=1.00
       scripts/legacy_bridge/analyze_service_boundaries.py:437-441  (union)
-      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:192-196  (union)
+      scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:281-285  (union)
   [f323e07cca628456]   STRU  health_module  L=5 N=2 saved=5 sim=1.00
       gateway/main.py:133-137  (health_module)
       gateway/main.py:146-150  (delegation_slice_detail)
+  [ddebd58cc0058ba6]   EXAC  walk  L=4 N=2 saved=4 sim=1.00
+      scripts/generate_pydantic.py:39-42  (walk)
+      scripts/generate_zod.py:40-43  (walk)
+  [1d1b3f6d77e9ac98]   EXAC  walk  L=4 N=2 saved=4 sim=1.00
+      scripts/generate_pydantic.py:52-55  (walk)
+      scripts/generate_zod.py:53-56  (walk)
   [cae7903dcb44e30d]   STRU  resolve_path  L=3 N=2 saved=3 sim=1.00
-      scripts/legacy_bridge/generate_migration_wave_plan.py:89-91  (resolve_path)
-      scripts/legacy_bridge/run_arch_migration_discovery.py:120-122  (resolve_output_dir)
+      scripts/legacy_bridge/generate_migration_wave_plan.py:95-97  (resolve_path)
+      scripts/legacy_bridge/run_arch_migration_discovery.py:122-124  (resolve_output_dir)
 
-REFACTOR[10] (ranked by priority):
+REFACTOR[14] (ranked by priority):
   [1] ○ extract_function   → scripts/utils/main.py
       WHY: 3 occurrences of 12-line block across 3 files — saves 24 lines
       FILES: scripts/generate_pydantic.py, scripts/generate_sql.py, scripts/generate_zod.py
-  [2] ○ extract_function   → scripts/utils/read_text.py
+  [2] ○ extract_function   → scripts/utils/_flatten_messages.py
+      WHY: 2 occurrences of 11-line block across 2 files — saves 11 lines
+      FILES: scripts/generate_pydantic.py, scripts/generate_zod.py
+  [3] ○ extract_function   → scripts/utils/_flatten_enums.py
+      WHY: 2 occurrences of 11-line block across 2 files — saves 11 lines
+      FILES: scripts/generate_pydantic.py, scripts/generate_zod.py
+  [4] ○ extract_function   → scripts/utils/read_text.py
       WHY: 3 occurrences of 5-line block across 3 files — saves 10 lines
       FILES: scripts/detect_migration_candidates.py, scripts/legacy_bridge/analyze_service_boundaries.py, scripts/legacy_bridge/run_arch_migration_discovery.py
-  [3] ○ extract_function   → scripts/legacy_bridge/utils/deep_merge.py
+  [5] ○ extract_function   → scripts/legacy_bridge/utils/deep_merge.py
       WHY: 2 occurrences of 8-line block across 2 files — saves 8 lines
       FILES: scripts/legacy_bridge/analyze_service_boundaries.py, scripts/legacy_bridge/detect_cqrs_pattern_clusters.py
-  [4] ○ extract_function   → scripts/utils/__init__.py
+  [6] ○ extract_function   → scripts/utils/__init__.py
       WHY: 3 occurrences of 4-line block across 3 files — saves 8 lines
       FILES: scripts/dual_writer.py, scripts/idempotency_store.py, scripts/search_index.py
-  [5] ○ extract_function   → scripts/utils/_connect.py
+  [7] ○ extract_function   → scripts/utils/_connect.py
       WHY: 2 occurrences of 8-line block across 2 files — saves 8 lines
       FILES: scripts/event_store.py, scripts/schema_registry.py
-  [6] ○ extract_function   → scripts/legacy_bridge/utils/load_config.py
+  [8] ○ extract_function   → scripts/legacy_bridge/utils/load_config.py
       WHY: 2 occurrences of 7-line block across 2 files — saves 7 lines
       FILES: scripts/legacy_bridge/analyze_service_boundaries.py, scripts/legacy_bridge/detect_cqrs_pattern_clusters.py
-  [7] ○ extract_function   → scripts/legacy_bridge/utils/find.py
+  [9] ○ extract_function   → scripts/legacy_bridge/utils/find.py
       WHY: 2 occurrences of 5-line block across 2 files — saves 5 lines
       FILES: scripts/legacy_bridge/analyze_service_boundaries.py, scripts/legacy_bridge/detect_cqrs_pattern_clusters.py
-  [8] ○ extract_function   → scripts/legacy_bridge/utils/union.py
+  [10] ○ extract_function   → scripts/legacy_bridge/utils/union.py
       WHY: 2 occurrences of 5-line block across 2 files — saves 5 lines
       FILES: scripts/legacy_bridge/analyze_service_boundaries.py, scripts/legacy_bridge/detect_cqrs_pattern_clusters.py
-  [9] ○ extract_function   → gateway/utils/health_module.py
+  [11] ○ extract_function   → gateway/utils/health_module.py
       WHY: 2 occurrences of 5-line block across 1 files — saves 5 lines
       FILES: gateway/main.py
-  [10] ○ extract_function   → scripts/legacy_bridge/utils/resolve_path.py
+  [12] ○ extract_function   → scripts/utils/walk.py
+      WHY: 2 occurrences of 4-line block across 2 files — saves 4 lines
+      FILES: scripts/generate_pydantic.py, scripts/generate_zod.py
+  [13] ○ extract_function   → scripts/utils/walk.py
+      WHY: 2 occurrences of 4-line block across 2 files — saves 4 lines
+      FILES: scripts/generate_pydantic.py, scripts/generate_zod.py
+  [14] ○ extract_function   → scripts/legacy_bridge/utils/resolve_path.py
       WHY: 2 occurrences of 3-line block across 2 files — saves 3 lines
       FILES: scripts/legacy_bridge/generate_migration_wave_plan.py, scripts/legacy_bridge/run_arch_migration_discovery.py
 
-QUICK_WINS[6] (low risk, high savings — do first):
+QUICK_WINS[8] (low risk, high savings — do first):
   [1] extract_function   saved=24L  → scripts/utils/main.py
       FILES: generate_pydantic.py, generate_sql.py, generate_zod.py
-  [2] extract_function   saved=10L  → scripts/utils/read_text.py
+  [2] extract_function   saved=11L  → scripts/utils/_flatten_messages.py
+      FILES: generate_pydantic.py, generate_zod.py
+  [3] extract_function   saved=11L  → scripts/utils/_flatten_enums.py
+      FILES: generate_pydantic.py, generate_zod.py
+  [4] extract_function   saved=10L  → scripts/utils/read_text.py
       FILES: detect_migration_candidates.py, analyze_service_boundaries.py, run_arch_migration_discovery.py
-  [3] extract_function   saved=8L  → scripts/legacy_bridge/utils/deep_merge.py
+  [5] extract_function   saved=8L  → scripts/legacy_bridge/utils/deep_merge.py
       FILES: analyze_service_boundaries.py, detect_cqrs_pattern_clusters.py
-  [4] extract_function   saved=8L  → scripts/utils/__init__.py
+  [6] extract_function   saved=8L  → scripts/utils/__init__.py
       FILES: dual_writer.py, idempotency_store.py, search_index.py
-  [5] extract_function   saved=8L  → scripts/utils/_connect.py
+  [7] extract_function   saved=8L  → scripts/utils/_connect.py
       FILES: event_store.py, schema_registry.py
-  [6] extract_function   saved=7L  → scripts/legacy_bridge/utils/load_config.py
+  [8] extract_function   saved=7L  → scripts/legacy_bridge/utils/load_config.py
       FILES: analyze_service_boundaries.py, detect_cqrs_pattern_clusters.py
 
-EFFORT_ESTIMATE (total ≈ 2.8h):
+EFFORT_ESTIMATE (total ≈ 3.8h):
   medium main                                saved=24L  ~48min
+  easy   _flatten_messages                   saved=11L  ~22min
+  easy   _flatten_enums                      saved=11L  ~22min
   easy   read_text                           saved=10L  ~20min
   easy   deep_merge                          saved=8L  ~16min
   easy   __init__                            saved=8L  ~16min
@@ -107,9 +137,8 @@ EFFORT_ESTIMATE (total ≈ 2.8h):
   easy   load_config                         saved=7L  ~14min
   easy   find                                saved=5L  ~10min
   easy   union                               saved=5L  ~10min
-  easy   health_module                       saved=5L  ~10min
-  easy   resolve_path                        saved=3L  ~6min
+  ... +4 more (~32min)
 
 METRICS-TARGET:
-  dup_groups:  10 → 0
-  saved_lines: 83 lines recoverable
+  dup_groups:  14 → 0
+  saved_lines: 113 lines recoverable

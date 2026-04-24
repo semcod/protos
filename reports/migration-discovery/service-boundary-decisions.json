@@ -1,0 +1,273 @@
+{
+  "count": 4,
+  "reason_counts": [
+    {
+      "reason": "delivery mode: decompose-before-extract",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: activities",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: assignments",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: auth",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: backups",
+      "count": 4
+    },
+    {
+      "reason": "coordination target: base.module.ts",
+      "count": 3
+    },
+    {
+      "reason": "coordination target: connect-data",
+      "count": 3
+    },
+    {
+      "reason": "backend groups covered: 39",
+      "count": 2
+    },
+    {
+      "reason": "coordination target: connect-config",
+      "count": 2
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 456",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-config",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 34",
+      "count": 1
+    },
+    {
+      "reason": "backend groups covered: 40",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 8",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 66",
+      "count": 1
+    },
+    {
+      "reason": "iframe readiness: 24",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-font",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-menu",
+      "count": 1
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 282",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-scenario",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 7",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 4",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 29",
+      "count": 1
+    },
+    {
+      "reason": "iframe readiness: 32",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-operator",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: module.interface.ts",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: template",
+      "count": 1
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 266",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-test",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 20",
+      "count": 1
+    },
+    {
+      "reason": "backend groups covered: 41",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 14",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 101",
+      "count": 1
+    },
+    {
+      "reason": "iframe-free extraction path",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-id",
+      "count": 1
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 260",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-menu",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 1",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 2",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 35",
+      "count": 1
+    },
+    {
+      "reason": "iframe readiness: 38",
+      "count": 1
+    }
+  ],
+  "rows": [
+    {
+      "module": "connect-config",
+      "service_slug": "service-config",
+      "priority": 456,
+      "delivery_mode": "decompose-before-extract",
+      "iframe_score": 24,
+      "page_count": 34,
+      "reasons": [
+        "selected as service-boundary candidate with priority 456",
+        "delivery mode: decompose-before-extract",
+        "service grouping target: service-config",
+        "page coverage: 34",
+        "backend groups covered: 40",
+        "cross-module targets: 8",
+        "shared dependency files: 66",
+        "iframe readiness: 24",
+        "backend scope: activities",
+        "backend scope: assignments",
+        "backend scope: auth",
+        "backend scope: backups",
+        "coordination target: base.module.ts",
+        "coordination target: connect-data",
+        "coordination target: connect-font",
+        "coordination target: connect-menu"
+      ]
+    },
+    {
+      "module": "connect-scenario",
+      "service_slug": "service-scenario",
+      "priority": 282,
+      "delivery_mode": "decompose-before-extract",
+      "iframe_score": 32,
+      "page_count": 7,
+      "reasons": [
+        "selected as service-boundary candidate with priority 282",
+        "delivery mode: decompose-before-extract",
+        "service grouping target: service-scenario",
+        "page coverage: 7",
+        "backend groups covered: 39",
+        "cross-module targets: 4",
+        "shared dependency files: 29",
+        "iframe readiness: 32",
+        "backend scope: activities",
+        "backend scope: assignments",
+        "backend scope: auth",
+        "backend scope: backups",
+        "coordination target: base.module.ts",
+        "coordination target: connect-operator",
+        "coordination target: module.interface.ts",
+        "coordination target: template"
+      ]
+    },
+    {
+      "module": "connect-test",
+      "service_slug": "service-test",
+      "priority": 266,
+      "delivery_mode": "decompose-before-extract",
+      "iframe_score": 0,
+      "page_count": 20,
+      "reasons": [
+        "selected as service-boundary candidate with priority 266",
+        "delivery mode: decompose-before-extract",
+        "service grouping target: service-test",
+        "page coverage: 20",
+        "backend groups covered: 41",
+        "cross-module targets: 14",
+        "shared dependency files: 101",
+        "iframe-free extraction path",
+        "backend scope: activities",
+        "backend scope: assignments",
+        "backend scope: auth",
+        "backend scope: backups",
+        "coordination target: base.module.ts",
+        "coordination target: connect-config",
+        "coordination target: connect-data",
+        "coordination target: connect-id"
+      ]
+    },
+    {
+      "module": "connect-menu",
+      "service_slug": "service-menu",
+      "priority": 260,
+      "delivery_mode": "decompose-before-extract",
+      "iframe_score": 38,
+      "page_count": 1,
+      "reasons": [
+        "selected as service-boundary candidate with priority 260",
+        "delivery mode: decompose-before-extract",
+        "service grouping target: service-menu",
+        "page coverage: 1",
+        "backend groups covered: 39",
+        "cross-module targets: 2",
+        "shared dependency files: 35",
+        "iframe readiness: 38",
+        "backend scope: activities",
+        "backend scope: assignments",
+        "backend scope: auth",
+        "backend scope: backups",
+        "coordination target: connect-config",
+        "coordination target: connect-data"
+      ]
+    }
+  ]
+}

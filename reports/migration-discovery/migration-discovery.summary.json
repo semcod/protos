@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T14:14:19.751554+00:00",
+  "generated_at": "2026-04-24T14:39:31.987462+00:00",
   "repo_root": "/home/tom/github/maskservice/c2004",
   "profile": {
     "languages": [
@@ -9,7 +9,7 @@
       },
       {
         "name": "python",
-        "files": 796
+        "files": 802
       },
       {
         "name": "javascript",
@@ -33,12 +33,14 @@
   },
   "counts": {
     "candidate_modules": 17,
+    "delegable_candidate_modules": 6,
+    "excluded_candidate_modules": 11,
     "service_boundary_modules": 30,
     "cqrs_pattern_modules": 11,
     "cqrs_clusters": 10,
     "migration_waves": 5,
     "recommended_services": 4,
-    "delegation_plan_modules": 17
+    "delegation_plan_modules": 6
   },
   "top_candidates": [
     "connect-reports-month",
@@ -46,6 +48,13 @@
     "connect-manager-library",
     ".swop",
     "project"
+  ],
+  "top_delegable_candidates": [
+    "connect-reports-month",
+    "connect-config-network",
+    "connect-manager-library",
+    "connect-id-user-list",
+    "connect-template"
   ],
   "top_service_candidates": [
     "connect-config",
@@ -67,6 +76,172 @@
     "Scenario Builder Core",
     "Menu Tree Contracts"
   ],
+  "service_boundary_decision_reasons": [
+    {
+      "reason": "delivery mode: decompose-before-extract",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: activities",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: assignments",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: auth",
+      "count": 4
+    },
+    {
+      "reason": "backend scope: backups",
+      "count": 4
+    },
+    {
+      "reason": "coordination target: base.module.ts",
+      "count": 3
+    },
+    {
+      "reason": "coordination target: connect-data",
+      "count": 3
+    },
+    {
+      "reason": "backend groups covered: 39",
+      "count": 2
+    },
+    {
+      "reason": "coordination target: connect-config",
+      "count": 2
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 456",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-config",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 34",
+      "count": 1
+    },
+    {
+      "reason": "backend groups covered: 40",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 8",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 66",
+      "count": 1
+    },
+    {
+      "reason": "iframe readiness: 24",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-font",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-menu",
+      "count": 1
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 282",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-scenario",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 7",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 4",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 29",
+      "count": 1
+    },
+    {
+      "reason": "iframe readiness: 32",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-operator",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: module.interface.ts",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: template",
+      "count": 1
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 266",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-test",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 20",
+      "count": 1
+    },
+    {
+      "reason": "backend groups covered: 41",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 14",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 101",
+      "count": 1
+    },
+    {
+      "reason": "iframe-free extraction path",
+      "count": 1
+    },
+    {
+      "reason": "coordination target: connect-id",
+      "count": 1
+    },
+    {
+      "reason": "selected as service-boundary candidate with priority 260",
+      "count": 1
+    },
+    {
+      "reason": "service grouping target: service-menu",
+      "count": 1
+    },
+    {
+      "reason": "page coverage: 1",
+      "count": 1
+    },
+    {
+      "reason": "cross-module targets: 2",
+      "count": 1
+    },
+    {
+      "reason": "shared dependency files: 35",
+      "count": 1
+    },
+    {
+      "reason": "iframe readiness: 38",
+      "count": 1
+    }
+  ],
   "artifacts": {
     "repository_profile_json": "/home/tom/github/semcod/protos/reports/migration-discovery/repository-profile.json",
     "repository_profile_md": "/home/tom/github/semcod/protos/reports/migration-discovery/repository-profile.md",
@@ -80,7 +255,217 @@
     "migration_wave_plan_md": "/home/tom/github/semcod/protos/reports/migration-discovery/migration-wave-plan.md",
     "delegation_plan_json": "/home/tom/github/semcod/protos/reports/migration-discovery/delegation-plan.generated.json",
     "delegation_plan_md": "/home/tom/github/semcod/protos/reports/migration-discovery/delegation-plan.generated.md",
+    "excluded_candidates_json": "/home/tom/github/semcod/protos/reports/migration-discovery/excluded-candidates.json",
+    "excluded_candidates_md": "/home/tom/github/semcod/protos/reports/migration-discovery/excluded-candidates.md",
+    "service_boundary_decisions_json": "/home/tom/github/semcod/protos/reports/migration-discovery/service-boundary-decisions.json",
+    "service_boundary_decisions_md": "/home/tom/github/semcod/protos/reports/migration-discovery/service-boundary-decisions.md",
+    "delegation_decisions_json": "/home/tom/github/semcod/protos/reports/migration-discovery/delegation-decisions.json",
+    "delegation_decisions_md": "/home/tom/github/semcod/protos/reports/migration-discovery/delegation-decisions.md",
     "summary_json": "/home/tom/github/semcod/protos/reports/migration-discovery/migration-discovery.summary.json",
     "summary_md": "/home/tom/github/semcod/protos/reports/migration-discovery/migration-discovery.summary.md"
-  }
+  },
+  "excluded_candidate_reasons": [
+    {
+      "reason": "not marked as service candidate and lacks delegated slice naming",
+      "count": 11
+    },
+    {
+      "reason": "recommended owner is legacy-host",
+      "count": 6
+    },
+    {
+      "reason": "extraction target is monolith-fragment",
+      "count": 6
+    },
+    {
+      "reason": "technical or container-level module",
+      "count": 5
+    },
+    {
+      "reason": "technical or container-level path",
+      "count": 4
+    },
+    {
+      "reason": "hidden or temporary module name",
+      "count": 1
+    },
+    {
+      "reason": "top-level application should not be delegated as a slice",
+      "count": 1
+    }
+  ],
+  "delegation_decision_reasons": [
+    {
+      "reason": "service signal: has docker packaging",
+      "count": 6
+    },
+    {
+      "reason": "cqrs cluster size: 1",
+      "count": 6
+    },
+    {
+      "reason": "service signal: exposes own API routes",
+      "count": 5
+    },
+    {
+      "reason": "service signal: has executable entrypoint",
+      "count": 5
+    },
+    {
+      "reason": "readiness signal: external imports: 4",
+      "count": 5
+    },
+    {
+      "reason": "readiness signal: api endpoints used: 0",
+      "count": 5
+    },
+    {
+      "reason": "service signal: has dedicated api/app directory",
+      "count": 4
+    },
+    {
+      "reason": "service signal: has vertical api+ui structure",
+      "count": 4
+    },
+    {
+      "reason": "readiness signal: cross-module imports: 0",
+      "count": 4
+    },
+    {
+      "reason": "estimated effort is medium",
+      "count": 3
+    },
+    {
+      "reason": "phase target is phase-3",
+      "count": 3
+    },
+    {
+      "reason": "phase target is phase-2",
+      "count": 2
+    },
+    {
+      "reason": "estimated effort is high",
+      "count": 2
+    },
+    {
+      "reason": "readiness signal: page imports: 0",
+      "count": 2
+    },
+    {
+      "reason": "selected as delegable slice with score 82.00",
+      "count": 1
+    },
+    {
+      "reason": "phase target is phase-1",
+      "count": 1
+    },
+    {
+      "reason": "estimated effort is low",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 2",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 7",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 380",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 71.17",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 20",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 17",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 2259",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 67.35",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 6",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 10",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 1518",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 40.00",
+      "count": 1
+    },
+    {
+      "reason": "service signal: owns db or migration assets",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 23",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 21",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 4508",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 7.56",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: cross-module imports: 2",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: external imports: 15",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: api endpoints used: 1",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 27",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 1493",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 4.00",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: cross-module imports: 6",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 23",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 4284",
+      "count": 1
+    }
+  ]
 }

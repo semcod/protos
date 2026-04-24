@@ -1,4 +1,5 @@
 flowchart TD
+    SUMD["SUMD<br/>198 funcs"]
     gateway__delegation["gateway.delegation<br/>7 funcs"]
     gateway__main["gateway.main<br/>16 funcs"]
     gateway__search_handler["gateway.search_handler<br/>2 funcs"]
@@ -8,12 +9,11 @@ flowchart TD
     scripts__event_store["scripts.event_store<br/>13 funcs"]
     scripts__generate_incremental["scripts.generate_incremental<br/>8 funcs"]
     scripts__generate_json_schema["scripts.generate_json_schema<br/>2 funcs"]
-    scripts__generate_pydantic["scripts.generate_pydantic<br/>2 funcs"]
+    scripts__generate_pydantic["scripts.generate_pydantic<br/>5 funcs"]
     scripts__generate_sql["scripts.generate_sql<br/>3 funcs"]
-    scripts__generate_zod["scripts.generate_zod<br/>2 funcs"]
-    scripts__legacy_bridge["scripts.legacy_bridge<br/>91 funcs"]
+    scripts__generate_zod["scripts.generate_zod<br/>5 funcs"]
+    scripts__legacy_bridge["scripts.legacy_bridge<br/>105 funcs"]
     scripts__legacy_registry["scripts.legacy_registry<br/>8 funcs"]
-    scripts__parse_proto["scripts.parse_proto<br/>2 funcs"]
     scripts__schema_registry["scripts.schema_registry<br/>16 funcs"]
     scripts__legacy_registry ==>|9| scripts__legacy_bridge
     gateway__main ==>|6| gateway__sse
@@ -21,13 +21,12 @@ flowchart TD
     gateway__main ==>|5| gateway__delegation
     scripts__legacy_bridge -->|3| scripts__detect_migration_candidates
     gateway__main -->|2| gateway__search_handler
-    scripts__schema_registry -->|2| scripts__parse_proto
-    scripts__legacy_registry -->|1| scripts__parse_proto
-    scripts__generate_incremental -->|1| scripts__parse_proto
-    scripts__generate_incremental -->|1| scripts__generate_zod
+    scripts__generate_incremental -->|2| SUMD
+    scripts__schema_registry -->|2| SUMD
+    scripts__legacy_registry -->|1| SUMD
     scripts__generate_incremental -->|1| scripts__generate_sql
-    scripts__generate_sql -->|1| scripts__parse_proto
-    scripts__generate_json_schema -->|1| scripts__parse_proto
-    scripts__generate_pydantic -->|1| scripts__parse_proto
+    scripts__generate_sql -->|1| SUMD
+    scripts__generate_json_schema -->|1| SUMD
     scripts__event_store -->|1| scripts__schema_registry
-    scripts__generate_zod -->|1| scripts__parse_proto
+    scripts__generate_pydantic -->|1| SUMD
+    scripts__generate_zod -->|1| SUMD

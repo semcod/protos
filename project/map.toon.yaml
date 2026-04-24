@@ -1,10 +1,10 @@
-# protos | 61f 8697L | python:58,shell:2,less:1 | 2026-04-24
-# stats: 212 func | 58 cls | 61 mod | CC̄=4.9 | critical:24 | cycles:0
-# alerts[5]: CC analyze_frontend_modules=43; CC build_service_components=34; CC analyze_candidate=28; CC discover_candidate_paths=20; CC select_execution_plan=20
-# hotspots[5]: analyze_frontend_modules fan=26; analyze_repository fan=24; run_discovery fan=24; build_ts_index fan=21; main fan=21
+# protos | 72f 10087L | python:65,typescript:4,shell:2,less:1 | 2026-04-24
+# stats: 241 func | 77 cls | 72 mod | CC̄=5.3 | critical:31 | cycles:0
+# alerts[5]: CC analyze_frontend_modules=43; CC build_service_components=34; CC analyze_candidate=28; CC parse_proto=28; CC build_service_boundary_decision_report=21
+# hotspots[5]: run_discovery fan=30; analyze_frontend_modules fan=26; analyze_repository fan=26; parse_proto fan=22; build_ts_index fan=21
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[61]:
+M[72]:
   adapters/legacy_to_proto/user_adapter.py,37
   adapters/proto_to_legacy/user_adapter.py,22
   app.doql.less,146
@@ -16,9 +16,19 @@ M[61]:
   gateway/tests/test_gateway.py,12
   gateway/user_handler.py,151
   gateway/ws.py,77
+  generated/python/identification_v1_models.py,32
+  generated/python/search_v1_models.py,36
+  generated/python/user_v1_models.py,17
+  generated/python/user_v2_models.py,22
+  generated/ts/zod/identification_v1.ts,33
+  generated/ts/zod/search_v1.ts,40
+  generated/ts/zod/user_v1.ts,19
+  generated/ts/zod/user_v2.ts,22
   project.sh,48
   scratch/smoke_test_dual_write.py,28
   scratch/smoke_test_search.py,31
+  scratch/swop_pipeline_service_id.py,90
+  scratch/swop_scan_c2004.py,238
   scripts/__init__.py,1
   scripts/conflict_resolver.py,237
   scripts/detect_migration_candidates.py,500
@@ -26,25 +36,26 @@ M[61]:
   scripts/event_store.py,399
   scripts/generate_incremental.py,149
   scripts/generate_json_schema.py,100
-  scripts/generate_pydantic.py,75
+  scripts/generate_pydantic.py,147
   scripts/generate_sql.py,98
-  scripts/generate_zod.py,68
+  scripts/generate_zod.py,130
   scripts/idempotency_store.py,42
   scripts/legacy_bridge/__init__.py,1
   scripts/legacy_bridge/analyze_service_boundaries.py,844
-  scripts/legacy_bridge/delegation_plan.py,119
-  scripts/legacy_bridge/detect_cqrs_pattern_clusters.py,370
+  scripts/legacy_bridge/candidate_selection.py,57
+  scripts/legacy_bridge/delegation_plan.py,151
+  scripts/legacy_bridge/detect_cqrs_pattern_clusters.py,477
   scripts/legacy_bridge/diff_engine.py,110
-  scripts/legacy_bridge/generate_delegation_plan.py,97
-  scripts/legacy_bridge/generate_migration_wave_plan.py,321
+  scripts/legacy_bridge/generate_delegation_plan.py,117
+  scripts/legacy_bridge/generate_migration_wave_plan.py,339
   scripts/legacy_bridge/migration_advisor.py,55
   scripts/legacy_bridge/migrator.py,70
   scripts/legacy_bridge/normalizer.py,99
   scripts/legacy_bridge/report_generator.py,57
-  scripts/legacy_bridge/run_arch_migration_discovery.py,460
+  scripts/legacy_bridge/run_arch_migration_discovery.py,824
   scripts/legacy_bridge/sync_check.py,40
   scripts/legacy_registry.py,246
-  scripts/parse_proto.py,160
+  scripts/parse_proto.py,269
   scripts/schema_registry.py,544
   scripts/search_index.py,62
   scripts/vector_clock.py,113
@@ -128,8 +139,42 @@ D:
   gateway/ws.py:
     e: ConnectionManager
     ConnectionManager: __init__(0),connect(1),disconnect(1),broadcast(2)  # Thread-safe (asyncio-safe) WebSocket broadcast pool.
+  generated/python/identification_v1_models.py:
+    e: IdentifierType,IdentifyUserCommand,UserIdentificationReadModel,UserIdentifiedEvent
+    IdentifierType:
+    IdentifyUserCommand:
+    UserIdentificationReadModel:
+    UserIdentifiedEvent:
+  generated/python/search_v1_models.py:
+    e: IndexEntryCommand,EntryIndexed,SearchRequest,SearchResponse,Result
+    IndexEntryCommand:
+    EntryIndexed:
+    SearchRequest:
+    SearchResponse:
+    Result:
+  generated/python/user_v1_models.py:
+    e: CreateUserCommand,GetUserQuery,User
+    CreateUserCommand:
+    GetUserQuery:
+    User:
+  generated/python/user_v2_models.py:
+    e: CreateUserCommand,GetUserQuery,User
+    CreateUserCommand:
+    GetUserQuery:
+    User:
   scratch/smoke_test_dual_write.py:
   scratch/smoke_test_search.py:
+  scratch/swop_pipeline_service_id.py:
+    e: main
+    main()
+  scratch/swop_scan_c2004.py:
+    e: _kind_by_suffix,_base_names,_kind_by_base,collect_ground_truth,run_swop_scan,main
+    _kind_by_suffix(name)
+    _base_names(node)
+    _kind_by_base(bases)
+    collect_ground_truth(root)
+    run_swop_scan()
+    main()
   scripts/__init__.py:
   scripts/conflict_resolver.py:
     e: _field_effects,UnresolvableConflictError,ConflictResolver
@@ -186,7 +231,10 @@ D:
     generate(ast;registry_id;registry_version)
     main()
   scripts/generate_pydantic.py:
-    e: generate,main
+    e: _flatten_messages,_flatten_enums,_py_type,generate,main
+    _flatten_messages(ast)
+    _flatten_enums(ast)
+    _py_type(field;message_names;enum_names)
     generate(ast)
     main()
   scripts/generate_sql.py:
@@ -195,7 +243,10 @@ D:
     generate_sql(ast)
     main()
   scripts/generate_zod.py:
-    e: to_zod,main
+    e: _flatten_messages,_flatten_enums,_zod_type,to_zod,main
+    _flatten_messages(ast)
+    _flatten_enums(ast)
+    _zod_type(field;message_names;enum_names)
     to_zod(ast)
     main()
   scripts/idempotency_store.py:
@@ -243,15 +294,23 @@ D:
     build_markdown(payload)
     analyze(repo_root;config;top_services)
     main()
+  scripts/legacy_bridge/candidate_selection.py:
+    e: parse_score,get_candidate_exclusion_reasons,is_delegable_candidate
+    parse_score(row)
+    get_candidate_exclusion_reasons(row)
+    is_delegable_candidate(row)
   scripts/legacy_bridge/delegation_plan.py:
-    e: to_slice_name,build_steps,build_slice_blueprint,build_output_row,render_markdown
+    e: _to_float,_normalize_shared_types_package,_normalize_reasons,to_slice_name,build_steps,build_slice_blueprint,build_output_row,render_markdown
+    _to_float(value;default)
+    _normalize_shared_types_package(value)
+    _normalize_reasons(value)
     to_slice_name(module)
     build_steps(module)
     build_slice_blueprint(module)
     build_output_row(row;cluster_meta)
     render_markdown(rows;limit;clusters)
   scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:
-    e: deep_merge,load_config,normalize_config,parse_args,read_text,load_candidate_scores,module_from_types_path,split_tokens,classify_pattern,jaccard,assign_clusters,analyze_repository,render_markdown,main,ModulePattern
+    e: deep_merge,load_config,normalize_config,parse_args,read_text,load_candidate_scores,module_from_types_path,split_tokens,classify_pattern,jaccard,assign_clusters,shared_tokens_for_module,analyze_repository,render_markdown,main,ModulePattern
     ModulePattern:
     deep_merge(base;override)
     load_config(config_path)
@@ -264,6 +323,7 @@ D:
     classify_pattern(commands;events;config)
     jaccard(left;right)
     assign_clusters(signature_map;pattern_map;threshold)
+    shared_tokens_for_module(repo_root;module)
     analyze_repository(repo_root;config;candidate_scores)
     render_markdown(payload)
     main()
@@ -274,9 +334,10 @@ D:
     DiffReport:
     diff_fields(legacy_fields;proto_fields)
   scripts/legacy_bridge/generate_delegation_plan.py:
-    e: load_candidates,load_clusters,parse_args,main
+    e: load_candidates,load_clusters,dedupe_candidates,parse_args,main
     load_candidates(path)
     load_clusters(path)
+    dedupe_candidates(rows)
     parse_args()
     main()
   scripts/legacy_bridge/generate_migration_wave_plan.py:
@@ -308,16 +369,23 @@ D:
     e: generate_markdown_report
     generate_markdown_report(subject;legacy_version;proto_version;report;suggestion)
   scripts/legacy_bridge/run_arch_migration_discovery.py:
-    e: parse_args,read_text,resolve_output_dir,profile_repository,render_repository_profile_markdown,render_module_candidates_markdown,build_delegation_plan,build_summary,render_summary_markdown,write_text,write_json,relative_artifact_path,run_discovery,main
+    e: parse_args,read_text,resolve_output_dir,profile_repository,render_repository_profile_markdown,render_module_candidates_markdown,_parse_score,build_excluded_candidates_report,build_service_boundary_decision_report,build_delegation_decision_report,build_delegation_plan,build_summary,render_summary_markdown,render_excluded_candidates_markdown,render_delegation_decisions_markdown,render_service_boundary_decisions_markdown,write_text,write_json,relative_artifact_path,run_discovery,main
     parse_args()
     read_text(path)
     resolve_output_dir(repo_root;raw_output_dir)
     profile_repository(repo_root;config)
     render_repository_profile_markdown(profile)
     render_module_candidates_markdown(rows)
-    build_delegation_plan(rows;limit)
-    build_summary(repo_root;profile;candidate_rows;service_boundary_payload;cqrs_pattern_payload;delegation_rows;wave_plan_payload;artifact_paths)
+    _parse_score(row)
+    build_excluded_candidates_report(rows)
+    build_service_boundary_decision_report(payload)
+    build_delegation_decision_report(rows)
+    build_delegation_plan(rows;limit;clusters_by_module)
+    build_summary(repo_root;profile;candidate_rows;service_boundary_payload;cqrs_pattern_payload;delegation_rows;wave_plan_payload;artifact_paths;service_boundary_decisions_payload)
     render_summary_markdown(summary)
+    render_excluded_candidates_markdown(payload)
+    render_delegation_decisions_markdown(payload)
+    render_service_boundary_decisions_markdown(payload)
     write_text(path;content)
     write_json(path;payload)
     relative_artifact_path(path;repo_root)
@@ -332,8 +400,13 @@ D:
     LegacySchemaRegistry: __init__(1),_init_db(0),register(6),_get_next_version(2),get_latest(2),_row_to_sv(1),list_schemas(0)
     main()
   scripts/parse_proto.py:
-    e: _parse_reserved_numbers,parse_proto
+    e: _parse_reserved_numbers,_to_dict,parse_proto,EnumValue,ProtoEnum,Field,Message
+    EnumValue:
+    ProtoEnum:
+    Field:
+    Message:
     _parse_reserved_numbers(token)
+    _to_dict(obj)
     parse_proto(file_path)
   scripts/schema_registry.py:
     e: _connect,_diff_messages,check_compatibility,_sha256_file,_cli,IncompatibleSchemaError,SchemaVersion,SchemaRegistry

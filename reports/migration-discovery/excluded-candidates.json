@@ -1,0 +1,168 @@
+{
+  "count": 11,
+  "reason_counts": [
+    {
+      "reason": "not marked as service candidate and lacks delegated slice naming",
+      "count": 11
+    },
+    {
+      "reason": "recommended owner is legacy-host",
+      "count": 6
+    },
+    {
+      "reason": "extraction target is monolith-fragment",
+      "count": 6
+    },
+    {
+      "reason": "technical or container-level module",
+      "count": 5
+    },
+    {
+      "reason": "technical or container-level path",
+      "count": 4
+    },
+    {
+      "reason": "hidden or temporary module name",
+      "count": 1
+    },
+    {
+      "reason": "top-level application should not be delegated as a slice",
+      "count": 1
+    }
+  ],
+  "rows": [
+    {
+      "module": ".swop",
+      "path": "modules/.swop",
+      "kind": "component",
+      "score": 55.0,
+      "phase": "phase-2",
+      "reasons": [
+        "hidden or temporary module name",
+        "recommended owner is legacy-host",
+        "extraction target is monolith-fragment",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "project",
+      "path": "modules/project",
+      "kind": "component",
+      "score": 55.0,
+      "phase": "phase-2",
+      "reasons": [
+        "technical or container-level module",
+        "recommended owner is legacy-host",
+        "extraction target is monolith-fragment",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "testql-scenarios",
+      "path": "modules/testql-scenarios",
+      "kind": "component",
+      "score": 55.0,
+      "phase": "phase-2",
+      "reasons": [
+        "recommended owner is legacy-host",
+        "extraction target is monolith-fragment",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "site",
+      "path": "site",
+      "kind": "frontend",
+      "score": 46.65,
+      "phase": "phase-3",
+      "reasons": [
+        "technical or container-level module",
+        "technical or container-level path",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "env",
+      "path": "env",
+      "kind": "component",
+      "score": 40.0,
+      "phase": "phase-3",
+      "reasons": [
+        "technical or container-level module",
+        "technical or container-level path",
+        "recommended owner is legacy-host",
+        "extraction target is monolith-fragment",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "encoder-control",
+      "path": "services/encoder-control",
+      "kind": "service",
+      "score": 39.0,
+      "phase": "phase-3",
+      "reasons": [
+        "recommended owner is legacy-host",
+        "extraction target is monolith-fragment",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "desktop",
+      "path": "desktop",
+      "kind": "frontend",
+      "score": 35.0,
+      "phase": "phase-3",
+      "reasons": [
+        "recommended owner is legacy-host",
+        "extraction target is monolith-fragment",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "fleet-workshop-manager",
+      "path": "services/backend/fleet-workshop-manager",
+      "kind": "service",
+      "score": 27.5,
+      "phase": "phase-3",
+      "reasons": [
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "backend",
+      "path": "backend",
+      "kind": "application",
+      "score": 0.0,
+      "phase": "phase-3",
+      "reasons": [
+        "technical or container-level module",
+        "technical or container-level path",
+        "top-level application should not be delegated as a slice",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "fleet-data-manager",
+      "path": "services/backend/fleet-data-manager",
+      "kind": "service",
+      "score": 0.0,
+      "phase": "phase-3",
+      "reasons": [
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    },
+    {
+      "module": "frontend",
+      "path": "frontend",
+      "kind": "frontend",
+      "score": 0.0,
+      "phase": "phase-3",
+      "reasons": [
+        "technical or container-level module",
+        "technical or container-level path",
+        "not marked as service candidate and lacks delegated slice naming"
+      ]
+    }
+  ]
+}

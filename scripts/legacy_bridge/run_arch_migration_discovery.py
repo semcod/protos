@@ -24,6 +24,7 @@ except ModuleNotFoundError:
     from scripts.detect_migration_candidates import analyze_repository
 
 try:
+    from legacy_bridge.candidate_selection import get_candidate_exclusion_reasons, is_delegable_candidate, parse_score
     from legacy_bridge.analyze_service_boundaries import analyze as analyze_service_boundaries
     from legacy_bridge.analyze_service_boundaries import build_markdown as build_service_boundaries_markdown
     from legacy_bridge.analyze_service_boundaries import load_config as load_service_boundary_config
@@ -32,6 +33,7 @@ try:
     from legacy_bridge.delegation_plan import build_output_row, render_markdown as render_delegation_markdown
     from legacy_bridge.generate_migration_wave_plan import build_waves, render_markdown as render_wave_plan_markdown
 except ModuleNotFoundError:
+    from candidate_selection import get_candidate_exclusion_reasons, is_delegable_candidate, parse_score
     from analyze_service_boundaries import analyze as analyze_service_boundaries
     from analyze_service_boundaries import build_markdown as build_service_boundaries_markdown
     from analyze_service_boundaries import load_config as load_service_boundary_config
@@ -229,10 +231,163 @@ def render_module_candidates_markdown(rows: list[dict[str, Any]]) -> str:
 
 
 def _parse_score(row: dict[str, Any]) -> float:
-    try:
-        return float(row.get("score", 0.0))
-    except (TypeError, ValueError):
-        return 0.0
+    return parse_score(row)
+
+
+def build_excluded_candidates_report(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    excluded_rows: list[dict[str, Any]] = []
+    reason_counts: Counter[str] = Counter()
+
+    for row in rows:
+        reasons = get_candidate_exclusion_reasons(row)
+        if not reasons:
+            continue
+        for reason in reasons:
+            reason_counts[reason] += 1
+        excluded_rows.append(
+            {
+                "module": str(row.get("module", "")),
+                "path": str(row.get("path", "")),
+                "kind": str(row.get("kind", "")),
+                "score": _parse_score(row),
+                "phase": str(row.get("phase", "n/a")),
+                "reasons": reasons,
+            }
+        )
+
+    excluded_rows.sort(key=lambda item: (-float(item.get("score", 0.0)), item.get("module", "")))
+    return {
+        "count": len(excluded_rows),
+        "reason_counts": [{"reason": reason, "count": count} for reason, count in reason_counts.most_common()],
+        "rows": excluded_rows,
+    }
+
+
+def build_service_boundary_decision_report(payload: dict[str, Any]) -> dict[str, Any]:
+    selected_rows: list[dict[str, Any]] = []
+    reason_counts: Counter[str] = Counter()
+
+    for row in payload.get("recommended_service_candidates", []):
+        if not isinstance(row, dict):
+            continue
+
+        module = str(row.get("module", ""))
+        service_slug = str(row.get("service_slug", "n/a"))
+        page_count = int(row.get("page_count", 0) or 0)
+        iframe_score = int(row.get("iframe_score", 0) or 0)
+        priority = int(row.get("extraction_priority", 0) or 0)
+        delivery_mode = str(row.get("delivery_mode", "n/a"))
+        backend_groups = row.get("backend_route_groups", []) if isinstance(row.get("backend_route_groups"), list) else []
+        cross_targets = row.get("cross_module_targets", []) if isinstance(row.get("cross_module_targets"), list) else []
+        companion_modules = row.get("companion_modules", []) if isinstance(row.get("companion_modules"), list) else []
+        shared_deps = row.get("shared_dependency_files", []) if isinstance(row.get("shared_dependency_files"), list) else []
+
+        reasons = [
+            f"selected as service-boundary candidate with priority {priority}",
+            f"delivery mode: {delivery_mode}",
+            f"service grouping target: {service_slug}",
+        ]
+        if page_count > 0:
+            reasons.append(f"page coverage: {page_count}")
+        if backend_groups:
+            reasons.append(f"backend groups covered: {len(backend_groups)}")
+        if cross_targets:
+            reasons.append(f"cross-module targets: {len(cross_targets)}")
+        if companion_modules:
+            reasons.append(f"companion modules: {len(companion_modules)}")
+        if shared_deps:
+            reasons.append(f"shared dependency files: {len(shared_deps)}")
+        if iframe_score >= 60:
+            reasons.append(f"strong iframe readiness: {iframe_score}")
+        elif iframe_score > 0:
+            reasons.append(f"iframe readiness: {iframe_score}")
+        else:
+            reasons.append("iframe-free extraction path")
+
+        for backend_group in backend_groups[:4]:
+            reasons.append(f"backend scope: {backend_group}")
+        for target in cross_targets[:4]:
+            reasons.append(f"coordination target: {target}")
+
+        for reason in reasons:
+            reason_counts[reason] += 1
+
+        selected_rows.append(
+            {
+                "module": module,
+                "service_slug": service_slug,
+                "priority": priority,
+                "delivery_mode": delivery_mode,
+                "iframe_score": iframe_score,
+                "page_count": page_count,
+                "reasons": reasons,
+            }
+        )
+
+    selected_rows.sort(key=lambda item: (-item["priority"], item["module"]))
+    return {
+        "count": len(selected_rows),
+        "reason_counts": [{"reason": reason, "count": count} for reason, count in reason_counts.most_common()],
+        "rows": selected_rows,
+    }
+
+
+def build_delegation_decision_report(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    selected_rows: list[dict[str, Any]] = []
+    reason_counts: Counter[str] = Counter()
+
+    for row in rows:
+        module = str(row.get("module", ""))
+        cqrs = row.get("cqrs", {}) if isinstance(row.get("cqrs"), dict) else {}
+        readiness = row.get("readiness", {}) if isinstance(row.get("readiness"), dict) else {}
+        reasons: list[str] = []
+
+        phase = str(readiness.get("phase", "n/a"))
+        effort = str(readiness.get("effort", "n/a"))
+        score = _parse_score(readiness if isinstance(readiness, dict) else row)
+        service_reasons = row.get("service_reasons", []) if isinstance(row.get("service_reasons"), list) else []
+        readiness_reasons = readiness.get("reasons", []) if isinstance(readiness.get("reasons"), list) else []
+        cqrs_pattern = str(cqrs.get("pattern", "n/a"))
+        cluster_size = int(cqrs.get("cluster_size", 0) or 0)
+        command_count = int(cqrs.get("command_count", 0) or 0)
+        event_count = int(cqrs.get("event_count", 0) or 0)
+
+        reasons.append(f"selected as delegable slice with score {score:.2f}")
+        reasons.append(f"phase target is {phase}")
+        reasons.append(f"estimated effort is {effort}")
+        if service_reasons:
+            for reason in service_reasons[:5]:
+                reasons.append(f"service signal: {reason}")
+        if cqrs_pattern != "n/a":
+            reasons.append(f"cqrs pattern detected: {cqrs_pattern}")
+        if cluster_size > 0:
+            reasons.append(f"cqrs cluster size: {cluster_size}")
+        if command_count or event_count:
+            reasons.append(f"cqrs token coverage: {command_count} commands / {event_count} events")
+        for reason in readiness_reasons[:6]:
+            reasons.append(f"readiness signal: {reason}")
+
+        for reason in reasons:
+            reason_counts[reason] += 1
+
+        selected_rows.append(
+            {
+                "module": module,
+                "score": score,
+                "phase": phase,
+                "effort": effort,
+                "cqrs_pattern": cqrs_pattern,
+                "shared_types_package": str(cqrs.get("shared_types_package", "n/a")),
+                "reasons": reasons,
+            }
+        )
+
+    selected_rows.sort(key=lambda item: (-item["score"], item["module"]))
+    return {
+        "count": len(selected_rows),
+        "reason_counts": [{"reason": reason, "count": count} for reason, count in reason_counts.most_common()],
+        "rows": selected_rows,
+    }
 
 
 def build_delegation_plan(
@@ -241,7 +396,8 @@ def build_delegation_plan(
     clusters_by_module: dict[str, dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], str]:
     clusters_by_module = clusters_by_module or {}
-    sorted_rows = sorted(rows, key=_parse_score, reverse=True)
+    delegable_rows = [row for row in rows if is_delegable_candidate(row)]
+    sorted_rows = sorted(delegable_rows, key=_parse_score, reverse=True)
     selected = [
         build_output_row(row, clusters_by_module.get(str(row.get("module", "")), {}))
         for row in sorted_rows[:limit]
@@ -259,7 +415,9 @@ def build_summary(
     delegation_rows: list[dict[str, Any]],
     wave_plan_payload: dict[str, Any],
     artifact_paths: dict[str, str],
+    service_boundary_decisions_payload: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    service_boundary_decisions_payload = service_boundary_decisions_payload or {}
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "repo_root": str(repo_root),
@@ -270,6 +428,8 @@ def build_summary(
         },
         "counts": {
             "candidate_modules": len(candidate_rows),
+            "delegable_candidate_modules": len([row for row in candidate_rows if is_delegable_candidate(row)]),
+            "excluded_candidate_modules": len([row for row in candidate_rows if not is_delegable_candidate(row)]),
             "service_boundary_modules": len(service_boundary_payload.get("frontend_modules", [])),
             "cqrs_pattern_modules": len(cqrs_pattern_payload.get("rows", [])),
             "cqrs_clusters": len(cqrs_pattern_payload.get("clusters", [])),
@@ -278,9 +438,11 @@ def build_summary(
             "delegation_plan_modules": len(delegation_rows),
         },
         "top_candidates": [row["module"] for row in candidate_rows[:5]],
+        "top_delegable_candidates": [row["module"] for row in sorted((row for row in candidate_rows if is_delegable_candidate(row)), key=_parse_score, reverse=True)[:5]],
         "top_service_candidates": [row["module"] for row in service_boundary_payload.get("recommended_service_candidates", [])[:5]],
         "top_cqrs_pattern_candidates": [row["module"] for row in cqrs_pattern_payload.get("rows", [])[:5]],
         "top_migration_waves": [w["wave_name"] for w in wave_plan_payload.get("waves", [])[:5]],
+        "service_boundary_decision_reasons": service_boundary_decisions_payload.get("reason_counts", []),
         "artifacts": artifact_paths,
     }
 
@@ -305,7 +467,16 @@ def render_summary_markdown(summary: dict[str, Any]) -> str:
         lines.append(f"| {key} | {value} |")
     lines.extend([
         "",
-        "## Top migration candidates",
+        "## Top delegable candidates",
+        "",
+    ])
+    for item in summary.get("top_delegable_candidates", []):
+        lines.append(f"- `{item}`")
+    if not summary.get("top_delegable_candidates"):
+        lines.append("- `none`")
+    lines.extend([
+        "",
+        "## Top raw migration candidates",
         "",
     ])
     for item in summary["top_candidates"]:
@@ -320,6 +491,33 @@ def render_summary_markdown(summary: dict[str, Any]) -> str:
     for item in summary["top_service_candidates"]:
         lines.append(f"- `{item}`")
     if not summary["top_service_candidates"]:
+        lines.append("- `none`")
+    lines.extend([
+        "",
+        "## Service-boundary decision reasons",
+        "",
+    ])
+    for item in summary.get("service_boundary_decision_reasons", [])[:10]:
+        lines.append(f"- `{item['reason']}`: {item['count']}")
+    if not summary.get("service_boundary_decision_reasons"):
+        lines.append("- `none`")
+    lines.extend([
+        "",
+        "## Excluded candidate reasons",
+        "",
+    ])
+    for item in summary.get("excluded_candidate_reasons", [])[:10]:
+        lines.append(f"- `{item['reason']}`: {item['count']}")
+    if not summary.get("excluded_candidate_reasons"):
+        lines.append("- `none`")
+    lines.extend([
+        "",
+        "## Delegation decision reasons",
+        "",
+    ])
+    for item in summary.get("delegation_decision_reasons", [])[:10]:
+        lines.append(f"- `{item['reason']}`: {item['count']}")
+    if not summary.get("delegation_decision_reasons"):
         lines.append("- `none`")
     lines.extend([
         "",
@@ -340,6 +538,116 @@ def render_summary_markdown(summary: dict[str, Any]) -> str:
     for name, path in sorted(summary["artifacts"].items()):
         lines.append(f"| {name} | `{path}` |")
     return "\n".join(lines) + "\n"
+
+
+def render_excluded_candidates_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Excluded Delegation Candidates",
+        "",
+        f"Total excluded candidates: {payload['count']}",
+        "",
+        "## Exclusion reasons",
+        "",
+    ]
+    for item in payload.get("reason_counts", []):
+        lines.append(f"- `{item['reason']}`: {item['count']}")
+    if not payload.get("reason_counts"):
+        lines.append("- `none`")
+
+    lines.extend([
+        "",
+        "## Excluded candidates",
+        "",
+    ])
+    for row in payload.get("rows", []):
+        lines.append(f"### Excluded: {row['module'] or 'unknown'}")
+        lines.append("")
+        lines.append(f"- Path: `{row['path'] or '-'}`")
+        lines.append(f"- Kind: `{row['kind'] or '-'}`")
+        lines.append(f"- Score: `{row['score']:.2f}`")
+        lines.append(f"- Phase: `{row['phase']}`")
+        lines.append("- Reasons:")
+        for reason in row.get("reasons", []):
+            lines.append(f"  - {reason}")
+        lines.append("")
+    if not payload.get("rows"):
+        lines.append("No excluded candidates.")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def render_delegation_decisions_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Delegation Decision Rationale",
+        "",
+        f"Total selected delegation candidates: {payload['count']}",
+        "",
+        "## Repeated decision signals",
+        "",
+    ]
+    for item in payload.get("reason_counts", [])[:20]:
+        lines.append(f"- `{item['reason']}`: {item['count']}")
+    if not payload.get("reason_counts"):
+        lines.append("- `none`")
+
+    lines.extend([
+        "",
+        "## Selected candidates",
+        "",
+    ])
+    for row in payload.get("rows", []):
+        lines.append(f"### Selected: {row['module']}")
+        lines.append("")
+        lines.append(f"- Score: `{row['score']:.2f}`")
+        lines.append(f"- Phase: `{row['phase']}`")
+        lines.append(f"- Effort: `{row['effort']}`")
+        lines.append(f"- CQRS pattern: `{row['cqrs_pattern']}`")
+        lines.append(f"- Shared types package: `{row['shared_types_package']}`")
+        lines.append("- Why selected:")
+        for reason in row.get("reasons", []):
+            lines.append(f"  - {reason}")
+        lines.append("")
+    if not payload.get("rows"):
+        lines.append("No selected delegation candidates.")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def render_service_boundary_decisions_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Service Boundary Decision Rationale",
+        "",
+        f"Total recommended service candidates: {payload['count']}",
+        "",
+        "## Repeated decision signals",
+        "",
+    ]
+    for item in payload.get("reason_counts", [])[:20]:
+        lines.append(f"- `{item['reason']}`: {item['count']}")
+    if not payload.get("reason_counts"):
+        lines.append("- `none`")
+
+    lines.extend([
+        "",
+        "## Recommended candidates",
+        "",
+    ])
+    for row in payload.get("rows", []):
+        lines.append(f"### Recommended: {row['module']}")
+        lines.append("")
+        lines.append(f"- Service slug: `{row['service_slug']}`")
+        lines.append(f"- Priority: `{row['priority']}`")
+        lines.append(f"- Delivery mode: `{row['delivery_mode']}`")
+        lines.append(f"- Iframe score: `{row['iframe_score']}`")
+        lines.append(f"- Pages: `{row['page_count']}`")
+        lines.append("- Why selected:")
+        for reason in row.get("reasons", []):
+            lines.append(f"  - {reason}")
+        lines.append("")
+    if not payload.get("rows"):
+        lines.append("No recommended service candidates.")
+        lines.append("")
+    return "\n".join(lines)
 
 
 def write_text(path: Path, content: str) -> None:
@@ -371,6 +679,7 @@ def run_discovery(
 
     profile = profile_repository(repo_root, config)
     candidate_rows = analyze_repository(repo_root)
+    excluded_candidates_payload = build_excluded_candidates_report(candidate_rows)
     service_boundary_payload = analyze_service_boundaries(repo_root, config, top_services=top_services)
     cqrs_pattern_payload = analyze_cqrs_pattern_clusters(
         repo_root,
@@ -388,6 +697,8 @@ def run_discovery(
         delegation_limit,
         clusters_by_module,
     )
+    service_boundary_decisions_payload = build_service_boundary_decision_report(service_boundary_payload)
+    delegation_decisions_payload = build_delegation_decision_report(delegation_rows)
 
     # Generate migration wave plan
     waves = build_waves(cqrs_pattern_payload, candidate_rows, max_waves=5)
@@ -409,6 +720,12 @@ def run_discovery(
         "migration_wave_plan_md": output_dir / "migration-wave-plan.md",
         "delegation_plan_json": output_dir / "delegation-plan.generated.json",
         "delegation_plan_md": output_dir / "delegation-plan.generated.md",
+        "excluded_candidates_json": output_dir / "excluded-candidates.json",
+        "excluded_candidates_md": output_dir / "excluded-candidates.md",
+        "service_boundary_decisions_json": output_dir / "service-boundary-decisions.json",
+        "service_boundary_decisions_md": output_dir / "service-boundary-decisions.md",
+        "delegation_decisions_json": output_dir / "delegation-decisions.json",
+        "delegation_decisions_md": output_dir / "delegation-decisions.md",
     }
 
     write_json(artifacts["repository_profile_json"], profile)
@@ -423,9 +740,27 @@ def run_discovery(
     write_text(artifacts["migration_wave_plan_md"], wave_plan_markdown)
     write_json(artifacts["delegation_plan_json"], delegation_rows)
     write_text(artifacts["delegation_plan_md"], delegation_markdown)
+    write_json(artifacts["excluded_candidates_json"], excluded_candidates_payload)
+    write_text(artifacts["excluded_candidates_md"], render_excluded_candidates_markdown(excluded_candidates_payload))
+    write_json(artifacts["service_boundary_decisions_json"], service_boundary_decisions_payload)
+    write_text(artifacts["service_boundary_decisions_md"], render_service_boundary_decisions_markdown(service_boundary_decisions_payload))
+    write_json(artifacts["delegation_decisions_json"], delegation_decisions_payload)
+    write_text(artifacts["delegation_decisions_md"], render_delegation_decisions_markdown(delegation_decisions_payload))
 
     artifact_paths = {name: relative_artifact_path(path, repo_root) for name, path in artifacts.items()}
-    summary = build_summary(repo_root, profile, candidate_rows, service_boundary_payload, cqrs_pattern_payload, delegation_rows, wave_plan_payload, artifact_paths)
+    summary = build_summary(
+        repo_root,
+        profile,
+        candidate_rows,
+        service_boundary_payload,
+        cqrs_pattern_payload,
+        delegation_rows,
+        wave_plan_payload,
+        artifact_paths,
+        service_boundary_decisions_payload,
+    )
+    summary["excluded_candidate_reasons"] = excluded_candidates_payload.get("reason_counts", [])
+    summary["delegation_decision_reasons"] = delegation_decisions_payload.get("reason_counts", [])
     artifacts["summary_json"] = output_dir / "migration-discovery.summary.json"
     artifacts["summary_md"] = output_dir / "migration-discovery.summary.md"
     write_json(artifacts["summary_json"], summary)
@@ -441,9 +776,12 @@ def run_discovery(
         "profile": profile,
         "module_candidates": candidate_rows,
         "service_boundaries": service_boundary_payload,
+        "service_boundary_decisions": service_boundary_decisions_payload,
         "cqrs_pattern_clusters": cqrs_pattern_payload,
         "migration_wave_plan": wave_plan_payload,
         "delegation_plan": delegation_rows,
+        "excluded_candidates": excluded_candidates_payload,
+        "delegation_decisions": delegation_decisions_payload,
         "summary": summary,
     }
 

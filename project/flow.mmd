@@ -4,6 +4,9 @@ flowchart TD
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
 
     subgraph Core
+        generated__ts__zod__user_v1__CreateUserCommandSchema["CreateUserCommandSchema"]
+        generated__ts__zod__user_v1__GetUserQuerySchema["GetUserQuerySchema"]
+        generated__ts__zod__user_v1__UserSchema["UserSchema"]
         gateway__ws__ConnectionManager__connect["connect"]
         gateway__ws__ConnectionManager__disconnect["disconnect"]
         gateway__ws__ConnectionManager__broadcast["broadcast"]
@@ -16,10 +19,7 @@ flowchart TD
         gateway__main__lifespan["lifespan"]
         gateway__main__health["health"]
         gateway__main__health_modules["health_modules"]
-        gateway__main__health_module["health_module"]
-        gateway__main__delegation_slices["delegation_slices"]
-        gateway__main__delegation_slice_detail["delegation_slice_detail"]
-        ...["+372 more"]
+        ...["+422 more"]
     end
 
-    class gateway__ws__ConnectionManager__connect,gateway__ws__ConnectionManager__disconnect,gateway__ws__ConnectionManager__broadcast,gateway__delegation__DelegatedSlice___path_checks,gateway__delegation__DelegatedSlice__health,gateway__delegation__DelegatedSlice__summary,gateway__delegation__DelegatedSlice__detail,gateway__main__lifespan,gateway__main__health,gateway__main__health_modules entry
+    class generated__ts__zod__user_v1__CreateUserCommandSchema,generated__ts__zod__user_v1__GetUserQuerySchema,generated__ts__zod__user_v1__UserSchema,gateway__ws__ConnectionManager__connect,gateway__ws__ConnectionManager__disconnect,gateway__ws__ConnectionManager__broadcast,gateway__delegation__DelegatedSlice___path_checks,gateway__delegation__DelegatedSlice__health,gateway__delegation__DelegatedSlice__summary,gateway__delegation__DelegatedSlice__detail entry

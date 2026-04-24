@@ -1,0 +1,324 @@
+{
+  "count": 6,
+  "reason_counts": [
+    {
+      "reason": "service signal: has docker packaging",
+      "count": 6
+    },
+    {
+      "reason": "cqrs cluster size: 1",
+      "count": 6
+    },
+    {
+      "reason": "service signal: exposes own API routes",
+      "count": 5
+    },
+    {
+      "reason": "service signal: has executable entrypoint",
+      "count": 5
+    },
+    {
+      "reason": "readiness signal: external imports: 4",
+      "count": 5
+    },
+    {
+      "reason": "readiness signal: api endpoints used: 0",
+      "count": 5
+    },
+    {
+      "reason": "service signal: has dedicated api/app directory",
+      "count": 4
+    },
+    {
+      "reason": "service signal: has vertical api+ui structure",
+      "count": 4
+    },
+    {
+      "reason": "readiness signal: cross-module imports: 0",
+      "count": 4
+    },
+    {
+      "reason": "estimated effort is medium",
+      "count": 3
+    },
+    {
+      "reason": "phase target is phase-3",
+      "count": 3
+    },
+    {
+      "reason": "phase target is phase-2",
+      "count": 2
+    },
+    {
+      "reason": "estimated effort is high",
+      "count": 2
+    },
+    {
+      "reason": "readiness signal: page imports: 0",
+      "count": 2
+    },
+    {
+      "reason": "selected as delegable slice with score 82.00",
+      "count": 1
+    },
+    {
+      "reason": "phase target is phase-1",
+      "count": 1
+    },
+    {
+      "reason": "estimated effort is low",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 2",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 7",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 380",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 71.17",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 20",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 17",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 2259",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 67.35",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 6",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 10",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 1518",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 40.00",
+      "count": 1
+    },
+    {
+      "reason": "service signal: owns db or migration assets",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: page imports: 23",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 21",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 4508",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 7.56",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: cross-module imports: 2",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: external imports: 15",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: api endpoints used: 1",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 27",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 1493",
+      "count": 1
+    },
+    {
+      "reason": "selected as delegable slice with score 4.00",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: cross-module imports: 6",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: files: 23",
+      "count": 1
+    },
+    {
+      "reason": "readiness signal: lines: 4284",
+      "count": 1
+    }
+  ],
+  "rows": [
+    {
+      "module": "connect-reports-month",
+      "score": 82.0,
+      "phase": "phase-1",
+      "effort": "low",
+      "cqrs_pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "reasons": [
+        "selected as delegable slice with score 82.00",
+        "phase target is phase-1",
+        "estimated effort is low",
+        "service signal: has docker packaging",
+        "service signal: has dedicated api/app directory",
+        "service signal: has vertical api+ui structure",
+        "service signal: exposes own API routes",
+        "service signal: has executable entrypoint",
+        "cqrs cluster size: 1",
+        "readiness signal: cross-module imports: 0",
+        "readiness signal: page imports: 2",
+        "readiness signal: external imports: 4",
+        "readiness signal: api endpoints used: 0",
+        "readiness signal: files: 7",
+        "readiness signal: lines: 380"
+      ]
+    },
+    {
+      "module": "connect-config-network",
+      "score": 71.17,
+      "phase": "phase-2",
+      "effort": "medium",
+      "cqrs_pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "reasons": [
+        "selected as delegable slice with score 71.17",
+        "phase target is phase-2",
+        "estimated effort is medium",
+        "service signal: has docker packaging",
+        "service signal: has dedicated api/app directory",
+        "service signal: has vertical api+ui structure",
+        "service signal: exposes own API routes",
+        "service signal: has executable entrypoint",
+        "cqrs cluster size: 1",
+        "readiness signal: cross-module imports: 0",
+        "readiness signal: page imports: 20",
+        "readiness signal: external imports: 4",
+        "readiness signal: api endpoints used: 0",
+        "readiness signal: files: 17",
+        "readiness signal: lines: 2259"
+      ]
+    },
+    {
+      "module": "connect-manager-library",
+      "score": 67.35,
+      "phase": "phase-2",
+      "effort": "medium",
+      "cqrs_pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "reasons": [
+        "selected as delegable slice with score 67.35",
+        "phase target is phase-2",
+        "estimated effort is medium",
+        "service signal: has docker packaging",
+        "service signal: has dedicated api/app directory",
+        "service signal: has vertical api+ui structure",
+        "service signal: exposes own API routes",
+        "service signal: has executable entrypoint",
+        "cqrs cluster size: 1",
+        "readiness signal: cross-module imports: 0",
+        "readiness signal: page imports: 6",
+        "readiness signal: external imports: 4",
+        "readiness signal: api endpoints used: 0",
+        "readiness signal: files: 10",
+        "readiness signal: lines: 1518"
+      ]
+    },
+    {
+      "module": "connect-id-user-list",
+      "score": 40.0,
+      "phase": "phase-3",
+      "effort": "high",
+      "cqrs_pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "reasons": [
+        "selected as delegable slice with score 40.00",
+        "phase target is phase-3",
+        "estimated effort is high",
+        "service signal: has docker packaging",
+        "service signal: has dedicated api/app directory",
+        "service signal: has vertical api+ui structure",
+        "service signal: owns db or migration assets",
+        "service signal: exposes own API routes",
+        "cqrs cluster size: 1",
+        "readiness signal: cross-module imports: 0",
+        "readiness signal: page imports: 23",
+        "readiness signal: external imports: 4",
+        "readiness signal: api endpoints used: 0",
+        "readiness signal: files: 21",
+        "readiness signal: lines: 4508"
+      ]
+    },
+    {
+      "module": "connect-template",
+      "score": 7.56,
+      "phase": "phase-3",
+      "effort": "medium",
+      "cqrs_pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "reasons": [
+        "selected as delegable slice with score 7.56",
+        "phase target is phase-3",
+        "estimated effort is medium",
+        "service signal: has docker packaging",
+        "service signal: exposes own API routes",
+        "service signal: has executable entrypoint",
+        "cqrs cluster size: 1",
+        "readiness signal: cross-module imports: 2",
+        "readiness signal: page imports: 0",
+        "readiness signal: external imports: 15",
+        "readiness signal: api endpoints used: 1",
+        "readiness signal: files: 27",
+        "readiness signal: lines: 1493"
+      ]
+    },
+    {
+      "module": "connect-display",
+      "score": 4.0,
+      "phase": "phase-3",
+      "effort": "high",
+      "cqrs_pattern": "n/a",
+      "shared_types_package": "@semcod/contracts-types:custom-per-module",
+      "reasons": [
+        "selected as delegable slice with score 4.00",
+        "phase target is phase-3",
+        "estimated effort is high",
+        "service signal: has docker packaging",
+        "service signal: has executable entrypoint",
+        "cqrs cluster size: 1",
+        "readiness signal: cross-module imports: 6",
+        "readiness signal: page imports: 0",
+        "readiness signal: external imports: 4",
+        "readiness signal: api endpoints used: 0",
+        "readiness signal: files: 23",
+        "readiness signal: lines: 4284"
+      ]
+    }
+  ]
+}

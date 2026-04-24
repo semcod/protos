@@ -1,14 +1,18 @@
-# code2llm/evolution | 402 func | 10f | 2026-04-24
+# code2llm/evolution | 459 func | 16f | 2026-04-24
 
-NEXT[0]: no refactoring needed
+NEXT[1] (ranked by impact):
+  [1] !  SPLIT-FUNC      main  CC=17  fan=23
+      WHY: CC=17 exceeds 15
+      EFFORT: ~1h  IMPACT: 391
+
 
 RISKS[0]: none
 
 METRICS-TARGET:
-  CC̄:          0.2 → ≤0.1
-  max-CC:      6 → ≤3
+  CC̄:          0.3 → ≤0.2
+  max-CC:      17 → ≤8
   god-modules: 0 → 0
-  high-CC(≥15): 0 → ≤0
+  high-CC(≥15): 1 → ≤0
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -36,4 +40,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=1.8 → now CC̄=0.2
+  prev CC̄=0.3 → now CC̄=0.3

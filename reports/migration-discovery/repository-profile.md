@@ -1,6 +1,6 @@
 # Repository Profile
 
-Generated at: 2026-04-24T14:14:17.930797+00:00
+Generated at: 2026-04-24T14:39:30.138137+00:00
 
 - Repository root: `/home/tom/github/maskservice/c2004`
 - Frontend roots: `frontend/src`
@@ -12,7 +12,7 @@ Generated at: 2026-04-24T14:14:17.930797+00:00
 | Language | Files |
 | --- | ---: |
 | typescript | 941 |
-| python | 796 |
+| python | 802 |
 | javascript | 120 |
 | protobuf | 6 |
 

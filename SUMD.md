@@ -301,13 +301,13 @@ pip install -e .[dev]
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# protos | 61f 8697L | python:58,shell:2,less:1 | 2026-04-24
-# stats: 212 func | 58 cls | 61 mod | CC̄=4.9 | critical:24 | cycles:0
-# alerts[5]: CC analyze_frontend_modules=43; CC build_service_components=34; CC analyze_candidate=28; CC discover_candidate_paths=20; CC select_execution_plan=20
-# hotspots[5]: analyze_frontend_modules fan=26; analyze_repository fan=24; run_discovery fan=24; build_ts_index fan=21; main fan=21
+# protos | 72f 10087L | python:65,typescript:4,shell:2,less:1 | 2026-04-24
+# stats: 241 func | 77 cls | 72 mod | CC̄=5.3 | critical:31 | cycles:0
+# alerts[5]: CC analyze_frontend_modules=43; CC build_service_components=34; CC analyze_candidate=28; CC parse_proto=28; CC build_service_boundary_decision_report=21
+# hotspots[5]: run_discovery fan=30; analyze_frontend_modules fan=26; analyze_repository fan=26; parse_proto fan=22; build_ts_index fan=21
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[61]:
+M[72]:
   adapters/legacy_to_proto/user_adapter.py,37
   adapters/proto_to_legacy/user_adapter.py,22
   app.doql.less,146
@@ -319,9 +319,19 @@ M[61]:
   gateway/tests/test_gateway.py,12
   gateway/user_handler.py,151
   gateway/ws.py,77
+  generated/python/identification_v1_models.py,32
+  generated/python/search_v1_models.py,36
+  generated/python/user_v1_models.py,17
+  generated/python/user_v2_models.py,22
+  generated/ts/zod/identification_v1.ts,33
+  generated/ts/zod/search_v1.ts,40
+  generated/ts/zod/user_v1.ts,19
+  generated/ts/zod/user_v2.ts,22
   project.sh,48
   scratch/smoke_test_dual_write.py,28
   scratch/smoke_test_search.py,31
+  scratch/swop_pipeline_service_id.py,90
+  scratch/swop_scan_c2004.py,238
   scripts/__init__.py,1
   scripts/conflict_resolver.py,237
   scripts/detect_migration_candidates.py,500
@@ -329,25 +339,26 @@ M[61]:
   scripts/event_store.py,399
   scripts/generate_incremental.py,149
   scripts/generate_json_schema.py,100
-  scripts/generate_pydantic.py,75
+  scripts/generate_pydantic.py,147
   scripts/generate_sql.py,98
-  scripts/generate_zod.py,68
+  scripts/generate_zod.py,130
   scripts/idempotency_store.py,42
   scripts/legacy_bridge/__init__.py,1
   scripts/legacy_bridge/analyze_service_boundaries.py,844
-  scripts/legacy_bridge/delegation_plan.py,119
-  scripts/legacy_bridge/detect_cqrs_pattern_clusters.py,370
+  scripts/legacy_bridge/candidate_selection.py,57
+  scripts/legacy_bridge/delegation_plan.py,151
+  scripts/legacy_bridge/detect_cqrs_pattern_clusters.py,477
   scripts/legacy_bridge/diff_engine.py,110
-  scripts/legacy_bridge/generate_delegation_plan.py,97
-  scripts/legacy_bridge/generate_migration_wave_plan.py,321
+  scripts/legacy_bridge/generate_delegation_plan.py,117
+  scripts/legacy_bridge/generate_migration_wave_plan.py,339
   scripts/legacy_bridge/migration_advisor.py,55
   scripts/legacy_bridge/migrator.py,70
   scripts/legacy_bridge/normalizer.py,99
   scripts/legacy_bridge/report_generator.py,57
-  scripts/legacy_bridge/run_arch_migration_discovery.py,460
+  scripts/legacy_bridge/run_arch_migration_discovery.py,824
   scripts/legacy_bridge/sync_check.py,40
   scripts/legacy_registry.py,246
-  scripts/parse_proto.py,160
+  scripts/parse_proto.py,269
   scripts/schema_registry.py,544
   scripts/search_index.py,62
   scripts/vector_clock.py,113
@@ -431,8 +442,42 @@ D:
   gateway/ws.py:
     e: ConnectionManager
     ConnectionManager: __init__(0),connect(1),disconnect(1),broadcast(2)  # Thread-safe (asyncio-safe) WebSocket broadcast pool.
+  generated/python/identification_v1_models.py:
+    e: IdentifierType,IdentifyUserCommand,UserIdentificationReadModel,UserIdentifiedEvent
+    IdentifierType:
+    IdentifyUserCommand:
+    UserIdentificationReadModel:
+    UserIdentifiedEvent:
+  generated/python/search_v1_models.py:
+    e: IndexEntryCommand,EntryIndexed,SearchRequest,SearchResponse,Result
+    IndexEntryCommand:
+    EntryIndexed:
+    SearchRequest:
+    SearchResponse:
+    Result:
+  generated/python/user_v1_models.py:
+    e: CreateUserCommand,GetUserQuery,User
+    CreateUserCommand:
+    GetUserQuery:
+    User:
+  generated/python/user_v2_models.py:
+    e: CreateUserCommand,GetUserQuery,User
+    CreateUserCommand:
+    GetUserQuery:
+    User:
   scratch/smoke_test_dual_write.py:
   scratch/smoke_test_search.py:
+  scratch/swop_pipeline_service_id.py:
+    e: main
+    main()
+  scratch/swop_scan_c2004.py:
+    e: _kind_by_suffix,_base_names,_kind_by_base,collect_ground_truth,run_swop_scan,main
+    _kind_by_suffix(name)
+    _base_names(node)
+    _kind_by_base(bases)
+    collect_ground_truth(root)
+    run_swop_scan()
+    main()
   scripts/__init__.py:
   scripts/conflict_resolver.py:
     e: _field_effects,UnresolvableConflictError,ConflictResolver
@@ -489,7 +534,10 @@ D:
     generate(ast;registry_id;registry_version)
     main()
   scripts/generate_pydantic.py:
-    e: generate,main
+    e: _flatten_messages,_flatten_enums,_py_type,generate,main
+    _flatten_messages(ast)
+    _flatten_enums(ast)
+    _py_type(field;message_names;enum_names)
     generate(ast)
     main()
   scripts/generate_sql.py:
@@ -498,7 +546,10 @@ D:
     generate_sql(ast)
     main()
   scripts/generate_zod.py:
-    e: to_zod,main
+    e: _flatten_messages,_flatten_enums,_zod_type,to_zod,main
+    _flatten_messages(ast)
+    _flatten_enums(ast)
+    _zod_type(field;message_names;enum_names)
     to_zod(ast)
     main()
   scripts/idempotency_store.py:
@@ -546,15 +597,23 @@ D:
     build_markdown(payload)
     analyze(repo_root;config;top_services)
     main()
+  scripts/legacy_bridge/candidate_selection.py:
+    e: parse_score,get_candidate_exclusion_reasons,is_delegable_candidate
+    parse_score(row)
+    get_candidate_exclusion_reasons(row)
+    is_delegable_candidate(row)
   scripts/legacy_bridge/delegation_plan.py:
-    e: to_slice_name,build_steps,build_slice_blueprint,build_output_row,render_markdown
+    e: _to_float,_normalize_shared_types_package,_normalize_reasons,to_slice_name,build_steps,build_slice_blueprint,build_output_row,render_markdown
+    _to_float(value;default)
+    _normalize_shared_types_package(value)
+    _normalize_reasons(value)
     to_slice_name(module)
     build_steps(module)
     build_slice_blueprint(module)
     build_output_row(row;cluster_meta)
     render_markdown(rows;limit;clusters)
   scripts/legacy_bridge/detect_cqrs_pattern_clusters.py:
-    e: deep_merge,load_config,normalize_config,parse_args,read_text,load_candidate_scores,module_from_types_path,split_tokens,classify_pattern,jaccard,assign_clusters,analyze_repository,render_markdown,main,ModulePattern
+    e: deep_merge,load_config,normalize_config,parse_args,read_text,load_candidate_scores,module_from_types_path,split_tokens,classify_pattern,jaccard,assign_clusters,shared_tokens_for_module,analyze_repository,render_markdown,main,ModulePattern
     ModulePattern:
     deep_merge(base;override)
     load_config(config_path)
@@ -567,6 +626,7 @@ D:
     classify_pattern(commands;events;config)
     jaccard(left;right)
     assign_clusters(signature_map;pattern_map;threshold)
+    shared_tokens_for_module(repo_root;module)
     analyze_repository(repo_root;config;candidate_scores)
     render_markdown(payload)
     main()
@@ -577,9 +637,10 @@ D:
     DiffReport:
     diff_fields(legacy_fields;proto_fields)
   scripts/legacy_bridge/generate_delegation_plan.py:
-    e: load_candidates,load_clusters,parse_args,main
+    e: load_candidates,load_clusters,dedupe_candidates,parse_args,main
     load_candidates(path)
     load_clusters(path)
+    dedupe_candidates(rows)
     parse_args()
     main()
   scripts/legacy_bridge/generate_migration_wave_plan.py:
@@ -611,16 +672,23 @@ D:
     e: generate_markdown_report
     generate_markdown_report(subject;legacy_version;proto_version;report;suggestion)
   scripts/legacy_bridge/run_arch_migration_discovery.py:
-    e: parse_args,read_text,resolve_output_dir,profile_repository,render_repository_profile_markdown,render_module_candidates_markdown,build_delegation_plan,build_summary,render_summary_markdown,write_text,write_json,relative_artifact_path,run_discovery,main
+    e: parse_args,read_text,resolve_output_dir,profile_repository,render_repository_profile_markdown,render_module_candidates_markdown,_parse_score,build_excluded_candidates_report,build_service_boundary_decision_report,build_delegation_decision_report,build_delegation_plan,build_summary,render_summary_markdown,render_excluded_candidates_markdown,render_delegation_decisions_markdown,render_service_boundary_decisions_markdown,write_text,write_json,relative_artifact_path,run_discovery,main
     parse_args()
     read_text(path)
     resolve_output_dir(repo_root;raw_output_dir)
     profile_repository(repo_root;config)
     render_repository_profile_markdown(profile)
     render_module_candidates_markdown(rows)
-    build_delegation_plan(rows;limit)
-    build_summary(repo_root;profile;candidate_rows;service_boundary_payload;cqrs_pattern_payload;delegation_rows;wave_plan_payload;artifact_paths)
+    _parse_score(row)
+    build_excluded_candidates_report(rows)
+    build_service_boundary_decision_report(payload)
+    build_delegation_decision_report(rows)
+    build_delegation_plan(rows;limit;clusters_by_module)
+    build_summary(repo_root;profile;candidate_rows;service_boundary_payload;cqrs_pattern_payload;delegation_rows;wave_plan_payload;artifact_paths;service_boundary_decisions_payload)
     render_summary_markdown(summary)
+    render_excluded_candidates_markdown(payload)
+    render_delegation_decisions_markdown(payload)
+    render_service_boundary_decisions_markdown(payload)
     write_text(path;content)
     write_json(path;payload)
     relative_artifact_path(path;repo_root)
@@ -635,8 +703,13 @@ D:
     LegacySchemaRegistry: __init__(1),_init_db(0),register(6),_get_next_version(2),get_latest(2),_row_to_sv(1),list_schemas(0)
     main()
   scripts/parse_proto.py:
-    e: _parse_reserved_numbers,parse_proto
+    e: _parse_reserved_numbers,_to_dict,parse_proto,EnumValue,ProtoEnum,Field,Message
+    EnumValue:
+    ProtoEnum:
+    Field:
+    Message:
     _parse_reserved_numbers(token)
+    _to_dict(obj)
     parse_proto(file_path)
   scripts/schema_registry.py:
     e: _connect,_diff_messages,check_compatibility,_sha256_file,_cli,IncompatibleSchemaError,SchemaVersion,SchemaRegistry
@@ -754,43 +827,51 @@ D:
 
 ## Call Graph
 
-*134 nodes · 112 edges · 26 modules · CC̄=1.7*
+*157 nodes · 129 edges · 28 modules · CC̄=1.9*
 
 ### Hubs (by degree)
 
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `analyze_frontend_modules` *(in scripts.legacy_bridge.analyze_service_boundaries)* | 43 ⚠ | 1 | 66 | **67** |
-| `run_discovery` *(in scripts.legacy_bridge.run_arch_migration_discovery)* | 6 | 1 | 42 | **43** |
-| `analyze_repository` *(in scripts.legacy_bridge.detect_cqrs_pattern_clusters)* | 19 ⚠ | 1 | 35 | **36** |
-| `discover_candidate_paths` *(in scripts.detect_migration_candidates)* | 20 ⚠ | 1 | 33 | **34** |
-| `profile_repository` *(in scripts.legacy_bridge.run_arch_migration_discovery)* | 18 ⚠ | 1 | 33 | **34** |
-| `parse_proto` *(in scripts.parse_proto)* | 17 ⚠ | 8 | 26 | **34** |
-| `build_waves` *(in scripts.legacy_bridge.generate_migration_wave_plan)* | 15 ⚠ | 3 | 31 | **34** |
-| `build_service_components` *(in scripts.legacy_bridge.analyze_service_boundaries)* | 34 ⚠ | 1 | 32 | **33** |
+| `run_discovery` *(in scripts.legacy_bridge.run_arch_migration_discovery)* | 8 | 1 | 57 | **58** |
+| `parse_proto` *(in scripts.parse_proto)* | 28 ⚠ | 0 | 55 | **55** |
+| `main` *(in scratch.swop_scan_c2004)* | 17 ⚠ | 0 | 53 | **53** |
+| `build_delegation_decision_report` *(in scripts.legacy_bridge.run_arch_migration_discovery)* | 19 ⚠ | 1 | 43 | **44** |
+| `analyze_repository` *(in scripts.legacy_bridge.detect_cqrs_pattern_clusters)* | 20 ⚠ | 1 | 37 | **38** |
+| `get_candidate_exclusion_reasons` *(in scripts.legacy_bridge.run_arch_migration_discovery)* | 14 ⚠ | 2 | 33 | **35** |
+| `render_markdown` *(in scripts.legacy_bridge.delegation_plan)* | 8 | 1 | 33 | **34** |
 
 ```toon markpact:analysis path=project/calls.toon.yaml
 # code2llm call graph | /home/tom/github/semcod/protos
-# nodes: 134 | edges: 112 | modules: 26
-# CC̄=1.7
+# nodes: 157 | edges: 129 | modules: 28
+# CC̄=1.9
 
 HUBS[20]:
   scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
     CC=43  in:1  out:66  total:67
   scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
-    CC=6  in:1  out:42  total:43
+    CC=8  in:1  out:57  total:58
+  scripts.parse_proto.parse_proto
+    CC=28  in:0  out:55  total:55
+  scratch.swop_scan_c2004.main
+    CC=17  in:0  out:53  total:53
+  scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report
+    CC=19  in:1  out:43  total:44
   scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
-    CC=19  in:1  out:35  total:36
-  scripts.detect_migration_candidates.discover_candidate_paths
-    CC=20  in:1  out:33  total:34
+    CC=20  in:1  out:37  total:38
+  scripts.legacy_bridge.run_arch_migration_discovery.get_candidate_exclusion_reasons
+    CC=14  in:2  out:33  total:35
+  scripts.legacy_bridge.delegation_plan.render_markdown
+    CC=8  in:1  out:33  total:34
   scripts.legacy_bridge.run_arch_migration_discovery.profile_repository
     CC=18  in:1  out:33  total:34
-  scripts.parse_proto.parse_proto
-    CC=17  in:8  out:26  total:34
-  scripts.legacy_bridge.generate_migration_wave_plan.build_waves
-    CC=15  in:3  out:31  total:34
+  scripts.detect_migration_candidates.discover_candidate_paths
+    CC=20  in:1  out:33  total:34
   scripts.legacy_bridge.analyze_service_boundaries.build_service_components
     CC=34  in:1  out:32  total:33
+  scripts.legacy_bridge.generate_migration_wave_plan.build_waves
+    CC=15  in:2  out:31  total:33
   scripts.legacy_bridge.generate_migration_wave_plan.main
     CC=8  in:0  out:33  total:33
   scripts.detect_migration_candidates.analyze_candidate
@@ -799,24 +880,19 @@ HUBS[20]:
     CC=10  in:1  out:30  total:31
   scripts.legacy_bridge.detect_cqrs_pattern_clusters.main
     CC=10  in:0  out:31  total:31
-  scripts.legacy_bridge.delegation_plan.render_markdown
-    CC=8  in:1  out:30  total:31
   scripts.legacy_bridge.generate_delegation_plan.main
-    CC=4  in:0  out:27  total:27
-  scripts.generate_incremental.main
-    CC=11  in:0  out:24  total:24
+    CC=6  in:0  out:29  total:29
   scripts.legacy_bridge.run_arch_migration_discovery.main
     CC=6  in:0  out:24  total:24
   scripts.legacy_bridge.analyze_service_boundaries.main
     CC=7  in:0  out:24  total:24
-  scripts.legacy_bridge.diff_engine.diff_fields
-    CC=12  in:3  out:19  total:22
-  scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
-    CC=7  in:1  out:19  total:20
-  scripts.schema_registry.SchemaRegistry.register
-    CC=10  in:0  out:18  total:18
+  scripts.generate_incremental.main
+    CC=11  in:0  out:24  total:24
 
 MODULES:
+  SUMD  [2 funcs]
+    parse_proto  CC=0  out:0
+    to_zod  CC=0  out:0
   adapters.legacy_to_proto.user_adapter  [2 funcs]
     legacy_to_proto  CC=1  out:11
     wrap_for_event_store  CC=1  out:1
@@ -850,6 +926,13 @@ MODULES:
     handle_dual_write_user  CC=1  out:4
     handle_get_user  CC=2  out:2
     handle_list_events  CC=3  out:3
+  scratch.swop_scan_c2004  [6 funcs]
+    _base_names  CC=7  out:9
+    _kind_by_base  CC=3  out:0
+    _kind_by_suffix  CC=4  out:1
+    collect_ground_truth  CC=9  out:12
+    main  CC=17  out:53
+    run_swop_scan  CC=1  out:2
   scripts.conflict_resolver  [2 funcs]
     resolve_merge  CC=22  out:15
     _field_effects  CC=2  out:3
@@ -878,16 +961,20 @@ MODULES:
   scripts.generate_json_schema  [2 funcs]
     generate  CC=6  out:3
     main  CC=3  out:10
-  scripts.generate_pydantic  [2 funcs]
-    generate  CC=5  out:6
+  scripts.generate_pydantic  [4 funcs]
+    _flatten_enums  CC=1  out:8
+    _flatten_messages  CC=1  out:5
+    generate  CC=10  out:16
     main  CC=3  out:9
   scripts.generate_sql  [3 funcs]
     _table_name  CC=1  out:2
     generate_sql  CC=6  out:6
     main  CC=3  out:9
-  scripts.generate_zod  [2 funcs]
+  scripts.generate_zod  [4 funcs]
+    _flatten_enums  CC=1  out:8
+    _flatten_messages  CC=1  out:5
     main  CC=3  out:9
-    to_zod  CC=4  out:7
+    to_zod  CC=7  out:15
   scripts.legacy_bridge.analyze_service_boundaries  [28 funcs]
     analyze  CC=2  out:10
     analyze_frontend_modules  CC=43  out:66
@@ -899,27 +986,32 @@ MODULES:
     build_ts_index  CC=10  out:30
     choose_component_anchor  CC=1  out:2
     const_str  CC=3  out:2
-  scripts.legacy_bridge.delegation_plan  [5 funcs]
-    build_output_row  CC=3  out:15
+  scripts.legacy_bridge.delegation_plan  [7 funcs]
+    _normalize_shared_types_package  CC=5  out:3
+    _to_float  CC=2  out:1
+    build_output_row  CC=6  out:22
     build_slice_blueprint  CC=1  out:2
     build_steps  CC=1  out:1
-    render_markdown  CC=8  out:30
+    render_markdown  CC=8  out:33
     to_slice_name  CC=1  out:4
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters  [7 funcs]
-    analyze_repository  CC=19  out:35
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters  [9 funcs]
+    analyze_repository  CC=20  out:37
     assign_clusters  CC=9  out:14
     deep_merge  CC=4  out:6
     load_config  CC=3  out:5
     main  CC=10  out:31
     normalize_config  CC=2  out:1
     parse_args  CC=1  out:8
+    read_text  CC=3  out:2
+    shared_tokens_for_module  CC=4  out:5
   scripts.legacy_bridge.diff_engine  [1 funcs]
     diff_fields  CC=12  out:19
-  scripts.legacy_bridge.generate_delegation_plan  [4 funcs]
-    load_candidates  CC=4  out:5
-    load_clusters  CC=7  out:7
-    main  CC=4  out:27
+  scripts.legacy_bridge.generate_delegation_plan  [5 funcs]
+    dedupe_candidates  CC=6  out:8
+    load_clusters  CC=9  out:10
+    main  CC=6  out:29
     parse_args  CC=1  out:9
+    parse_score  CC=2  out:2
   scripts.legacy_bridge.generate_migration_wave_plan  [5 funcs]
     build_waves  CC=15  out:31
     load_json  CC=3  out:3
@@ -932,19 +1024,22 @@ MODULES:
   scripts.legacy_bridge.normalizer  [2 funcs]
     normalize_json_schema  CC=3  out:10
     normalize_proto_ast  CC=2  out:5
-  scripts.legacy_bridge.run_arch_migration_discovery  [8 funcs]
-    build_delegation_plan  CC=2  out:5
+  scripts.legacy_bridge.run_arch_migration_discovery  [13 funcs]
+    _parse_score  CC=2  out:2
+    build_delegation_decision_report  CC=19  out:43
+    build_delegation_plan  CC=5  out:7
+    build_excluded_candidates_report  CC=5  out:18
+    get_candidate_exclusion_reasons  CC=14  out:33
+    is_delegable_candidate  CC=1  out:1
     main  CC=6  out:24
     parse_args  CC=1  out:8
     profile_repository  CC=18  out:33
     resolve_output_dir  CC=2  out:2
-    run_discovery  CC=6  out:42
-    write_json  CC=1  out:2
-    write_text  CC=1  out:2
   scripts.legacy_bridge.sync_check  [1 funcs]
     main  CC=6  out:12
-  scripts.parse_proto  [1 funcs]
-    parse_proto  CC=17  out:26
+  scripts.parse_proto  [2 funcs]
+    _to_dict  CC=5  out:5
+    parse_proto  CC=28  out:55
   scripts.schema_registry  [6 funcs]
     __init__  CC=1  out:1
     register  CC=10  out:18
@@ -976,34 +1071,34 @@ EDGES:
   gateway.main.list_events → gateway.user_handler.handle_list_events
   gateway.main.cmd_index_search_entry → gateway.search_handler.handle_index_entry
   gateway.main.query_search → gateway.search_handler.handle_search
+  scratch.swop_scan_c2004.collect_ground_truth → scratch.swop_scan_c2004._base_names
+  scratch.swop_scan_c2004.collect_ground_truth → scratch.swop_scan_c2004._kind_by_suffix
+  scratch.swop_scan_c2004.collect_ground_truth → scratch.swop_scan_c2004._kind_by_base
+  scratch.swop_scan_c2004.main → scratch.swop_scan_c2004.collect_ground_truth
+  scratch.swop_scan_c2004.main → scratch.swop_scan_c2004.run_swop_scan
   scripts.generate_incremental.should_regenerate → scripts.generate_incremental.file_hash
   scripts.generate_incremental.regenerate → scripts.generate_incremental._stem
-  scripts.generate_incremental.regenerate → scripts.parse_proto.parse_proto
+  scripts.generate_incremental.regenerate → SUMD.parse_proto
   scripts.generate_incremental.regenerate → scripts.generate_incremental._write
-  scripts.generate_incremental.regenerate → scripts.generate_zod.to_zod
+  scripts.generate_incremental.regenerate → SUMD.to_zod
   scripts.generate_incremental.main → scripts.generate_incremental.load_cache
   scripts.generate_incremental.main → scripts.generate_incremental.should_regenerate
   scripts.generate_incremental.main → scripts.generate_incremental.save_cache
   scripts.generate_sql.generate_sql → scripts.generate_sql._table_name
-  scripts.generate_sql.main → scripts.parse_proto.parse_proto
+  scripts.generate_sql.main → SUMD.parse_proto
   scripts.generate_sql.main → scripts.generate_sql.generate_sql
   scripts.schema_registry.check_compatibility → scripts.schema_registry._diff_messages
   scripts.schema_registry.SchemaRegistry.__init__ → scripts.schema_registry._connect
-  scripts.schema_registry.SchemaRegistry.register → scripts.parse_proto.parse_proto
+  scripts.schema_registry.SchemaRegistry.register → SUMD.parse_proto
   scripts.schema_registry.SchemaRegistry.register → scripts.schema_registry._sha256_file
-  scripts.generate_json_schema.main → scripts.parse_proto.parse_proto
+  scripts.generate_json_schema.main → SUMD.parse_proto
   scripts.generate_json_schema.main → scripts.generate_json_schema.generate
-  scripts.generate_pydantic.main → scripts.parse_proto.parse_proto
-  scripts.generate_pydantic.main → scripts.generate_pydantic.generate
   scripts.detect_migration_candidates.discover_candidate_paths → scripts.detect_migration_candidates.has_candidate_markers
   scripts.detect_migration_candidates.import_tokens → scripts.detect_migration_candidates.normalize_token
   scripts.detect_migration_candidates.analyze_candidate → scripts.detect_migration_candidates.normalize_token
   scripts.detect_migration_candidates.analyze_candidate → scripts.detect_migration_candidates.iter_files
   scripts.detect_migration_candidates.build_output_row → scripts.detect_migration_candidates.score_migration_candidate
   scripts.detect_migration_candidates.build_output_row → scripts.detect_migration_candidates.classify_extraction_target
-  scripts.detect_migration_candidates.analyze_repository → scripts.detect_migration_candidates.discover_candidate_paths
-  scripts.detect_migration_candidates.analyze_repository → scripts.detect_migration_candidates.analyze_candidate
-  scripts.detect_migration_candidates.analyze_repository → scripts.detect_migration_candidates.build_output_row
 ```
 
 ## Test Contracts
