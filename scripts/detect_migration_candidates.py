@@ -231,10 +231,73 @@ def count_outbound_api_calls(content: str) -> int:
     return sum(len(pattern.findall(content)) for pattern in OUTBOUND_API_PATTERNS)
 
 
+def _check_candidate_flags(candidate_path: Path) -> tuple[bool, bool, bool, bool, bool, bool]:
+    """Check structural flags for a candidate."""
+    has_module_descriptor = (candidate_path / "module.yaml").exists()
+    has_docker = (candidate_path / "Dockerfile").exists() or (candidate_path / "docker-compose.yml").exists()
+    has_api_dir = any((candidate_path / name).is_dir() for name in ("api", "app"))
+    has_ui_dir = any((candidate_path / name).is_dir() for name in ("ui", "src", "frontend"))
+    has_tests = any((candidate_path / name).is_dir() for name in ("tests", "test"))
+    has_db_assets = any((candidate_path / name).is_dir() for name in ("db", "alembic", "migrations"))
+    return has_module_descriptor, has_docker, has_api_dir, has_ui_dir, has_tests, has_db_assets
+
+
+def _analyze_file_content(
+    file_path: Path,
+    content: str,
+    current_alias: str,
+    other_aliases: set[str],
+    normalized_top_level_names: set[str],
+) -> tuple[int, int, int, int, int, int]:
+    """Analyze a single file's content and return metrics."""
+    lines = sum(1 for _ in content.splitlines())
+    entrypoints = 1 if file_path.name in ENTRYPOINT_FILES else 0
+    own_api_routes = 0
+    api_endpoints_used = 0
+    page_imports = 0
+    cross_module_imports = 0
+    external_imports = 0
+    
+    if file_path.suffix in SOURCE_SUFFIXES or file_path.name == "endpoints.yaml":
+        own_api_routes = count_api_routes(file_path, content)
+        api_endpoints_used = count_outbound_api_calls(content)
+        page_imports = len(PAGE_IMPORT_PATTERN.findall(content))
+    
+    imports: list[str] = []
+    if file_path.suffix == ".py":
+        imports = extract_python_imports(content)
+    elif file_path.suffix in {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"}:
+        imports = extract_ts_imports(content)
+    
+    for specifier in imports:
+        tokens = import_tokens(specifier)
+        if not tokens:
+            continue
+        if any(token in {"shared", "common", "core", "utils"} for token in tokens):
+            pass  # shared refs counted separately
+        if any(token in other_aliases for token in tokens):
+            cross_module_imports += 1
+            continue
+        if specifier.startswith((".", "/", "@/", "~/")):
+            continue
+        first = specifier.split(".", 1)[0].split("/", 1)[0]
+        first_token = normalize_token(first)
+        if first_token == current_alias or first_token in normalized_top_level_names:
+            continue
+        if file_path.suffix == ".py" and first in STDLIB_MODULES:
+            continue
+        external_imports += 1
+    
+    return lines, entrypoints, own_api_routes, api_endpoints_used, page_imports, cross_module_imports, external_imports
+
+
 def analyze_candidate(candidate: CandidatePath, all_candidates: list[CandidatePath], top_level_names: set[str]) -> CandidateMetrics:
     current_alias = normalize_token(candidate.name)
     other_aliases = {normalize_token(item.name) for item in all_candidates if item.name != candidate.name}
     normalized_top_level_names = {normalize_token(name) for name in top_level_names}
+    
+    has_module_descriptor, has_docker, has_api_dir, has_ui_dir, has_tests, has_db_assets = _check_candidate_flags(candidate.path)
+    
     files = 0
     lines = 0
     cross_module_imports = 0
@@ -245,25 +308,23 @@ def analyze_candidate(candidate: CandidatePath, all_candidates: list[CandidatePa
     entrypoints = 0
     shared_refs = 0
 
-    has_module_descriptor = (candidate.path / "module.yaml").exists()
-    has_docker = (candidate.path / "Dockerfile").exists() or (candidate.path / "docker-compose.yml").exists()
-    has_api_dir = any((candidate.path / name).is_dir() for name in ("api", "app"))
-    has_ui_dir = any((candidate.path / name).is_dir() for name in ("ui", "src", "frontend"))
-    has_tests = any((candidate.path / name).is_dir() for name in ("tests", "test"))
-    has_db_assets = any((candidate.path / name).is_dir() for name in ("db", "alembic", "migrations"))
-
     for file_path in iter_files(candidate.path):
         content = read_text(file_path)
         if not content:
             continue
         files += 1
-        lines += sum(1 for _ in content.splitlines())
-        if file_path.name in ENTRYPOINT_FILES:
-            entrypoints += 1
-        if file_path.suffix in SOURCE_SUFFIXES or file_path.name == "endpoints.yaml":
-            own_api_routes += count_api_routes(file_path, content)
-            api_endpoints_used += count_outbound_api_calls(content)
-            page_imports += len(PAGE_IMPORT_PATTERN.findall(content))
+        file_lines, file_entrypoints, file_own_routes, file_api_used, file_page_imports, file_cross, file_external = _analyze_file_content(
+            file_path, content, current_alias, other_aliases, normalized_top_level_names
+        )
+        lines += file_lines
+        entrypoints += file_entrypoints
+        own_api_routes += file_own_routes
+        api_endpoints_used += file_api_used
+        page_imports += file_page_imports
+        cross_module_imports += file_cross
+        external_imports += file_external
+        
+        # Count shared refs separately
         imports: list[str] = []
         if file_path.suffix == ".py":
             imports = extract_python_imports(content)
@@ -271,22 +332,8 @@ def analyze_candidate(candidate: CandidatePath, all_candidates: list[CandidatePa
             imports = extract_ts_imports(content)
         for specifier in imports:
             tokens = import_tokens(specifier)
-            if not tokens:
-                continue
-            if any(token in {"shared", "common", "core", "utils"} for token in tokens):
+            if tokens and any(token in {"shared", "common", "core", "utils"} for token in tokens):
                 shared_refs += 1
-            if any(token in other_aliases for token in tokens):
-                cross_module_imports += 1
-                continue
-            if specifier.startswith((".", "/", "@/", "~/")):
-                continue
-            first = specifier.split(".", 1)[0].split("/", 1)[0]
-            first_token = normalize_token(first)
-            if first_token == current_alias or first_token in normalized_top_level_names:
-                continue
-            if file_path.suffix == ".py" and first in STDLIB_MODULES:
-                continue
-            external_imports += 1
 
     return CandidateMetrics(
         module=candidate.name,
@@ -433,7 +480,7 @@ def build_output_row(metrics: CandidateMetrics) -> dict[str, object]:
         "has_ui_dir": metrics.has_ui_dir,
         "has_tests": metrics.has_tests,
         "has_db_assets": metrics.has_db_assets,
-        "recommended_owner": "protos" if extraction_target in {"delegated-slice", "standalone-service", "frontend-microfrontend"} else "legacy-host",
+        "recommended_owner": "protogate" if extraction_target in {"delegated-slice", "standalone-service", "frontend-microfrontend"} else "legacy-host",
     }
 
 

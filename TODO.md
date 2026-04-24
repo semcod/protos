@@ -1,8 +1,8 @@
-# TODO - Protos Refactor Plan
+# TODO - Protogate Refactor Plan
 
 ## Objective
 
-Turn protos into a reusable delegation platform where any bounded slice from legacy systems can be moved with minimal coupling.
+Turn protogate into a reusable delegation platform where any bounded slice from legacy systems can be moved with minimal coupling.
 
 ## Current gaps observed
 
@@ -18,7 +18,7 @@ Turn protos into a reusable delegation platform where any bounded slice from leg
 
 ## Target architecture
 
-1. Protos owns contracts, commands, queries, events, read models, and delegated UI runtime.
+1. Protogate owns contracts, commands, queries, events, read models, and delegated UI runtime.
 2. Legacy host (c2004) owns shell, auth/session bridge, and iframe routing only.
 3. Each delegated module follows one vertical-slice template:
 
@@ -34,7 +34,7 @@ Turn protos into a reusable delegation platform where any bounded slice from leg
 
 ### Phase 1 - Platform hardening ✅
 
-1. ~~Standardize module slice template in protos for new delegated modules.~~ ✅ `DelegatedSlice` registry in `gateway/delegation.py`
+1. ~~Standardize module slice template in protogate for new delegated modules.~~ ✅ `DelegatedSlice` registry in `gateway/delegation.py`
 2. ~~Add strict event and command naming conventions.~~ ✅ Standard routes: `/commands/{slice}/*`, `/queries/{slice}/*`
 3. ~~Introduce module-level health endpoints and smoke checks.~~ ✅ `/health/modules`, `/health/modules/{slice}`, `/delegation/slices`
 4. ~~Add generated delegation plan workflow from c2004 candidate reports.~~ ✅ `generate_delegation_plan.py` with shared blueprint model
@@ -48,7 +48,7 @@ Turn protos into a reusable delegation platform where any bounded slice from leg
 
 ### Phase 3 - Migration automation
 
-1. Integrate readiness scoring from c2004 into protos planning scripts.
+1. Integrate readiness scoring from c2004 into protogate planning scripts.
 2. Add scripted checklist generation per module.
 3. Add bootstrap validation scripts (data parity and smoke checks).
 4. Add archive-ready gate to ensure safe legacy removal.
@@ -59,9 +59,9 @@ Turn protos into a reusable delegation platform where any bounded slice from leg
 2. Build shared packages from duplicated TypeScript code.
 3. Apply same cutover pattern for medium and high complexity modules.
 
-## Required improvements in protos codebase
+## Required improvements in protogate codebase
 
-1. Create dedicated delegated frontend workspace in protos for TypeScript apps.
+1. Create dedicated delegated frontend workspace in protogate for TypeScript apps.
 2. Keep contracts independent from transport details.
 3. Strengthen read model boundaries per module.
 4. Add structured migration telemetry for each delegated slice.
@@ -79,9 +79,9 @@ Turn protos into a reusable delegation platform where any bounded slice from leg
 ## Runbook
 
 1. Generate candidate report in c2004.
-2. Run delegation plan generator in protos with c2004 report path and optional CQRS cluster map.
+2. Run delegation plan generator in protogate with c2004 report path and optional CQRS cluster map.
 3. Pick top module from phase-1.
-4. Implement full slice in protos.
+4. Implement full slice in protogate.
 5. Switch c2004 module to iframe host only.
 6. Validate parity, then archive legacy implementation.
 

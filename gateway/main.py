@@ -1,5 +1,5 @@
 """
-main.py – FastAPI gateway for the semcod/protos platform.
+main.py – FastAPI gateway for the semcod/protogate platform.
 
 Entry point for the HTTP / WebSocket / SSE gateway that bridges
 external clients (web, mobile, desktop) with the CQRS back-end

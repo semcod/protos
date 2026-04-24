@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T14:39:31.987462+00:00",
+  "generated_at": "2026-04-24T15:03:18.483224+00:00",
   "repo_root": "/home/tom/github/maskservice/c2004",
   "profile": {
     "languages": [
@@ -40,7 +40,9 @@
     "cqrs_clusters": 10,
     "migration_waves": 5,
     "recommended_services": 4,
-    "delegation_plan_modules": 6
+    "delegation_plan_modules": 6,
+    "swop_contexts": 0,
+    "swop_proto_files": 0
   },
   "top_candidates": [
     "connect-reports-month",
@@ -76,6 +78,7 @@
     "Scenario Builder Core",
     "Menu Tree Contracts"
   ],
+  "top_swop_contexts": [],
   "service_boundary_decision_reasons": [
     {
       "reason": "delivery mode: decompose-before-extract",

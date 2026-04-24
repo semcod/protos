@@ -6,7 +6,19 @@ from pathlib import Path
 SCRIPTS_DIR = Path(__file__).parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from legacy_bridge.analyze_service_boundaries import analyze, build_markdown, load_config
+from legacy_bridge.analyze_service_boundaries import (
+    _build_module_index,
+    _calculate_module_stats,
+    _generate_merge_hints,
+    _build_eligible_modules,
+    _apply_merge_hints,
+    _determine_component_action,
+    _build_component_row,
+    analyze,
+    build_markdown,
+    load_config,
+    TsFile,
+)
 
 
 def test_analyze_service_boundaries_detects_iframe_candidates(tmp_path: Path):
@@ -110,3 +122,48 @@ def test_build_markdown_contains_expected_sections(tmp_path: Path):
     assert "## Suggested service components" in markdown
     assert "## Recommended service candidates" in markdown
     assert "connect-id" in markdown
+
+
+def test_build_module_index_creates_correct_structure():
+    """Test _build_module_index helper function."""
+    ts_index = {
+        "frontend/src/modules/id/page.ts": TsFile(
+            path=Path("/repo/frontend/src/modules/id/page.ts"),
+            rel="frontend/src/modules/id/page.ts",
+            module="id",
+            is_page=True,
+            imports=("frontend/src/services/id.service.ts",),
+            api_groups=(),
+        ),
+        "frontend/src/services/id.service.ts": TsFile(
+            path=Path("/repo/frontend/src/services/id.service.ts"),
+            rel="frontend/src/services/id.service.ts",
+            module="services",
+            is_page=False,
+            imports=(),
+            api_groups=("/api/v3/identification",),
+        ),
+    }
+    files_by_module, cross_edges = _build_module_index(ts_index)
+    
+    assert "id" in files_by_module
+    assert "services" in files_by_module
+    assert len(files_by_module["id"]) == 1
+    assert len(files_by_module["services"]) == 1
+    assert cross_edges[("id", "services")] == 1
+
+
+def test_determine_component_action():
+    """Test _determine_component_action helper function."""
+    # iframe-first case
+    action = _determine_component_action([], 90, [], ["identification"])
+    assert action == "iframe-first"
+    
+    # decompose case
+    rows = [{"delivery_mode": "decompose-before-extract"}]
+    action = _determine_component_action(rows, 50, [], [])
+    assert action == "decompose"
+    
+    # extract-service case
+    action = _determine_component_action([], 50, ["other"], [])
+    assert action == "extract-service"

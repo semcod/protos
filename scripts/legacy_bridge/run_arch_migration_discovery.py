@@ -27,20 +27,47 @@ try:
     from legacy_bridge.candidate_selection import get_candidate_exclusion_reasons, is_delegable_candidate, parse_score
     from legacy_bridge.analyze_service_boundaries import analyze as analyze_service_boundaries
     from legacy_bridge.analyze_service_boundaries import build_markdown as build_service_boundaries_markdown
+    from legacy_bridge.analyze_service_boundaries import build_cleanup_markdown as build_service_boundary_cleanup_markdown
+    from legacy_bridge.analyze_service_boundaries import build_cqrs_model_boundaries_markdown
+    from legacy_bridge.analyze_service_boundaries import build_execution_plan_markdown as build_service_boundary_execution_markdown
+    from legacy_bridge.analyze_service_boundaries import build_service_blueprint_markdown
+    from legacy_bridge.analyze_service_boundaries import build_target_structure_markdown as build_service_boundary_target_structure_markdown
     from legacy_bridge.analyze_service_boundaries import load_config as load_service_boundary_config
     from legacy_bridge.detect_cqrs_pattern_clusters import analyze_repository as analyze_cqrs_pattern_clusters
     from legacy_bridge.detect_cqrs_pattern_clusters import render_markdown as render_cqrs_pattern_clusters_markdown
     from legacy_bridge.delegation_plan import build_output_row, render_markdown as render_delegation_markdown
     from legacy_bridge.generate_migration_wave_plan import build_waves, render_markdown as render_wave_plan_markdown
+    from legacy_bridge.report_rendering import (
+        render_delegation_decisions_markdown,
+        render_excluded_candidates_markdown,
+        render_service_boundary_decisions_markdown,
+        render_summary_markdown,
+    )
 except ModuleNotFoundError:
     from candidate_selection import get_candidate_exclusion_reasons, is_delegable_candidate, parse_score
     from analyze_service_boundaries import analyze as analyze_service_boundaries
     from analyze_service_boundaries import build_markdown as build_service_boundaries_markdown
+    from analyze_service_boundaries import build_cleanup_markdown as build_service_boundary_cleanup_markdown
+    from analyze_service_boundaries import build_cqrs_model_boundaries_markdown
+    from analyze_service_boundaries import build_execution_plan_markdown as build_service_boundary_execution_markdown
+    from analyze_service_boundaries import build_service_blueprint_markdown
+    from analyze_service_boundaries import build_target_structure_markdown as build_service_boundary_target_structure_markdown
     from analyze_service_boundaries import load_config as load_service_boundary_config
     from detect_cqrs_pattern_clusters import analyze_repository as analyze_cqrs_pattern_clusters
     from detect_cqrs_pattern_clusters import render_markdown as render_cqrs_pattern_clusters_markdown
     from delegation_plan import build_output_row, render_markdown as render_delegation_markdown
     from generate_migration_wave_plan import build_waves, render_markdown as render_wave_plan_markdown
+    from report_rendering import (
+        render_delegation_decisions_markdown,
+        render_excluded_candidates_markdown,
+        render_service_boundary_decisions_markdown,
+        render_summary_markdown,
+    )
+
+try:
+    from legacy_bridge.swop_integration import render_swop_markdown, run_swop_pipeline
+except ModuleNotFoundError:
+    from swop_integration import render_swop_markdown, run_swop_pipeline
 
 LANGUAGE_SUFFIXES = {
     ".py": "python",
@@ -108,6 +135,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", default="reports/migration-discovery", help="directory for generated artifacts, relative to repo root if not absolute")
     parser.add_argument("--top-services", type=int, help="number of top service candidates to recommend in service-boundary analysis")
     parser.add_argument("--delegation-limit", type=int, default=8, help="number of top module candidates to include in generated delegation plan")
+    parser.add_argument("--swop-repo", help="optional path to the swop repository to generate manifests and proto artifacts")
+    parser.add_argument("--swop-cqrs-root", default="backend/app/cqrs", help="CQRS root inside the analyzed repository for swop scans")
+    parser.add_argument("--swop-context", action="append", dest="swop_contexts", default=[], help="explicit CQRS context to feed into swop; can be provided multiple times")
     parser.add_argument("--stdout", action="store_true", help="print summary JSON to stdout")
     return parser.parse_args()
 
@@ -416,8 +446,11 @@ def build_summary(
     wave_plan_payload: dict[str, Any],
     artifact_paths: dict[str, str],
     service_boundary_decisions_payload: dict[str, Any] | None = None,
+    swop_payload: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     service_boundary_decisions_payload = service_boundary_decisions_payload or {}
+    swop_payload = swop_payload or {}
+    swop_summary = swop_payload.get("summary", {}) if isinstance(swop_payload, dict) else {}
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "repo_root": str(repo_root),
@@ -436,218 +469,18 @@ def build_summary(
             "migration_waves": len(wave_plan_payload.get("waves", [])),
             "recommended_services": len(service_boundary_payload.get("recommended_service_candidates", [])),
             "delegation_plan_modules": len(delegation_rows),
+            "swop_contexts": int(swop_summary.get("resolved", 0) or 0),
+            "swop_proto_files": int(swop_summary.get("proto_files", 0) or 0),
         },
         "top_candidates": [row["module"] for row in candidate_rows[:5]],
         "top_delegable_candidates": [row["module"] for row in sorted((row for row in candidate_rows if is_delegable_candidate(row)), key=_parse_score, reverse=True)[:5]],
         "top_service_candidates": [row["module"] for row in service_boundary_payload.get("recommended_service_candidates", [])[:5]],
         "top_cqrs_pattern_candidates": [row["module"] for row in cqrs_pattern_payload.get("rows", [])[:5]],
         "top_migration_waves": [w["wave_name"] for w in wave_plan_payload.get("waves", [])[:5]],
+        "top_swop_contexts": list(swop_payload.get("resolved_contexts", []))[:5] if isinstance(swop_payload, dict) else [],
         "service_boundary_decision_reasons": service_boundary_decisions_payload.get("reason_counts", []),
         "artifacts": artifact_paths,
     }
-
-
-def render_summary_markdown(summary: dict[str, Any]) -> str:
-    lines = [
-        "# Migration Discovery Summary",
-        "",
-        f"Generated at: {summary['generated_at']}",
-        "",
-        f"- Repository root: `{summary['repo_root']}`",
-        f"- Languages: `{', '.join(row['name'] for row in summary['profile']['languages']) or '-'}`",
-        f"- Frameworks: `{', '.join(summary['profile']['frameworks']) or '-'}`",
-        f"- Architecture hints: `{', '.join(summary['profile']['architecture_hints']) or '-'}`",
-        "",
-        "## Counts",
-        "",
-        "| Metric | Value |",
-        "| --- | ---: |",
-    ]
-    for key, value in summary["counts"].items():
-        lines.append(f"| {key} | {value} |")
-    lines.extend([
-        "",
-        "## Top delegable candidates",
-        "",
-    ])
-    for item in summary.get("top_delegable_candidates", []):
-        lines.append(f"- `{item}`")
-    if not summary.get("top_delegable_candidates"):
-        lines.append("- `none`")
-    lines.extend([
-        "",
-        "## Top raw migration candidates",
-        "",
-    ])
-    for item in summary["top_candidates"]:
-        lines.append(f"- `{item}`")
-    if not summary["top_candidates"]:
-        lines.append("- `none`")
-    lines.extend([
-        "",
-        "## Top service candidates",
-        "",
-    ])
-    for item in summary["top_service_candidates"]:
-        lines.append(f"- `{item}`")
-    if not summary["top_service_candidates"]:
-        lines.append("- `none`")
-    lines.extend([
-        "",
-        "## Service-boundary decision reasons",
-        "",
-    ])
-    for item in summary.get("service_boundary_decision_reasons", [])[:10]:
-        lines.append(f"- `{item['reason']}`: {item['count']}")
-    if not summary.get("service_boundary_decision_reasons"):
-        lines.append("- `none`")
-    lines.extend([
-        "",
-        "## Excluded candidate reasons",
-        "",
-    ])
-    for item in summary.get("excluded_candidate_reasons", [])[:10]:
-        lines.append(f"- `{item['reason']}`: {item['count']}")
-    if not summary.get("excluded_candidate_reasons"):
-        lines.append("- `none`")
-    lines.extend([
-        "",
-        "## Delegation decision reasons",
-        "",
-    ])
-    for item in summary.get("delegation_decision_reasons", [])[:10]:
-        lines.append(f"- `{item['reason']}`: {item['count']}")
-    if not summary.get("delegation_decision_reasons"):
-        lines.append("- `none`")
-    lines.extend([
-        "",
-        "## Top CQRS pattern candidates",
-        "",
-    ])
-    for item in summary["top_cqrs_pattern_candidates"]:
-        lines.append(f"- `{item}`")
-    if not summary["top_cqrs_pattern_candidates"]:
-        lines.append("- `none`")
-    lines.extend([
-        "",
-        "## Artifacts",
-        "",
-        "| Name | Path |",
-        "| --- | --- |",
-    ])
-    for name, path in sorted(summary["artifacts"].items()):
-        lines.append(f"| {name} | `{path}` |")
-    return "\n".join(lines) + "\n"
-
-
-def render_excluded_candidates_markdown(payload: dict[str, Any]) -> str:
-    lines = [
-        "# Excluded Delegation Candidates",
-        "",
-        f"Total excluded candidates: {payload['count']}",
-        "",
-        "## Exclusion reasons",
-        "",
-    ]
-    for item in payload.get("reason_counts", []):
-        lines.append(f"- `{item['reason']}`: {item['count']}")
-    if not payload.get("reason_counts"):
-        lines.append("- `none`")
-
-    lines.extend([
-        "",
-        "## Excluded candidates",
-        "",
-    ])
-    for row in payload.get("rows", []):
-        lines.append(f"### Excluded: {row['module'] or 'unknown'}")
-        lines.append("")
-        lines.append(f"- Path: `{row['path'] or '-'}`")
-        lines.append(f"- Kind: `{row['kind'] or '-'}`")
-        lines.append(f"- Score: `{row['score']:.2f}`")
-        lines.append(f"- Phase: `{row['phase']}`")
-        lines.append("- Reasons:")
-        for reason in row.get("reasons", []):
-            lines.append(f"  - {reason}")
-        lines.append("")
-    if not payload.get("rows"):
-        lines.append("No excluded candidates.")
-        lines.append("")
-    return "\n".join(lines)
-
-
-def render_delegation_decisions_markdown(payload: dict[str, Any]) -> str:
-    lines = [
-        "# Delegation Decision Rationale",
-        "",
-        f"Total selected delegation candidates: {payload['count']}",
-        "",
-        "## Repeated decision signals",
-        "",
-    ]
-    for item in payload.get("reason_counts", [])[:20]:
-        lines.append(f"- `{item['reason']}`: {item['count']}")
-    if not payload.get("reason_counts"):
-        lines.append("- `none`")
-
-    lines.extend([
-        "",
-        "## Selected candidates",
-        "",
-    ])
-    for row in payload.get("rows", []):
-        lines.append(f"### Selected: {row['module']}")
-        lines.append("")
-        lines.append(f"- Score: `{row['score']:.2f}`")
-        lines.append(f"- Phase: `{row['phase']}`")
-        lines.append(f"- Effort: `{row['effort']}`")
-        lines.append(f"- CQRS pattern: `{row['cqrs_pattern']}`")
-        lines.append(f"- Shared types package: `{row['shared_types_package']}`")
-        lines.append("- Why selected:")
-        for reason in row.get("reasons", []):
-            lines.append(f"  - {reason}")
-        lines.append("")
-    if not payload.get("rows"):
-        lines.append("No selected delegation candidates.")
-        lines.append("")
-    return "\n".join(lines)
-
-
-def render_service_boundary_decisions_markdown(payload: dict[str, Any]) -> str:
-    lines = [
-        "# Service Boundary Decision Rationale",
-        "",
-        f"Total recommended service candidates: {payload['count']}",
-        "",
-        "## Repeated decision signals",
-        "",
-    ]
-    for item in payload.get("reason_counts", [])[:20]:
-        lines.append(f"- `{item['reason']}`: {item['count']}")
-    if not payload.get("reason_counts"):
-        lines.append("- `none`")
-
-    lines.extend([
-        "",
-        "## Recommended candidates",
-        "",
-    ])
-    for row in payload.get("rows", []):
-        lines.append(f"### Recommended: {row['module']}")
-        lines.append("")
-        lines.append(f"- Service slug: `{row['service_slug']}`")
-        lines.append(f"- Priority: `{row['priority']}`")
-        lines.append(f"- Delivery mode: `{row['delivery_mode']}`")
-        lines.append(f"- Iframe score: `{row['iframe_score']}`")
-        lines.append(f"- Pages: `{row['page_count']}`")
-        lines.append("- Why selected:")
-        for reason in row.get("reasons", []):
-            lines.append(f"  - {reason}")
-        lines.append("")
-    if not payload.get("rows"):
-        lines.append("No recommended service candidates.")
-        lines.append("")
-    return "\n".join(lines)
 
 
 def write_text(path: Path, content: str) -> None:
@@ -672,6 +505,9 @@ def run_discovery(
     config_path: Path | None = None,
     top_services: int | None = None,
     delegation_limit: int = 8,
+    swop_repo: Path | None = None,
+    swop_cqrs_root: str = "backend/app/cqrs",
+    swop_contexts: list[str] | None = None,
 ) -> dict[str, Any]:
     repo_root = repo_root.resolve()
     output_dir = output_dir.resolve()
@@ -699,6 +535,7 @@ def run_discovery(
     )
     service_boundary_decisions_payload = build_service_boundary_decision_report(service_boundary_payload)
     delegation_decisions_payload = build_delegation_decision_report(delegation_rows)
+    swop_payload: dict[str, Any] | None = None
 
     # Generate migration wave plan
     waves = build_waves(cqrs_pattern_payload, candidate_rows, max_waves=5)
@@ -714,6 +551,10 @@ def run_discovery(
         "module_candidates_md": output_dir / "module-candidates.md",
         "service_boundaries_json": output_dir / "service-boundaries.json",
         "service_boundaries_md": output_dir / "service-boundaries.md",
+        "service_boundaries_execution_plan_md": output_dir / "service-boundaries.execution-plan.md",
+        "service_boundaries_target_structure_md": output_dir / "service-boundaries.target-structure.md",
+        "service_boundaries_cleanup_md": output_dir / "service-boundaries.cleanup-checklist.md",
+        "service_boundaries_cqrs_model_boundaries_md": output_dir / "service-boundaries.cqrs-model-boundaries.md",
         "cqrs_pattern_clusters_json": output_dir / "cqrs-pattern-clusters.json",
         "cqrs_pattern_clusters_md": output_dir / "cqrs-pattern-clusters.md",
         "migration_wave_plan_json": output_dir / "migration-wave-plan.json",
@@ -728,12 +569,35 @@ def run_discovery(
         "delegation_decisions_md": output_dir / "delegation-decisions.md",
     }
 
+    if swop_repo is not None:
+        swop_payload = run_swop_pipeline(
+            repo_root=repo_root,
+            output_dir=output_dir,
+            swop_repo=swop_repo,
+            service_boundaries=service_boundary_payload,
+            cqrs_root=swop_cqrs_root,
+            contexts=swop_contexts,
+        )
+        artifacts["swop_json"] = output_dir / "swop-integration.json"
+        artifacts["swop_md"] = output_dir / "swop-integration.md"
+
     write_json(artifacts["repository_profile_json"], profile)
     write_text(artifacts["repository_profile_md"], render_repository_profile_markdown(profile))
     write_json(artifacts["module_candidates_json"], candidate_rows)
     write_text(artifacts["module_candidates_md"], render_module_candidates_markdown(candidate_rows))
     write_json(artifacts["service_boundaries_json"], service_boundary_payload)
     write_text(artifacts["service_boundaries_md"], build_service_boundaries_markdown(service_boundary_payload))
+    write_text(artifacts["service_boundaries_execution_plan_md"], build_service_boundary_execution_markdown(service_boundary_payload))
+    write_text(artifacts["service_boundaries_target_structure_md"], build_service_boundary_target_structure_markdown(service_boundary_payload))
+    write_text(artifacts["service_boundaries_cleanup_md"], build_service_boundary_cleanup_markdown(service_boundary_payload))
+    write_text(artifacts["service_boundaries_cqrs_model_boundaries_md"], build_cqrs_model_boundaries_markdown(service_boundary_payload))
+    for row in service_boundary_payload.get("execution_plan", []):
+        service_slug = row.get("service_slug")
+        if service_slug:
+            blueprint_key = f"service_boundaries_{service_slug}_blueprint_md"
+            blueprint_path = output_dir / f"service-boundaries.{service_slug}-blueprint.md"
+            artifacts[blueprint_key] = blueprint_path
+            write_text(blueprint_path, build_service_blueprint_markdown(service_slug, service_boundary_payload))
     write_json(artifacts["cqrs_pattern_clusters_json"], cqrs_pattern_payload)
     write_text(artifacts["cqrs_pattern_clusters_md"], render_cqrs_pattern_clusters_markdown(cqrs_pattern_payload))
     write_json(artifacts["migration_wave_plan_json"], wave_plan_payload)
@@ -746,6 +610,9 @@ def run_discovery(
     write_text(artifacts["service_boundary_decisions_md"], render_service_boundary_decisions_markdown(service_boundary_decisions_payload))
     write_json(artifacts["delegation_decisions_json"], delegation_decisions_payload)
     write_text(artifacts["delegation_decisions_md"], render_delegation_decisions_markdown(delegation_decisions_payload))
+    if swop_payload is not None:
+        write_json(artifacts["swop_json"], swop_payload)
+        write_text(artifacts["swop_md"], render_swop_markdown(swop_payload))
 
     artifact_paths = {name: relative_artifact_path(path, repo_root) for name, path in artifacts.items()}
     summary = build_summary(
@@ -758,6 +625,7 @@ def run_discovery(
         wave_plan_payload,
         artifact_paths,
         service_boundary_decisions_payload,
+        swop_payload,
     )
     summary["excluded_candidate_reasons"] = excluded_candidates_payload.get("reason_counts", [])
     summary["delegation_decision_reasons"] = delegation_decisions_payload.get("reason_counts", [])
@@ -782,6 +650,7 @@ def run_discovery(
         "delegation_plan": delegation_rows,
         "excluded_candidates": excluded_candidates_payload,
         "delegation_decisions": delegation_decisions_payload,
+        "swop": swop_payload,
         "summary": summary,
     }
 
@@ -795,6 +664,7 @@ def main() -> int:
 
     config_path = Path(args.config).resolve() if args.config else None
     output_dir = resolve_output_dir(repo_root, args.output_dir)
+    swop_repo = Path(args.swop_repo).resolve() if args.swop_repo else None
     try:
         payload = run_discovery(
             repo_root=repo_root,
@@ -802,6 +672,9 @@ def main() -> int:
             config_path=config_path,
             top_services=args.top_services,
             delegation_limit=args.delegation_limit,
+            swop_repo=swop_repo,
+            swop_cqrs_root=args.swop_cqrs_root,
+            swop_contexts=args.swop_contexts,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"[ERROR] discovery failed: {exc}")
@@ -816,6 +689,9 @@ def main() -> int:
     print(f"[INFO] service boundary modules: {len(payload['service_boundaries'].get('frontend_modules', []))}")
     print(f"[INFO] cqrs pattern modules: {len(payload['cqrs_pattern_clusters'].get('rows', []))}")
     print(f"[INFO] delegation plan modules: {len(payload['delegation_plan'])}")
+    if payload.get("swop"):
+        print(f"[INFO] swop contexts: {payload['swop']['summary']['resolved']}")
+        print(f"[INFO] swop proto files: {payload['swop']['summary']['proto_files']}")
     return 0
 
 

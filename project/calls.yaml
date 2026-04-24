@@ -1,821 +1,37 @@
 project: /home/tom/github/semcod/protos
 generated_from: code2llm call graph analysis
 stats:
-  total_nodes: 157
-  total_edges: 129
-  modules_count: 28
+  total_nodes: 210
+  total_edges: 188
+  modules_count: 31
 nodes:
-  scripts.generate_incremental.file_hash:
-    name: file_hash
-    module: scripts.generate_incremental
-    line: 45
-    cyclomatic_complexity: 2
-    calls_out: 6
-    calls_in: 2
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.read_text:
-    name: read_text
+  scratch.swop_scan_c2004.main:
+    name: main
+    module: scratch.swop_scan_c2004
+    line: 150
+    cyclomatic_complexity: 17
+    calls_out: 53
+    calls_in: 0
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config:
+    name: normalize_config
     module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 199
-    cyclomatic_complexity: 3
-    calls_out: 2
-    calls_in: 2
-  scratch.swop_scan_c2004.run_swop_scan:
-    name: run_swop_scan
-    module: scratch.swop_scan_c2004
-    line: 135
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  scripts.schema_registry.SchemaRegistry.register:
-    name: register
-    module: scripts.schema_registry
-    line: 328
-    cyclomatic_complexity: 10
-    calls_out: 18
-    calls_in: 0
-  scripts.legacy_bridge.run_arch_migration_discovery.get_candidate_exclusion_reasons:
-    name: get_candidate_exclusion_reasons
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 112
-    cyclomatic_complexity: 14
-    calls_out: 33
-    calls_in: 2
-  scratch.swop_scan_c2004._kind_by_base:
-    name: _kind_by_base
-    module: scratch.swop_scan_c2004
-    line: 97
-    cyclomatic_complexity: 3
-    calls_out: 0
-    calls_in: 1
-  scripts.legacy_bridge.generate_migration_wave_plan.resolve_path:
-    name: resolve_path
-    module: scripts.legacy_bridge.generate_migration_wave_plan
-    line: 95
+    line: 182
     cyclomatic_complexity: 2
-    calls_out: 2
-    calls_in: 3
-  scripts.legacy_bridge.analyze_service_boundaries.detect_frontend_module:
-    name: detect_frontend_module
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 155
-    cyclomatic_complexity: 7
-    calls_out: 6
+    calls_out: 1
     calls_in: 1
-  scripts.conflict_resolver.ConflictResolver.resolve_merge:
-    name: resolve_merge
-    module: scripts.conflict_resolver
-    line: 147
-    cyclomatic_complexity: 22
-    calls_out: 15
-    calls_in: 0
-  gateway.sse.subscribe:
-    name: subscribe
-    module: gateway.sse
-    line: 38
-    cyclomatic_complexity: 1
-    calls_out: 3
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.backend_group_summary:
-    name: backend_group_summary
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 349
-    cyclomatic_complexity: 9
-    calls_out: 11
-    calls_in: 1
-  scripts.detect_migration_candidates.classify_extraction_target:
-    name: classify_extraction_target
+  scripts.detect_migration_candidates.analyze_candidate:
+    name: analyze_candidate
     module: scripts.detect_migration_candidates
-    line: 362
-    cyclomatic_complexity: 19
+    line: 294
+    cyclomatic_complexity: 12
     calls_out: 12
     calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.build_backend_index:
-    name: build_backend_index
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 322
-    cyclomatic_complexity: 7
-    calls_out: 19
-    calls_in: 1
-  scripts.detect_migration_candidates.import_tokens:
-    name: import_tokens
-    module: scripts.detect_migration_candidates
-    line: 219
-    cyclomatic_complexity: 3
-    calls_out: 2
-    calls_in: 1
-  SUMD.parse_proto:
-    name: parse_proto
-    module: SUMD
-    line: 688
-    cyclomatic_complexity: 0
-    calls_out: 0
-    calls_in: 8
-  scripts.legacy_bridge.normalizer.normalize_proto_ast:
-    name: normalize_proto_ast
-    module: scripts.legacy_bridge.normalizer
-    line: 79
-    cyclomatic_complexity: 2
-    calls_out: 5
-    calls_in: 3
-  scripts.legacy_bridge.delegation_plan._to_float:
-    name: _to_float
-    module: scripts.legacy_bridge.delegation_plan
-    line: 6
-    cyclomatic_complexity: 2
-    calls_out: 1
-    calls_in: 1
-  scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report:
-    name: build_excluded_candidates_report
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 284
-    cyclomatic_complexity: 5
-    calls_out: 18
-    calls_in: 1
-  scripts.legacy_bridge.generate_delegation_plan.main:
-    name: main
-    module: scripts.legacy_bridge.generate_delegation_plan
-    line: 133
-    cyclomatic_complexity: 6
-    calls_out: 29
-    calls_in: 0
-  scripts.legacy_bridge.analyze_service_boundaries.build_ts_index:
-    name: build_ts_index
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 231
-    cyclomatic_complexity: 10
-    calls_out: 30
-    calls_in: 1
-  scripts.detect_migration_candidates.parse_args:
-    name: parse_args
-    module: scripts.detect_migration_candidates
-    line: 465
-    cyclomatic_complexity: 1
-    calls_out: 6
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.deep_merge:
-    name: deep_merge
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 82
-    cyclomatic_complexity: 4
-    calls_out: 6
-    calls_in: 2
-  gateway.main.cmd_dual_create_user:
-    name: cmd_dual_create_user
-    module: gateway.main
-    line: 239
-    cyclomatic_complexity: 1
-    calls_out: 5
-    calls_in: 0
-  scripts.generate_sql.generate_sql:
-    name: generate_sql
-    module: scripts.generate_sql
-    line: 50
-    cyclomatic_complexity: 6
-    calls_out: 6
-    calls_in: 2
-  scripts.legacy_bridge.analyze_service_boundaries.normalize_api_group:
-    name: normalize_api_group
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 220
-    cyclomatic_complexity: 4
-    calls_out: 3
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.analyze:
-    name: analyze
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 794
-    cyclomatic_complexity: 2
-    calls_out: 10
-    calls_in: 1
-  scripts.schema_registry.check_compatibility:
-    name: check_compatibility
-    module: scripts.schema_registry
-    line: 243
-    cyclomatic_complexity: 6
-    calls_out: 2
-    calls_in: 3
-  scripts.generate_json_schema.main:
-    name: main
-    module: scripts.generate_json_schema
-    line: 83
-    cyclomatic_complexity: 3
-    calls_out: 10
-    calls_in: 0
-  adapters.legacy_to_proto.user_adapter.legacy_to_proto:
-    name: legacy_to_proto
-    module: adapters.legacy_to_proto.user_adapter
-    line: 10
-    cyclomatic_complexity: 1
-    calls_out: 11
-    calls_in: 1
-  scripts.parse_proto._to_dict:
-    name: _to_dict
-    module: scripts.parse_proto
-    line: 108
-    cyclomatic_complexity: 5
-    calls_out: 5
-    calls_in: 5
-  scripts.legacy_bridge.analyze_service_boundaries.build_target_structure:
-    name: build_target_structure
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 546
-    cyclomatic_complexity: 2
-    calls_out: 1
-    calls_in: 1
-  scripts.legacy_bridge.delegation_plan.render_markdown:
-    name: render_markdown
-    module: scripts.legacy_bridge.delegation_plan
-    line: 100
-    cyclomatic_complexity: 8
-    calls_out: 33
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.load_config:
-    name: load_config
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 92
-    cyclomatic_complexity: 3
-    calls_out: 5
-    calls_in: 1
-  scripts.generate_zod.to_zod:
-    name: to_zod
-    module: scripts.generate_zod
-    line: 86
-    cyclomatic_complexity: 7
-    calls_out: 15
-    calls_in: 1
-  scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report:
-    name: build_delegation_decision_report
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 313
-    cyclomatic_complexity: 19
-    calls_out: 43
-    calls_in: 1
-  scripts.detect_migration_candidates.score_migration_candidate:
-    name: score_migration_candidate
-    module: scripts.detect_migration_candidates
-    line: 313
-    cyclomatic_complexity: 15
-    calls_out: 13
-    calls_in: 1
-  scripts.legacy_bridge.run_arch_migration_discovery.write_text:
-    name: write_text
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 582
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 10
-  scripts.detect_migration_candidates.get_service_candidates:
-    name: get_service_candidates
-    module: scripts.detect_migration_candidates
-    line: 455
-    cyclomatic_complexity: 4
-    calls_out: 7
-    calls_in: 1
-  scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan:
-    name: build_delegation_plan
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 371
-    cyclomatic_complexity: 5
-    calls_out: 7
-    calls_in: 1
-  scripts.parse_proto.parse_proto:
-    name: parse_proto
-    module: scripts.parse_proto
-    line: 117
-    cyclomatic_complexity: 28
-    calls_out: 55
-    calls_in: 0
-  scripts.legacy_bridge.analyze_service_boundaries.strip_source_suffix:
-    name: strip_source_suffix
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 126
-    cyclomatic_complexity: 3
-    calls_out: 2
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.merge_named_rows:
-    name: merge_named_rows
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 314
-    cyclomatic_complexity: 3
-    calls_out: 3
-    calls_in: 2
-  scripts.legacy_bridge.analyze_service_boundaries.build_cleanup_checklist:
-    name: build_cleanup_checklist
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 569
-    cyclomatic_complexity: 2
-    calls_out: 1
-    calls_in: 1
-  adapters.legacy_to_proto.user_adapter.wrap_for_event_store:
-    name: wrap_for_event_store
-    module: adapters.legacy_to_proto.user_adapter
-    line: 27
-    cyclomatic_complexity: 1
-    calls_out: 1
-    calls_in: 0
-  gateway.user_handler.handle_create_user:
-    name: handle_create_user
-    module: gateway.user_handler
-    line: 51
-    cyclomatic_complexity: 1
-    calls_out: 4
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.choose_component_anchor:
-    name: choose_component_anchor
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 412
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  scripts.legacy_bridge.run_arch_migration_discovery.run_discovery:
-    name: run_discovery
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 598
-    cyclomatic_complexity: 8
-    calls_out: 57
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.const_str:
-    name: const_str
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 262
-    cyclomatic_complexity: 3
-    calls_out: 2
-    calls_in: 1
-  scratch.swop_scan_c2004._kind_by_suffix:
-    name: _kind_by_suffix
-    module: scratch.swop_scan_c2004
-    line: 74
-    cyclomatic_complexity: 4
-    calls_out: 1
-    calls_in: 1
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge:
-    name: deep_merge
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 163
-    cyclomatic_complexity: 4
-    calls_out: 6
-    calls_in: 3
-  scripts.generate_incremental.save_cache:
-    name: save_cache
-    module: scripts.generate_incremental
-    line: 61
-    cyclomatic_complexity: 1
-    calls_out: 3
-    calls_in: 1
-  scratch.swop_scan_c2004.collect_ground_truth:
-    name: collect_ground_truth
-    module: scratch.swop_scan_c2004
-    line: 104
-    cyclomatic_complexity: 9
-    calls_out: 12
-    calls_in: 1
-  gateway.main.query_search:
-    name: query_search
-    module: gateway.main
-    line: 326
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 0
-  gateway.main.delegation_slices:
-    name: delegation_slices
-    module: gateway.main
-    line: 141
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 0
-  scripts.detect_migration_candidates.main:
-    name: main
-    module: scripts.detect_migration_candidates
-    line: 474
-    cyclomatic_complexity: 5
-    calls_out: 17
-    calls_in: 0
-  scripts.legacy_bridge.generate_delegation_plan.parse_args:
-    name: parse_args
-    module: scripts.legacy_bridge.generate_delegation_plan
-    line: 116
-    cyclomatic_complexity: 1
-    calls_out: 9
-    calls_in: 1
-  scripts.legacy_bridge.normalizer.normalize_json_schema:
-    name: normalize_json_schema
-    module: scripts.legacy_bridge.normalizer
-    line: 46
-    cyclomatic_complexity: 3
-    calls_out: 10
-    calls_in: 3
-  scripts.legacy_bridge.run_arch_migration_discovery.main:
-    name: main
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 702
-    cyclomatic_complexity: 6
-    calls_out: 24
-    calls_in: 0
-  scripts.legacy_bridge.run_arch_migration_discovery.profile_repository:
-    name: profile_repository
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 167
-    cyclomatic_complexity: 18
-    calls_out: 33
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.parse_args:
-    name: parse_args
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 101
-    cyclomatic_complexity: 1
-    calls_out: 8
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.extract_prefixed_module:
-    name: extract_prefixed_module
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 134
-    cyclomatic_complexity: 9
-    calls_out: 14
-    calls_in: 1
-  scripts.legacy_bridge.generate_migration_wave_plan.load_json:
-    name: load_json
-    module: scripts.legacy_bridge.generate_migration_wave_plan
-    line: 86
-    cyclomatic_complexity: 3
-    calls_out: 3
-    calls_in: 2
-  scripts.schema_registry._diff_messages:
-    name: _diff_messages
-    module: scripts.schema_registry
-    line: 129
-    cyclomatic_complexity: 19
-    calls_out: 16
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.resolve_ts_import:
-    name: resolve_ts_import
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 201
-    cyclomatic_complexity: 5
-    calls_out: 11
-    calls_in: 1
-  gateway.user_handler.handle_deactivate_user:
-    name: handle_deactivate_user
-    module: gateway.user_handler
-    line: 107
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  gateway.search_handler.handle_index_entry:
-    name: handle_index_entry
-    module: gateway.search_handler
-    line: 18
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.load_config:
-    name: load_config
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 173
-    cyclomatic_complexity: 3
-    calls_out: 5
-    calls_in: 1
-  scripts.legacy_bridge.migrator.main:
-    name: main
-    module: scripts.legacy_bridge.migrator
-    line: 54
-    cyclomatic_complexity: 1
-    calls_out: 7
-    calls_in: 0
-  scripts.legacy_bridge.run_arch_migration_discovery.write_json:
-    name: write_json
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 587
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 10
-  scripts.legacy_bridge.analyze_service_boundaries.iter_files:
-    name: iter_files
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 116
-    cyclomatic_complexity: 7
-    calls_out: 7
-    calls_in: 2
-  scripts.schema_registry._connect:
-    name: _connect
-    module: scripts.schema_registry
-    line: 114
-    cyclomatic_complexity: 1
-    calls_out: 5
-    calls_in: 2
-  gateway.main.query_get_user:
-    name: query_get_user
-    module: gateway.main
-    line: 283
-    cyclomatic_complexity: 2
-    calls_out: 3
-    calls_in: 0
-  gateway.user_handler.handle_dual_write_user:
-    name: handle_dual_write_user
-    module: gateway.user_handler
-    line: 76
-    cyclomatic_complexity: 1
-    calls_out: 4
-    calls_in: 1
-  gateway.main.health_modules:
-    name: health_modules
-    module: gateway.main
-    line: 128
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 0
-  scripts.legacy_bridge.analyze_service_boundaries.build_service_components:
-    name: build_service_components
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 419
-    cyclomatic_complexity: 34
-    calls_out: 32
-    calls_in: 1
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.main:
-    name: main
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 439
-    cyclomatic_complexity: 10
-    calls_out: 31
-    calls_in: 0
-  gateway.user_handler.handle_list_events:
-    name: handle_list_events
-    module: gateway.user_handler
-    line: 134
-    cyclomatic_complexity: 3
-    calls_out: 3
-    calls_in: 1
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.parse_args:
-    name: parse_args
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 188
-    cyclomatic_complexity: 1
-    calls_out: 8
-    calls_in: 1
-  gateway.main.cmd_change_email:
-    name: cmd_change_email
-    module: gateway.main
-    line: 260
-    cyclomatic_complexity: 1
-    calls_out: 4
-    calls_in: 0
-  scripts.legacy_bridge.generate_delegation_plan.parse_score:
-    name: parse_score
-    module: scripts.legacy_bridge.generate_delegation_plan
-    line: 66
-    cyclomatic_complexity: 2
-    calls_out: 2
-    calls_in: 2
-  scripts.legacy_bridge.migrator.migrate_users:
-    name: migrate_users
-    module: scripts.legacy_bridge.migrator
-    line: 20
-    cyclomatic_complexity: 3
-    calls_out: 6
-    calls_in: 1
-  gateway.delegation.get_delegation_health:
-    name: get_delegation_health
-    module: gateway.delegation
-    line: 136
-    cyclomatic_complexity: 6
-    calls_out: 4
-    calls_in: 2
   scripts.generate_pydantic.main:
     name: main
     module: scripts.generate_pydantic
     line: 131
     cyclomatic_complexity: 3
     calls_out: 9
-    calls_in: 0
-  scripts.legacy_bridge.run_arch_migration_discovery._parse_score:
-    name: _parse_score
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 273
-    cyclomatic_complexity: 2
-    calls_out: 2
-    calls_in: 2
-  scripts.generate_json_schema.generate:
-    name: generate
-    module: scripts.generate_json_schema
-    line: 34
-    cyclomatic_complexity: 6
-    calls_out: 3
-    calls_in: 1
-  gateway.user_handler.handle_change_email:
-    name: handle_change_email
-    module: gateway.user_handler
-    line: 96
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.is_ignored:
-    name: is_ignored
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 112
-    cyclomatic_complexity: 2
-    calls_out: 1
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.counter_rows:
-    name: counter_rows
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 310
-    cyclomatic_complexity: 2
-    calls_out: 1
-    calls_in: 2
-  scripts.legacy_bridge.generate_delegation_plan.load_clusters:
-    name: load_clusters
-    module: scripts.legacy_bridge.generate_delegation_plan
-    line: 44
-    cyclomatic_complexity: 9
-    calls_out: 10
-    calls_in: 1
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository:
-    name: analyze_repository
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 317
-    cyclomatic_complexity: 20
-    calls_out: 37
-    calls_in: 1
-  scripts.generate_pydantic._flatten_messages:
-    name: _flatten_messages
-    module: scripts.generate_pydantic
-    line: 35
-    cyclomatic_complexity: 1
-    calls_out: 5
-    calls_in: 2
-  scripts.detect_migration_candidates.normalize_token:
-    name: normalize_token
-    module: scripts.detect_migration_candidates
-    line: 123
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 5
-  gateway.sse.event_generator:
-    name: event_generator
-    module: gateway.sse
-    line: 69
-    cyclomatic_complexity: 6
-    calls_out: 11
-    calls_in: 1
-  scripts.legacy_bridge.generate_migration_wave_plan.build_waves:
-    name: build_waves
-    module: scripts.legacy_bridge.generate_migration_wave_plan
-    line: 139
-    cyclomatic_complexity: 15
-    calls_out: 31
-    calls_in: 2
-  scripts.legacy_bridge.generate_migration_wave_plan.main:
-    name: main
-    module: scripts.legacy_bridge.generate_migration_wave_plan
-    line: 278
-    cyclomatic_complexity: 8
-    calls_out: 33
-    calls_in: 0
-  scripts.legacy_bridge.generate_migration_wave_plan.parse_args:
-    name: parse_args
-    module: scripts.legacy_bridge.generate_migration_wave_plan
-    line: 72
-    cyclomatic_complexity: 1
-    calls_out: 8
-    calls_in: 1
-  scripts.detect_migration_candidates.build_output_row:
-    name: build_output_row
-    module: scripts.detect_migration_candidates
-    line: 406
-    cyclomatic_complexity: 2
-    calls_out: 2
-    calls_in: 3
-  SUMD.to_zod:
-    name: to_zod
-    module: SUMD
-    line: 536
-    cyclomatic_complexity: 0
-    calls_out: 0
-    calls_in: 1
-  gateway.user_handler.handle_get_user:
-    name: handle_get_user
-    module: gateway.user_handler
-    line: 123
-    cyclomatic_complexity: 2
-    calls_out: 2
-    calls_in: 1
-  gateway.main.delegation_slice_detail:
-    name: delegation_slice_detail
-    module: gateway.main
-    line: 146
-    cyclomatic_complexity: 2
-    calls_out: 4
-    calls_in: 0
-  scripts.generate_incremental.load_cache:
-    name: load_cache
-    module: scripts.generate_incremental
-    line: 54
-    cyclomatic_complexity: 2
-    calls_out: 3
-    calls_in: 1
-  gateway.main.list_events:
-    name: list_events
-    module: gateway.main
-    line: 297
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 0
-  scripts.legacy_bridge.analyze_service_boundaries.main:
-    name: main
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 809
-    cyclomatic_complexity: 7
-    calls_out: 24
-    calls_in: 0
-  scripts.legacy_bridge.sync_check.main:
-    name: main
-    module: scripts.legacy_bridge.sync_check
-    line: 15
-    cyclomatic_complexity: 6
-    calls_out: 12
-    calls_in: 0
-  scripts.legacy_bridge.analyze_service_boundaries.resolve_candidate_file:
-    name: resolve_candidate_file
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 177
-    cyclomatic_complexity: 6
-    calls_out: 16
-    calls_in: 2
-  scripts.legacy_bridge.run_arch_migration_discovery.is_delegable_candidate:
-    name: is_delegable_candidate
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 280
-    cyclomatic_complexity: 1
-    calls_out: 1
-    calls_in: 4
-  scripts.generate_incremental.regenerate:
-    name: regenerate
-    module: scripts.generate_incremental
-    line: 92
-    cyclomatic_complexity: 1
-    calls_out: 11
-    calls_in: 1
-  scripts.generate_incremental.should_regenerate:
-    name: should_regenerate
-    module: scripts.generate_incremental
-    line: 67
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  scripts.generate_zod.main:
-    name: main
-    module: scripts.generate_zod
-    line: 114
-    cyclomatic_complexity: 3
-    calls_out: 9
-    calls_in: 0
-  gateway.main.cmd_index_search_entry:
-    name: cmd_index_search_entry
-    module: gateway.main
-    line: 311
-    cyclomatic_complexity: 1
-    calls_out: 3
-    calls_in: 0
-  gateway.delegation.get_delegated_slice:
-    name: get_delegated_slice
-    module: gateway.delegation
-    line: 125
-    cyclomatic_complexity: 1
-    calls_out: 1
-    calls_in: 2
-  gateway.search_handler.handle_search:
-    name: handle_search
-    module: gateway.search_handler
-    line: 41
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  gateway.main.sse_stream:
-    name: sse_stream
-    module: gateway.main
-    line: 176
-    cyclomatic_complexity: 1
-    calls_out: 5
-    calls_in: 0
-  scripts.legacy_bridge.run_arch_migration_discovery.resolve_output_dir:
-    name: resolve_output_dir
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 162
-    cyclomatic_complexity: 2
-    calls_out: 2
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.parse_router_prefixes:
-    name: parse_router_prefixes
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 268
-    cyclomatic_complexity: 8
-    calls_out: 5
-    calls_in: 1
-  gateway.main.health_module:
-    name: health_module
-    module: gateway.main
-    line: 133
-    cyclomatic_complexity: 2
-    calls_out: 4
     calls_in: 0
   scripts.legacy_bridge.delegation_plan.to_slice_name:
     name: to_slice_name
@@ -824,19 +40,33 @@ nodes:
     cyclomatic_complexity: 1
     calls_out: 4
     calls_in: 2
-  scripts.legacy_bridge.run_arch_migration_discovery.parse_args:
-    name: parse_args
-    module: scripts.legacy_bridge.run_arch_migration_discovery
-    line: 144
-    cyclomatic_complexity: 1
-    calls_out: 8
+  scripts.schema_registry._sha256_file:
+    name: _sha256_file
+    module: scripts.schema_registry
+    line: 280
+    cyclomatic_complexity: 2
+    calls_out: 6
     calls_in: 1
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.assign_clusters:
-    name: assign_clusters
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 268
-    cyclomatic_complexity: 9
-    calls_out: 14
+  scripts.detect_migration_candidates._analyze_file_content:
+    name: _analyze_file_content
+    module: scripts.detect_migration_candidates
+    line: 245
+    cyclomatic_complexity: 18
+    calls_out: 15
+    calls_in: 1
+  gateway.main.list_events:
+    name: list_events
+    module: gateway.main
+    line: 297
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 0
+  scripts.legacy_bridge.delegation_plan._to_float:
+    name: _to_float
+    module: scripts.legacy_bridge.delegation_plan
+    line: 6
+    cyclomatic_complexity: 2
+    calls_out: 1
     calls_in: 1
   gateway.main.cmd_deactivate_user:
     name: cmd_deactivate_user
@@ -845,234 +75,129 @@ nodes:
     cyclomatic_complexity: 1
     calls_out: 4
     calls_in: 0
-  gateway.main.cmd_create_user:
-    name: cmd_create_user
-    module: gateway.main
-    line: 220
-    cyclomatic_complexity: 1
-    calls_out: 5
-    calls_in: 0
-  scripts.generate_zod._flatten_enums:
-    name: _flatten_enums
-    module: scripts.generate_zod
-    line: 49
-    cyclomatic_complexity: 1
-    calls_out: 8
-    calls_in: 1
-  scripts.schema_registry._sha256_file:
-    name: _sha256_file
-    module: scripts.schema_registry
-    line: 280
-    cyclomatic_complexity: 2
-    calls_out: 6
-    calls_in: 1
-  scratch.swop_scan_c2004.main:
-    name: main
-    module: scratch.swop_scan_c2004
-    line: 150
-    cyclomatic_complexity: 17
-    calls_out: 53
-    calls_in: 0
-  scripts.detect_migration_candidates.has_candidate_markers:
-    name: has_candidate_markers
-    module: scripts.detect_migration_candidates
-    line: 127
-    cyclomatic_complexity: 6
-    calls_out: 6
-    calls_in: 3
-  scripts.generate_pydantic._flatten_enums:
-    name: _flatten_enums
-    module: scripts.generate_pydantic
-    line: 48
-    cyclomatic_complexity: 1
-    calls_out: 8
-    calls_in: 1
-  scripts.generate_zod._flatten_messages:
-    name: _flatten_messages
-    module: scripts.generate_zod
-    line: 36
-    cyclomatic_complexity: 1
-    calls_out: 5
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules:
-    name: analyze_frontend_modules
+  scripts.legacy_bridge.analyze_service_boundaries._build_module_index:
+    name: _build_module_index
     module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 585
-    cyclomatic_complexity: 43
-    calls_out: 66
-    calls_in: 1
-  scripts.legacy_bridge.delegation_plan.build_output_row:
-    name: build_output_row
-    module: scripts.legacy_bridge.delegation_plan
-    line: 67
-    cyclomatic_complexity: 6
-    calls_out: 22
-    calls_in: 1
-  scripts.detect_migration_candidates.analyze_repository:
-    name: analyze_repository
-    module: scripts.detect_migration_candidates
-    line: 440
-    cyclomatic_complexity: 4
-    calls_out: 13
-    calls_in: 2
-  scripts.generate_sql.main:
-    name: main
-    module: scripts.generate_sql
-    line: 82
-    cyclomatic_complexity: 3
-    calls_out: 9
-    calls_in: 0
-  scripts.legacy_bridge.delegation_plan._normalize_shared_types_package:
-    name: _normalize_shared_types_package
-    module: scripts.legacy_bridge.delegation_plan
-    line: 13
+    line: 612
     cyclomatic_complexity: 5
-    calls_out: 3
+    calls_out: 4
     calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.read_text:
-    name: read_text
+  scripts.legacy_bridge.analyze_service_boundaries.detect_frontend_module:
+    name: detect_frontend_module
     module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 170
-    cyclomatic_complexity: 2
-    calls_out: 1
-    calls_in: 2
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.shared_tokens_for_module:
-    name: shared_tokens_for_module
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 302
-    cyclomatic_complexity: 4
-    calls_out: 5
+    line: 155
+    cyclomatic_complexity: 7
+    calls_out: 6
     calls_in: 1
-  gateway.sse.push_to_subscribers:
-    name: push_to_subscribers
-    module: gateway.sse
-    line: 51
-    cyclomatic_complexity: 4
-    calls_out: 5
-    calls_in: 4
-  scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config:
-    name: normalize_config
-    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
-    line: 182
-    cyclomatic_complexity: 2
-    calls_out: 1
-    calls_in: 1
-  scripts.detect_migration_candidates.iter_files:
-    name: iter_files
-    module: scripts.detect_migration_candidates
-    line: 180
+  scripts.legacy_bridge.analyze_service_boundaries.parse_router_prefixes:
+    name: parse_router_prefixes
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 268
     cyclomatic_complexity: 8
-    calls_out: 1
+    calls_out: 5
     calls_in: 1
-  scripts.generate_incremental._stem:
-    name: _stem
-    module: scripts.generate_incremental
-    line: 76
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  scripts.conflict_resolver._field_effects:
-    name: _field_effects
-    module: scripts.conflict_resolver
-    line: 79
-    cyclomatic_complexity: 2
-    calls_out: 3
-    calls_in: 2
-  gateway.main.health:
-    name: health
-    module: gateway.main
-    line: 115
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 0
-  scripts.generate_pydantic.generate:
-    name: generate
-    module: scripts.generate_pydantic
-    line: 86
-    cyclomatic_complexity: 10
-    calls_out: 16
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.extract_api_groups:
-    name: extract_api_groups
+  scripts.legacy_bridge.analyze_service_boundaries.transitive_closure:
+    name: transitive_closure
     module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 227
+    line: 372
+    cyclomatic_complexity: 6
+    calls_out: 5
+    calls_in: 1
+  scripts.legacy_bridge.normalizer.normalize_json_schema:
+    name: normalize_json_schema
+    module: scripts.legacy_bridge.normalizer
+    line: 46
+    cyclomatic_complexity: 3
+    calls_out: 10
+    calls_in: 3
+  scratch.swop_scan_c2004.collect_ground_truth:
+    name: collect_ground_truth
+    module: scratch.swop_scan_c2004
+    line: 104
+    cyclomatic_complexity: 9
+    calls_out: 12
+    calls_in: 1
+  protogate.cli.cmd_gateway:
+    name: cmd_gateway
+    module: protogate.cli
+    line: 82
     cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.const_str:
+    name: const_str
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 262
+    cyclomatic_complexity: 3
     calls_out: 2
     calls_in: 1
-  gateway.delegation.list_delegated_slices:
-    name: list_delegated_slices
-    module: gateway.delegation
-    line: 129
-    cyclomatic_complexity: 2
-    calls_out: 3
-    calls_in: 2
-  scripts.detect_migration_candidates.analyze_candidate:
-    name: analyze_candidate
-    module: scripts.detect_migration_candidates
-    line: 234
-    cyclomatic_complexity: 28
-    calls_out: 32
+  scripts.legacy_bridge.analyze_service_boundaries.write_outputs:
+    name: write_outputs
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 1290
+    cyclomatic_complexity: 3
+    calls_out: 18
     calls_in: 1
-  gateway.sse.unsubscribe:
-    name: unsubscribe
-    module: gateway.sse
-    line: 43
+  scripts.legacy_bridge.analyze_service_boundaries._append_service_components_section:
+    name: _append_service_components_section
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 773
+    cyclomatic_complexity: 4
+    calls_out: 6
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.extract_prefixed_module:
+    name: extract_prefixed_module
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 134
+    cyclomatic_complexity: 9
+    calls_out: 14
+    calls_in: 1
+  scripts.generate_incremental.regenerate:
+    name: regenerate
+    module: scripts.generate_incremental
+    line: 92
+    cyclomatic_complexity: 1
+    calls_out: 11
+    calls_in: 1
+  scripts.generate_incremental.load_cache:
+    name: load_cache
+    module: scripts.generate_incremental
+    line: 54
     cyclomatic_complexity: 2
     calls_out: 3
-    calls_in: 2
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries._build_component_row:
+    name: _build_component_row
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 469
+    cyclomatic_complexity: 18
+    calls_out: 21
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries._build_cqrs_endpoint_templates:
+    name: _build_cqrs_endpoint_templates
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 984
+    cyclomatic_complexity: 6
+    calls_out: 9
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.main:
+    name: main
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 1314
+    cyclomatic_complexity: 8
+    calls_out: 19
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries._append_execution_plan_section:
+    name: _append_execution_plan_section
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 751
+    cyclomatic_complexity: 4
+    calls_out: 6
+    calls_in: 1
   scripts.schema_registry.SchemaRegistry.__init__:
     name: __init__
     module: scripts.schema_registry
     line: 296
-    cyclomatic_complexity: 1
-    calls_out: 1
-    calls_in: 0
-  scripts.generate_incremental.main:
-    name: main
-    module: scripts.generate_incremental
-    line: 108
-    cyclomatic_complexity: 11
-    calls_out: 24
-    calls_in: 0
-  scripts.legacy_bridge.generate_delegation_plan.dedupe_candidates:
-    name: dedupe_candidates
-    module: scripts.legacy_bridge.generate_delegation_plan
-    line: 73
-    cyclomatic_complexity: 6
-    calls_out: 8
-    calls_in: 1
-  scripts.legacy_bridge.diff_engine.diff_fields:
-    name: diff_fields
-    module: scripts.legacy_bridge.diff_engine
-    line: 38
-    cyclomatic_complexity: 12
-    calls_out: 19
-    calls_in: 3
-  scratch.swop_scan_c2004._base_names:
-    name: _base_names
-    module: scratch.swop_scan_c2004
-    line: 81
-    cyclomatic_complexity: 7
-    calls_out: 9
-    calls_in: 1
-  scripts.legacy_bridge.analyze_service_boundaries.select_execution_plan:
-    name: select_execution_plan
-    module: scripts.legacy_bridge.analyze_service_boundaries
-    line: 497
-    cyclomatic_complexity: 20
-    calls_out: 12
-    calls_in: 1
-  scripts.generate_sql._table_name:
-    name: _table_name
-    module: scripts.generate_sql
-    line: 42
-    cyclomatic_complexity: 1
-    calls_out: 2
-    calls_in: 1
-  scripts.event_store.EventStore.__init__:
-    name: __init__
-    module: scripts.event_store
-    line: 99
     cyclomatic_complexity: 1
     calls_out: 1
     calls_in: 0
@@ -1083,13 +208,538 @@ nodes:
     cyclomatic_complexity: 1
     calls_out: 2
     calls_in: 1
-  scripts.generate_incremental._write:
-    name: _write
-    module: scripts.generate_incremental
-    line: 81
-    cyclomatic_complexity: 2
+  adapters.legacy_to_proto.user_adapter.wrap_for_event_store:
+    name: wrap_for_event_store
+    module: adapters.legacy_to_proto.user_adapter
+    line: 27
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 0
+  scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan:
+    name: build_delegation_plan
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 423
+    cyclomatic_complexity: 5
     calls_out: 7
-    calls_in: 4
+    calls_in: 1
+  scripts.schema_registry._diff_messages:
+    name: _diff_messages
+    module: scripts.schema_registry
+    line: 129
+    cyclomatic_complexity: 19
+    calls_out: 16
+    calls_in: 1
+  gateway.search_handler.handle_search:
+    name: handle_search
+    module: gateway.search_handler
+    line: 41
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  scripts.legacy_bridge.swop_integration._context_score:
+    name: _context_score
+    module: scripts.legacy_bridge.swop_integration
+    line: 76
+    cyclomatic_complexity: 18
+    calls_out: 19
+    calls_in: 2
+  scripts.detect_migration_candidates.read_text:
+    name: read_text
+    module: scripts.detect_migration_candidates
+    line: 189
+    cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 1
+  scripts.legacy_bridge.candidate_selection.is_delegable_candidate:
+    name: is_delegable_candidate
+    module: scripts.legacy_bridge.candidate_selection
+    line: 56
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 5
+  gateway.main.health_module:
+    name: health_module
+    module: gateway.main
+    line: 133
+    cyclomatic_complexity: 2
+    calls_out: 4
+    calls_in: 0
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.shared_tokens_for_module:
+    name: shared_tokens_for_module
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 302
+    cyclomatic_complexity: 4
+    calls_out: 5
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.read_text:
+    name: read_text
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 170
+    cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 2
+  scripts.detect_migration_candidates.score_migration_candidate:
+    name: score_migration_candidate
+    module: scripts.detect_migration_candidates
+    line: 360
+    cyclomatic_complexity: 15
+    calls_out: 13
+    calls_in: 1
+  scripts.legacy_bridge.swop_integration._normalize_token:
+    name: _normalize_token
+    module: scripts.legacy_bridge.swop_integration
+    line: 170
+    cyclomatic_complexity: 7
+    calls_out: 7
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.load_config:
+    name: load_config
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 92
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
+  scripts.legacy_bridge.swop_integration._eligible_groups:
+    name: _eligible_groups
+    module: scripts.legacy_bridge.swop_integration
+    line: 63
+    cyclomatic_complexity: 6
+    calls_out: 5
+    calls_in: 3
+  gateway.user_handler.handle_change_email:
+    name: handle_change_email
+    module: gateway.user_handler
+    line: 96
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  scripts.detect_migration_candidates.build_output_row:
+    name: build_output_row
+    module: scripts.detect_migration_candidates
+    line: 453
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 1
+  gateway.user_handler.handle_deactivate_user:
+    name: handle_deactivate_user
+    module: gateway.user_handler
+    line: 107
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  scripts.parse_proto._to_dict:
+    name: _to_dict
+    module: scripts.parse_proto
+    line: 108
+    cyclomatic_complexity: 5
+    calls_out: 5
+    calls_in: 5
+  protogate.cli._batch_generate:
+    name: _batch_generate
+    module: protogate.cli
+    line: 144
+    cyclomatic_complexity: 9
+    calls_out: 24
+    calls_in: 2
+  scripts.detect_migration_candidates.import_tokens:
+    name: import_tokens
+    module: scripts.detect_migration_candidates
+    line: 219
+    cyclomatic_complexity: 3
+    calls_out: 2
+    calls_in: 2
+  scripts.generate_incremental.should_regenerate:
+    name: should_regenerate
+    module: scripts.generate_incremental
+    line: 67
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  protogate.cli.cmd_generate_zod:
+    name: cmd_generate_zod
+    module: protogate.cli
+    line: 202
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 0
+  scripts.legacy_bridge.report_rendering.render_delegation_decisions_markdown:
+    name: render_delegation_decisions_markdown
+    module: scripts.legacy_bridge.report_rendering
+    line: 160
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 0
+  scripts.detect_migration_candidates.parse_args:
+    name: parse_args
+    module: scripts.detect_migration_candidates
+    line: 512
+    cyclomatic_complexity: 1
+    calls_out: 6
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.build_markdown:
+    name: build_markdown
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 854
+    cyclomatic_complexity: 1
+    calls_out: 6
+    calls_in: 1
+  scripts.legacy_bridge.swop_integration.run_swop_pipeline:
+    name: run_swop_pipeline
+    module: scripts.legacy_bridge.swop_integration
+    line: 287
+    cyclomatic_complexity: 13
+    calls_out: 25
+    calls_in: 0
+  gateway.main.cmd_dual_create_user:
+    name: cmd_dual_create_user
+    module: gateway.main
+    line: 239
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.analyze:
+    name: analyze
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 1275
+    cyclomatic_complexity: 2
+    calls_out: 10
+    calls_in: 1
+  scripts.detect_migration_candidates.analyze_repository:
+    name: analyze_repository
+    module: scripts.detect_migration_candidates
+    line: 487
+    cyclomatic_complexity: 4
+    calls_out: 13
+    calls_in: 1
+  scripts.generate_zod._flatten_messages:
+    name: _flatten_messages
+    module: scripts.generate_zod
+    line: 36
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries._determine_component_action:
+    name: _determine_component_action
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 459
+    cyclomatic_complexity: 6
+    calls_out: 2
+    calls_in: 1
+  scripts.legacy_bridge.generate_migration_wave_plan.main:
+    name: main
+    module: scripts.legacy_bridge.generate_migration_wave_plan
+    line: 278
+    cyclomatic_complexity: 8
+    calls_out: 33
+    calls_in: 0
+  protogate.cli.cmd_legacy:
+    name: cmd_legacy
+    module: protogate.cli
+    line: 61
+    cyclomatic_complexity: 7
+    calls_out: 2
+    calls_in: 0
+  scripts.legacy_bridge.report_rendering._format_detail_value:
+    name: _format_detail_value
+    module: scripts.legacy_bridge.report_rendering
+    line: 49
+    cyclomatic_complexity: 5
+    calls_out: 3
+    calls_in: 1
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.read_text:
+    name: read_text
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 199
+    cyclomatic_complexity: 3
+    calls_out: 2
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.deep_merge:
+    name: deep_merge
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 82
+    cyclomatic_complexity: 4
+    calls_out: 6
+    calls_in: 2
+  gateway.main.sse_stream:
+    name: sse_stream
+    module: gateway.main
+    line: 176
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 0
+  protogate.cli.cmd_discovery:
+    name: cmd_discovery
+    module: protogate.cli
+    line: 96
+    cyclomatic_complexity: 7
+    calls_out: 10
+    calls_in: 0
+  gateway.main.query_get_user:
+    name: query_get_user
+    module: gateway.main
+    line: 283
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 0
+  scripts.generate_pydantic._flatten_messages:
+    name: _flatten_messages
+    module: scripts.generate_pydantic
+    line: 35
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 2
+  scripts.generate_incremental.file_hash:
+    name: file_hash
+    module: scripts.generate_incremental
+    line: 45
+    cyclomatic_complexity: 2
+    calls_out: 6
+    calls_in: 2
+  scripts.legacy_bridge.swop_integration.infer_contexts_from_service_boundaries:
+    name: infer_contexts_from_service_boundaries
+    module: scripts.legacy_bridge.swop_integration
+    line: 19
+    cyclomatic_complexity: 15
+    calls_out: 21
+    calls_in: 1
+  gateway.delegation.list_delegated_slices:
+    name: list_delegated_slices
+    module: gateway.delegation
+    line: 129
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.build_backend_index:
+    name: build_backend_index
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 322
+    cyclomatic_complexity: 7
+    calls_out: 19
+    calls_in: 1
+  scripts.legacy_bridge.candidate_selection.get_candidate_exclusion_reasons:
+    name: get_candidate_exclusion_reasons
+    module: scripts.legacy_bridge.candidate_selection
+    line: 24
+    cyclomatic_complexity: 14
+    calls_out: 33
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries._append_frontend_modules_section:
+    name: _append_frontend_modules_section
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 832
+    cyclomatic_complexity: 4
+    calls_out: 6
+    calls_in: 1
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.parse_args:
+    name: parse_args
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 188
+    cyclomatic_complexity: 1
+    calls_out: 8
+    calls_in: 1
+  scripts.legacy_bridge.report_rendering.render_excluded_candidates_markdown:
+    name: render_excluded_candidates_markdown
+    module: scripts.legacy_bridge.report_rendering
+    line: 136
+    cyclomatic_complexity: 2
+    calls_out: 5
+    calls_in: 0
+  scripts.generate_json_schema.main:
+    name: main
+    module: scripts.generate_json_schema
+    line: 83
+    cyclomatic_complexity: 3
+    calls_out: 10
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.resolve_candidate_file:
+    name: resolve_candidate_file
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 177
+    cyclomatic_complexity: 6
+    calls_out: 16
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.select_execution_plan:
+    name: select_execution_plan
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 523
+    cyclomatic_complexity: 20
+    calls_out: 12
+    calls_in: 1
+  scratch.swop_scan_c2004._kind_by_base:
+    name: _kind_by_base
+    module: scratch.swop_scan_c2004
+    line: 97
+    cyclomatic_complexity: 3
+    calls_out: 0
+    calls_in: 1
+  scripts.generate_sql._table_name:
+    name: _table_name
+    module: scripts.generate_sql
+    line: 42
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  scripts.conflict_resolver.ConflictResolver._check_field_conflicts:
+    name: _check_field_conflicts
+    module: scripts.conflict_resolver
+    line: 172
+    cyclomatic_complexity: 8
+    calls_out: 5
+    calls_in: 0
+  scripts.schema_registry._connect:
+    name: _connect
+    module: scripts.schema_registry
+    line: 114
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.build_ts_index:
+    name: build_ts_index
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 231
+    cyclomatic_complexity: 10
+    calls_out: 30
+    calls_in: 1
+  scripts.legacy_bridge.normalizer.normalize_proto_ast:
+    name: normalize_proto_ast
+    module: scripts.legacy_bridge.normalizer
+    line: 79
+    cyclomatic_complexity: 2
+    calls_out: 5
+    calls_in: 3
+  scripts.legacy_bridge.sync_check.main:
+    name: main
+    module: scripts.legacy_bridge.sync_check
+    line: 15
+    cyclomatic_complexity: 6
+    calls_out: 12
+    calls_in: 0
+  scripts.legacy_bridge.run_arch_migration_discovery._parse_score:
+    name: _parse_score
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 263
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.strip_source_suffix:
+    name: strip_source_suffix
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 126
+    cyclomatic_complexity: 3
+    calls_out: 2
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules:
+    name: analyze_frontend_modules
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 709
+    cyclomatic_complexity: 8
+    calls_out: 20
+    calls_in: 1
+  scripts.generate_incremental.main:
+    name: main
+    module: scripts.generate_incremental
+    line: 108
+    cyclomatic_complexity: 11
+    calls_out: 24
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries._apply_merge_hints:
+    name: _apply_merge_hints
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 428
+    cyclomatic_complexity: 8
+    calls_out: 7
+    calls_in: 1
+  scripts.parse_proto._handle_block_end:
+    name: _handle_block_end
+    module: scripts.parse_proto
+    line: 157
+    cyclomatic_complexity: 6
+    calls_out: 5
+    calls_in: 1
+  gateway.main.health_modules:
+    name: health_modules
+    module: gateway.main
+    line: 128
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 0
+  gateway.user_handler.handle_list_events:
+    name: handle_list_events
+    module: gateway.user_handler
+    line: 134
+    cyclomatic_complexity: 3
+    calls_out: 3
+    calls_in: 1
+  scripts.legacy_bridge.delegation_plan._normalize_shared_types_package:
+    name: _normalize_shared_types_package
+    module: scripts.legacy_bridge.delegation_plan
+    line: 13
+    cyclomatic_complexity: 5
+    calls_out: 3
+    calls_in: 1
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.assign_clusters:
+    name: assign_clusters
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 268
+    cyclomatic_complexity: 9
+    calls_out: 14
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries._build_eligible_modules:
+    name: _build_eligible_modules
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 419
+    cyclomatic_complexity: 4
+    calls_out: 0
+    calls_in: 1
+  scripts.generate_incremental.save_cache:
+    name: save_cache
+    module: scripts.generate_incremental
+    line: 61
+    cyclomatic_complexity: 1
+    calls_out: 3
+    calls_in: 1
+  adapters.legacy_to_proto.user_adapter.legacy_to_proto:
+    name: legacy_to_proto
+    module: adapters.legacy_to_proto.user_adapter
+    line: 10
+    cyclomatic_complexity: 1
+    calls_out: 11
+    calls_in: 1
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge:
+    name: deep_merge
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 163
+    cyclomatic_complexity: 4
+    calls_out: 6
+    calls_in: 3
+  scripts.generate_pydantic._flatten_enums:
+    name: _flatten_enums
+    module: scripts.generate_pydantic
+    line: 48
+    cyclomatic_complexity: 1
+    calls_out: 8
+    calls_in: 1
+  scripts.legacy_bridge.generate_delegation_plan.load_clusters:
+    name: load_clusters
+    module: scripts.legacy_bridge.generate_delegation_plan
+    line: 35
+    cyclomatic_complexity: 9
+    calls_out: 10
+    calls_in: 1
+  scripts.legacy_bridge.diff_engine.diff_fields:
+    name: diff_fields
+    module: scripts.legacy_bridge.diff_engine
+    line: 38
+    cyclomatic_complexity: 12
+    calls_out: 19
+    calls_in: 3
+  scripts.parse_proto._handle_enum_start:
+    name: _handle_enum_start
+    module: scripts.parse_proto
+    line: 144
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
   scripts.legacy_bridge.delegation_plan.build_steps:
     name: build_steps
     module: scripts.legacy_bridge.delegation_plan
@@ -1097,12 +747,733 @@ nodes:
     cyclomatic_complexity: 1
     calls_out: 1
     calls_in: 1
+  scripts.legacy_bridge.generate_delegation_plan.parse_args:
+    name: parse_args
+    module: scripts.legacy_bridge.generate_delegation_plan
+    line: 69
+    cyclomatic_complexity: 1
+    calls_out: 9
+    calls_in: 1
+  protogate.cli.cmd_generate:
+    name: cmd_generate
+    module: protogate.cli
+    line: 20
+    cyclomatic_complexity: 8
+    calls_out: 2
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.build_cleanup_checklist:
+    name: build_cleanup_checklist
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 596
+    cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 1
+  protogate.cli.run_command:
+    name: run_command
+    module: protogate.cli
+    line: 14
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 7
+  scripts.detect_migration_candidates.main:
+    name: main
+    module: scripts.detect_migration_candidates
+    line: 521
+    cyclomatic_complexity: 5
+    calls_out: 17
+    calls_in: 0
+  scripts.legacy_bridge.delegation_plan.render_markdown:
+    name: render_markdown
+    module: scripts.legacy_bridge.delegation_plan
+    line: 100
+    cyclomatic_complexity: 8
+    calls_out: 33
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.build_target_structure:
+    name: build_target_structure
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 572
+    cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 1
+  scripts.detect_migration_candidates.get_service_candidates:
+    name: get_service_candidates
+    module: scripts.detect_migration_candidates
+    line: 502
+    cyclomatic_complexity: 4
+    calls_out: 7
+    calls_in: 1
+  scripts.conflict_resolver._field_effects:
+    name: _field_effects
+    module: scripts.conflict_resolver
+    line: 79
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 2
+  scripts.legacy_bridge.report_rendering._append_reason_counts_section:
+    name: _append_reason_counts_section
+    module: scripts.legacy_bridge.report_rendering
+    line: 6
+    cyclomatic_complexity: 4
+    calls_out: 3
+    calls_in: 6
+  scripts.generate_pydantic.generate:
+    name: generate
+    module: scripts.generate_pydantic
+    line: 86
+    cyclomatic_complexity: 10
+    calls_out: 16
+    calls_in: 1
+  scripts.legacy_bridge.report_rendering._append_simple_list_section:
+    name: _append_simple_list_section
+    module: scripts.legacy_bridge.report_rendering
+    line: 25
+    cyclomatic_complexity: 3
+    calls_out: 3
+    calls_in: 5
+  scripts.legacy_bridge.analyze_service_boundaries.build_execution_plan_markdown:
+    name: build_execution_plan_markdown
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 869
+    cyclomatic_complexity: 8
+    calls_out: 12
+    calls_in: 1
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository:
+    name: analyze_repository
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 317
+    cyclomatic_complexity: 20
+    calls_out: 37
+    calls_in: 2
+  scripts.legacy_bridge.generate_migration_wave_plan.parse_args:
+    name: parse_args
+    module: scripts.legacy_bridge.generate_migration_wave_plan
+    line: 72
+    cyclomatic_complexity: 1
+    calls_out: 8
+    calls_in: 1
+  protogate.cli.cmd_clean:
+    name: cmd_clean
+    module: protogate.cli
+    line: 124
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.is_ignored:
+    name: is_ignored
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 112
+    cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 1
+  scratch.swop_scan_c2004.run_swop_scan:
+    name: run_swop_scan
+    module: scratch.swop_scan_c2004
+    line: 135
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  scripts.legacy_bridge.run_arch_migration_discovery.resolve_output_dir:
+    name: resolve_output_dir
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 152
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 1
+  scripts.legacy_bridge.run_arch_migration_discovery.parse_args:
+    name: parse_args
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 131
+    cyclomatic_complexity: 1
+    calls_out: 11
+    calls_in: 1
+  scripts.legacy_bridge.report_rendering.render_summary_markdown:
+    name: render_summary_markdown
+    module: scripts.legacy_bridge.report_rendering
+    line: 91
+    cyclomatic_complexity: 6
+    calls_out: 20
+    calls_in: 0
+  scripts.generate_incremental._stem:
+    name: _stem
+    module: scripts.generate_incremental
+    line: 76
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  protogate.cli.cmd_generate_pydantic:
+    name: cmd_generate_pydantic
+    module: protogate.cli
+    line: 197
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 0
+  scripts.legacy_bridge.generate_delegation_plan.main:
+    name: main
+    module: scripts.legacy_bridge.generate_delegation_plan
+    line: 86
+    cyclomatic_complexity: 6
+    calls_out: 29
+    calls_in: 0
+  scripts.legacy_bridge.run_arch_migration_discovery.write_text:
+    name: write_text
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 486
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 17
+  gateway.sse.unsubscribe:
+    name: unsubscribe
+    module: gateway.sse
+    line: 43
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 2
+  gateway.main.cmd_change_email:
+    name: cmd_change_email
+    module: gateway.main
+    line: 260
+    cyclomatic_complexity: 1
+    calls_out: 4
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.backend_group_summary:
+    name: backend_group_summary
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 349
+    cyclomatic_complexity: 9
+    calls_out: 11
+    calls_in: 1
+  gateway.main.cmd_create_user:
+    name: cmd_create_user
+    module: gateway.main
+    line: 220
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 0
+  scripts.schema_registry.SchemaRegistry.register:
+    name: register
+    module: scripts.schema_registry
+    line: 328
+    cyclomatic_complexity: 10
+    calls_out: 18
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.extract_api_groups:
+    name: extract_api_groups
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 227
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 1
+  scripts.generate_zod._flatten_enums:
+    name: _flatten_enums
+    module: scripts.generate_zod
+    line: 49
+    cyclomatic_complexity: 1
+    calls_out: 8
+    calls_in: 1
+  scripts.legacy_bridge.report_rendering.render_service_boundary_decisions_markdown:
+    name: render_service_boundary_decisions_markdown
+    module: scripts.legacy_bridge.report_rendering
+    line: 185
+    cyclomatic_complexity: 1
+    calls_out: 5
+    calls_in: 0
   scripts.detect_migration_candidates.discover_candidate_paths:
     name: discover_candidate_paths
     module: scripts.detect_migration_candidates
     line: 147
     cyclomatic_complexity: 20
     calls_out: 33
+    calls_in: 1
+  scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report:
+    name: build_excluded_candidates_report
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 267
+    cyclomatic_complexity: 5
+    calls_out: 18
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.build_service_components:
+    name: build_service_components
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 507
+    cyclomatic_complexity: 2
+    calls_out: 6
+    calls_in: 1
+  gateway.main.delegation_slice_detail:
+    name: delegation_slice_detail
+    module: gateway.main
+    line: 146
+    cyclomatic_complexity: 2
+    calls_out: 4
+    calls_in: 0
+  scripts.generate_json_schema.generate:
+    name: generate
+    module: scripts.generate_json_schema
+    line: 34
+    cyclomatic_complexity: 6
+    calls_out: 3
+    calls_in: 1
+  gateway.delegation.get_delegation_health:
+    name: get_delegation_health
+    module: gateway.delegation
+    line: 136
+    cyclomatic_complexity: 6
+    calls_out: 4
+    calls_in: 2
+  scripts.legacy_bridge.generate_delegation_plan.dedupe_candidates:
+    name: dedupe_candidates
+    module: scripts.legacy_bridge.generate_delegation_plan
+    line: 57
+    cyclomatic_complexity: 6
+    calls_out: 8
+    calls_in: 1
+  scripts.legacy_bridge.delegation_plan.build_output_row:
+    name: build_output_row
+    module: scripts.legacy_bridge.delegation_plan
+    line: 67
+    cyclomatic_complexity: 6
+    calls_out: 22
+    calls_in: 3
+  scripts.legacy_bridge.run_arch_migration_discovery.main:
+    name: main
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 658
+    cyclomatic_complexity: 8
+    calls_out: 29
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries.merge_named_rows:
+    name: merge_named_rows
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 314
+    cyclomatic_complexity: 3
+    calls_out: 3
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.choose_component_anchor:
+    name: choose_component_anchor
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 412
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  scratch.swop_scan_c2004._kind_by_suffix:
+    name: _kind_by_suffix
+    module: scratch.swop_scan_c2004
+    line: 74
+    cyclomatic_complexity: 4
+    calls_out: 1
+    calls_in: 1
+  scripts.legacy_bridge.migrator.main:
+    name: main
+    module: scripts.legacy_bridge.migrator
+    line: 54
+    cyclomatic_complexity: 1
+    calls_out: 7
+    calls_in: 0
+  scripts.generate_incremental._write:
+    name: _write
+    module: scripts.generate_incremental
+    line: 81
+    cyclomatic_complexity: 2
+    calls_out: 7
+    calls_in: 4
+  scripts.parse_proto.parse_proto:
+    name: parse_proto
+    module: scripts.parse_proto
+    line: 236
+    cyclomatic_complexity: 15
+    calls_out: 14
+    calls_in: 9
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.load_config:
+    name: load_config
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 173
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
+  scripts.legacy_bridge.report_rendering._append_detail_section:
+    name: _append_detail_section
+    module: scripts.legacy_bridge.report_rendering
+    line: 61
+    cyclomatic_complexity: 5
+    calls_out: 12
+    calls_in: 3
+  scripts.legacy_bridge.generate_migration_wave_plan.build_waves:
+    name: build_waves
+    module: scripts.legacy_bridge.generate_migration_wave_plan
+    line: 139
+    cyclomatic_complexity: 15
+    calls_out: 31
+    calls_in: 2
+  scripts.detect_migration_candidates.count_api_routes:
+    name: count_api_routes
+    module: scripts.detect_migration_candidates
+    line: 224
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
+  gateway.main.cmd_index_search_entry:
+    name: cmd_index_search_entry
+    module: gateway.main
+    line: 311
+    cyclomatic_complexity: 1
+    calls_out: 3
+    calls_in: 0
+  gateway.main.query_search:
+    name: query_search
+    module: gateway.main
+    line: 326
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 0
+  scripts.parse_proto._handle_message_start:
+    name: _handle_message_start
+    module: scripts.parse_proto
+    line: 132
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
+  scripts.detect_migration_candidates.classify_extraction_target:
+    name: classify_extraction_target
+    module: scripts.detect_migration_candidates
+    line: 409
+    cyclomatic_complexity: 19
+    calls_out: 12
+    calls_in: 1
+  scripts.detect_migration_candidates._check_candidate_flags:
+    name: _check_candidate_flags
+    module: scripts.detect_migration_candidates
+    line: 234
+    cyclomatic_complexity: 6
+    calls_out: 11
+    calls_in: 1
+  scripts.legacy_bridge.swop_integration._group_match_score:
+    name: _group_match_score
+    module: scripts.legacy_bridge.swop_integration
+    line: 125
+    cyclomatic_complexity: 11
+    calls_out: 13
+    calls_in: 2
+  gateway.sse.event_generator:
+    name: event_generator
+    module: gateway.sse
+    line: 69
+    cyclomatic_complexity: 6
+    calls_out: 11
+    calls_in: 1
+  gateway.sse.push_to_subscribers:
+    name: push_to_subscribers
+    module: gateway.sse
+    line: 51
+    cyclomatic_complexity: 4
+    calls_out: 5
+    calls_in: 4
+  scripts.legacy_bridge.candidate_selection.parse_score:
+    name: parse_score
+    module: scripts.legacy_bridge.candidate_selection
+    line: 17
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 3
+  scripts.legacy_bridge.run_arch_migration_discovery.run_discovery:
+    name: run_discovery
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 502
+    cyclomatic_complexity: 12
+    calls_out: 77
+    calls_in: 1
+  scripts.detect_migration_candidates.extract_python_imports:
+    name: extract_python_imports
+    module: scripts.detect_migration_candidates
+    line: 196
+    cyclomatic_complexity: 6
+    calls_out: 8
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries._calculate_module_stats:
+    name: _calculate_module_stats
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 627
+    cyclomatic_complexity: 26
+    calls_out: 35
+    calls_in: 1
+  gateway.user_handler.handle_get_user:
+    name: handle_get_user
+    module: gateway.user_handler
+    line: 123
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 1
+  scripts.schema_registry.check_compatibility:
+    name: check_compatibility
+    module: scripts.schema_registry
+    line: 243
+    cyclomatic_complexity: 6
+    calls_out: 2
+    calls_in: 3
+  scripts.legacy_bridge.analyze_service_boundaries.counter_rows:
+    name: counter_rows
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 310
+    cyclomatic_complexity: 2
+    calls_out: 1
+    calls_in: 2
+  scripts.legacy_bridge.run_arch_migration_discovery.profile_repository:
+    name: profile_repository
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 157
+    cyclomatic_complexity: 18
+    calls_out: 33
+    calls_in: 1
+  scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report:
+    name: build_delegation_decision_report
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 365
+    cyclomatic_complexity: 19
+    calls_out: 43
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries._append_recommended_candidates_section:
+    name: _append_recommended_candidates_section
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 795
+    cyclomatic_complexity: 4
+    calls_out: 5
+    calls_in: 1
+  gateway.user_handler.handle_dual_write_user:
+    name: handle_dual_write_user
+    module: gateway.user_handler
+    line: 76
+    cyclomatic_complexity: 1
+    calls_out: 4
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.parse_args:
+    name: parse_args
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 101
+    cyclomatic_complexity: 1
+    calls_out: 8
+    calls_in: 1
+  scripts.legacy_bridge.detect_cqrs_pattern_clusters.main:
+    name: main
+    module: scripts.legacy_bridge.detect_cqrs_pattern_clusters
+    line: 439
+    cyclomatic_complexity: 10
+    calls_out: 31
+    calls_in: 0
+  scripts.detect_migration_candidates.has_candidate_markers:
+    name: has_candidate_markers
+    module: scripts.detect_migration_candidates
+    line: 127
+    cyclomatic_complexity: 6
+    calls_out: 6
+    calls_in: 3
+  scripts.detect_migration_candidates.normalize_token:
+    name: normalize_token
+    module: scripts.detect_migration_candidates
+    line: 123
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 5
+  scripts.legacy_bridge.generate_migration_wave_plan.load_json:
+    name: load_json
+    module: scripts.legacy_bridge.generate_migration_wave_plan
+    line: 86
+    cyclomatic_complexity: 3
+    calls_out: 3
+    calls_in: 2
+  gateway.user_handler.handle_create_user:
+    name: handle_create_user
+    module: gateway.user_handler
+    line: 51
+    cyclomatic_complexity: 1
+    calls_out: 4
+    calls_in: 1
+  scripts.detect_migration_candidates.iter_files:
+    name: iter_files
+    module: scripts.detect_migration_candidates
+    line: 180
+    cyclomatic_complexity: 8
+    calls_out: 1
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.normalize_api_group:
+    name: normalize_api_group
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 220
+    cyclomatic_complexity: 4
+    calls_out: 3
+    calls_in: 1
+  scripts.generate_zod.main:
+    name: main
+    module: scripts.generate_zod
+    line: 114
+    cyclomatic_complexity: 3
+    calls_out: 9
+    calls_in: 0
+  protogate.cli.cmd_ci:
+    name: cmd_ci
+    module: protogate.cli
+    line: 91
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 0
+  gateway.delegation.get_delegated_slice:
+    name: get_delegated_slice
+    module: gateway.delegation
+    line: 125
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 2
+  gateway.search_handler.handle_index_entry:
+    name: handle_index_entry
+    module: gateway.search_handler
+    line: 18
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 1
+  scripts.legacy_bridge.report_rendering._append_artifacts_table:
+    name: _append_artifacts_table
+    module: scripts.legacy_bridge.report_rendering
+    line: 37
+    cyclomatic_complexity: 2
+    calls_out: 4
+    calls_in: 1
+  scripts.legacy_bridge.run_arch_migration_discovery.write_json:
+    name: write_json
+    module: scripts.legacy_bridge.run_arch_migration_discovery
+    line: 491
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 12
+  scripts.legacy_bridge.analyze_service_boundaries.resolve_ts_import:
+    name: resolve_ts_import
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 201
+    cyclomatic_complexity: 5
+    calls_out: 11
+    calls_in: 1
+  scripts.parse_proto._parse_top_level_declarations:
+    name: _parse_top_level_declarations
+    module: scripts.parse_proto
+    line: 117
+    cyclomatic_complexity: 3
+    calls_out: 5
+    calls_in: 1
+  scripts.event_store.EventStore.__init__:
+    name: __init__
+    module: scripts.event_store
+    line: 99
+    cyclomatic_complexity: 1
+    calls_out: 1
+    calls_in: 0
+  scripts.generate_zod.to_zod:
+    name: to_zod
+    module: scripts.generate_zod
+    line: 86
+    cyclomatic_complexity: 7
+    calls_out: 15
+    calls_in: 2
+  scripts.legacy_bridge.analyze_service_boundaries.iter_files:
+    name: iter_files
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 116
+    cyclomatic_complexity: 7
+    calls_out: 7
+    calls_in: 2
+  scripts.detect_migration_candidates.count_outbound_api_calls:
+    name: count_outbound_api_calls
+    module: scripts.detect_migration_candidates
+    line: 230
+    cyclomatic_complexity: 2
+    calls_out: 3
+    calls_in: 1
+  scratch.swop_scan_c2004._base_names:
+    name: _base_names
+    module: scratch.swop_scan_c2004
+    line: 81
+    cyclomatic_complexity: 7
+    calls_out: 9
+    calls_in: 1
+  scripts.generate_sql.main:
+    name: main
+    module: scripts.generate_sql
+    line: 82
+    cyclomatic_complexity: 3
+    calls_out: 9
+    calls_in: 0
+  protogate.cli.cmd_registry:
+    name: cmd_registry
+    module: protogate.cli
+    line: 43
+    cyclomatic_complexity: 6
+    calls_out: 3
+    calls_in: 0
+  scripts.legacy_bridge.swop_integration._name_tokens:
+    name: _name_tokens
+    module: scripts.legacy_bridge.swop_integration
+    line: 152
+    cyclomatic_complexity: 10
+    calls_out: 8
+    calls_in: 1
+  scripts.legacy_bridge.analyze_service_boundaries.build_service_blueprint_markdown:
+    name: build_service_blueprint_markdown
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 1043
+    cyclomatic_complexity: 11
+    calls_out: 26
+    calls_in: 2
+  gateway.main.health:
+    name: health
+    module: gateway.main
+    line: 115
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries._generate_merge_hints:
+    name: _generate_merge_hints
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 679
+    cyclomatic_complexity: 7
+    calls_out: 10
+    calls_in: 1
+  scripts.legacy_bridge.generate_migration_wave_plan.resolve_path:
+    name: resolve_path
+    module: scripts.legacy_bridge.generate_migration_wave_plan
+    line: 95
+    cyclomatic_complexity: 2
+    calls_out: 2
+    calls_in: 3
+  scripts.generate_sql.generate_sql:
+    name: generate_sql
+    module: scripts.generate_sql
+    line: 50
+    cyclomatic_complexity: 6
+    calls_out: 6
+    calls_in: 2
+  scripts.legacy_bridge.migrator.migrate_users:
+    name: migrate_users
+    module: scripts.legacy_bridge.migrator
+    line: 20
+    cyclomatic_complexity: 3
+    calls_out: 6
+    calls_in: 1
+  gateway.main.delegation_slices:
+    name: delegation_slices
+    module: gateway.main
+    line: 141
+    cyclomatic_complexity: 1
+    calls_out: 2
+    calls_in: 0
+  scripts.legacy_bridge.analyze_service_boundaries._append_merge_hints_section:
+    name: _append_merge_hints_section
+    module: scripts.legacy_bridge.analyze_service_boundaries
+    line: 818
+    cyclomatic_complexity: 3
+    calls_out: 3
+    calls_in: 1
+  gateway.sse.subscribe:
+    name: subscribe
+    module: gateway.sse
+    line: 38
+    cyclomatic_complexity: 1
+    calls_out: 3
     calls_in: 1
 edges:
 - caller: gateway.sse.push_to_subscribers
@@ -1113,6 +1484,504 @@ edges:
   call_type: resolved
 - caller: gateway.delegation.get_delegation_health
   callee: gateway.delegation.list_delegated_slices
+  call_type: resolved
+- caller: scripts.parse_proto._handle_block_end
+  callee: scripts.parse_proto._to_dict
+  call_type: resolved
+- caller: scripts.parse_proto.parse_proto
+  callee: scripts.parse_proto._handle_message_start
+  call_type: resolved
+- caller: scripts.parse_proto.parse_proto
+  callee: scripts.parse_proto._handle_enum_start
+  call_type: resolved
+- caller: scripts.parse_proto.parse_proto
+  callee: scripts.parse_proto._handle_block_end
+  call_type: resolved
+- caller: scripts.parse_proto.parse_proto
+  callee: scripts.parse_proto._to_dict
+  call_type: resolved
+- caller: scripts.parse_proto.parse_proto
+  callee: scripts.parse_proto._parse_top_level_declarations
+  call_type: resolved
+- caller: scripts.generate_incremental.should_regenerate
+  callee: scripts.generate_incremental.file_hash
+  call_type: resolved
+- caller: scripts.generate_incremental.regenerate
+  callee: scripts.generate_incremental._stem
+  call_type: resolved
+- caller: scripts.generate_incremental.regenerate
+  callee: scripts.parse_proto.parse_proto
+  call_type: resolved
+- caller: scripts.generate_incremental.regenerate
+  callee: scripts.generate_incremental._write
+  call_type: resolved
+- caller: scripts.generate_incremental.regenerate
+  callee: scripts.generate_zod.to_zod
+  call_type: resolved
+- caller: scripts.generate_incremental.main
+  callee: scripts.generate_incremental.load_cache
+  call_type: resolved
+- caller: scripts.generate_incremental.main
+  callee: scripts.generate_incremental.should_regenerate
+  call_type: resolved
+- caller: scripts.generate_incremental.main
+  callee: scripts.generate_incremental.save_cache
+  call_type: resolved
+- caller: scripts.generate_sql.generate_sql
+  callee: scripts.generate_sql._table_name
+  call_type: resolved
+- caller: scripts.generate_sql.main
+  callee: scripts.parse_proto.parse_proto
+  call_type: resolved
+- caller: scripts.generate_sql.main
+  callee: scripts.generate_sql.generate_sql
+  call_type: resolved
+- caller: scripts.schema_registry.check_compatibility
+  callee: scripts.schema_registry._diff_messages
+  call_type: resolved
+- caller: scripts.schema_registry.SchemaRegistry.__init__
+  callee: scripts.schema_registry._connect
+  call_type: resolved
+- caller: scripts.schema_registry.SchemaRegistry.register
+  callee: scripts.parse_proto.parse_proto
+  call_type: resolved
+- caller: scripts.schema_registry.SchemaRegistry.register
+  callee: scripts.schema_registry._sha256_file
+  call_type: resolved
+- caller: scripts.generate_json_schema.main
+  callee: scripts.parse_proto.parse_proto
+  call_type: resolved
+- caller: scripts.generate_json_schema.main
+  callee: scripts.generate_json_schema.generate
+  call_type: resolved
+- caller: scripts.generate_pydantic.generate
+  callee: scripts.generate_pydantic._flatten_enums
+  call_type: resolved
+- caller: scripts.generate_pydantic.generate
+  callee: scripts.generate_pydantic._flatten_messages
+  call_type: resolved
+- caller: scripts.generate_pydantic.main
+  callee: scripts.parse_proto.parse_proto
+  call_type: resolved
+- caller: scripts.generate_pydantic.main
+  callee: scripts.generate_pydantic.generate
+  call_type: resolved
+- caller: scripts.conflict_resolver.ConflictResolver._check_field_conflicts
+  callee: scripts.conflict_resolver._field_effects
+  call_type: resolved
+- caller: scripts.event_store.EventStore.__init__
+  callee: scripts.schema_registry._connect
+  call_type: resolved
+- caller: scripts.generate_zod.to_zod
+  callee: scripts.generate_zod._flatten_enums
+  call_type: resolved
+- caller: scripts.generate_zod.to_zod
+  callee: scripts.generate_zod._flatten_messages
+  call_type: resolved
+- caller: scripts.generate_zod.main
+  callee: scripts.parse_proto.parse_proto
+  call_type: resolved
+- caller: scripts.generate_zod.main
+  callee: scripts.generate_zod.to_zod
+  call_type: resolved
+- caller: scripts.legacy_bridge.delegation_plan.build_steps
+  callee: scripts.legacy_bridge.delegation_plan.to_slice_name
+  call_type: resolved
+- caller: scripts.legacy_bridge.delegation_plan.build_slice_blueprint
+  callee: scripts.legacy_bridge.delegation_plan.to_slice_name
+  call_type: resolved
+- caller: scripts.legacy_bridge.delegation_plan.build_slice_blueprint
+  callee: scripts.legacy_bridge.delegation_plan.build_steps
+  call_type: resolved
+- caller: scripts.legacy_bridge.delegation_plan.build_output_row
+  callee: scripts.legacy_bridge.delegation_plan._normalize_shared_types_package
+  call_type: resolved
+- caller: scripts.legacy_bridge.delegation_plan.build_output_row
+  callee: scripts.legacy_bridge.delegation_plan._to_float
+  call_type: resolved
+- caller: scripts.legacy_bridge.delegation_plan.render_markdown
+  callee: scripts.legacy_bridge.delegation_plan.build_output_row
+  call_type: resolved
+- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.load_config
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge
+  call_type: resolved
+- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge
+  call_type: resolved
+- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.shared_tokens_for_module
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.read_text
+  call_type: resolved
+- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config
+  call_type: resolved
+- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.assign_clusters
+  call_type: resolved
+- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.main
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.parse_args
+  call_type: resolved
+- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.main
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
+  call_type: resolved
+- caller: scripts.legacy_bridge.sync_check.main
+  callee: scripts.legacy_bridge.normalizer.normalize_json_schema
+  call_type: resolved
+- caller: scripts.legacy_bridge.sync_check.main
+  callee: scripts.legacy_bridge.normalizer.normalize_proto_ast
+  call_type: resolved
+- caller: scripts.legacy_bridge.sync_check.main
+  callee: scripts.legacy_bridge.diff_engine.diff_fields
+  call_type: resolved
+- caller: scripts.legacy_bridge.migrator.main
+  callee: scripts.legacy_bridge.migrator.migrate_users
+  call_type: resolved
+- caller: scripts.legacy_bridge.candidate_selection.is_delegable_candidate
+  callee: scripts.legacy_bridge.candidate_selection.get_candidate_exclusion_reasons
+  call_type: resolved
+- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
+  callee: scripts.legacy_bridge.generate_migration_wave_plan.parse_args
+  call_type: resolved
+- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
+  callee: scripts.legacy_bridge.generate_migration_wave_plan.resolve_path
+  call_type: resolved
+- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
+  callee: scripts.legacy_bridge.generate_migration_wave_plan.load_json
+  call_type: resolved
+- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
+  callee: scripts.legacy_bridge.generate_migration_wave_plan.build_waves
+  call_type: resolved
+- caller: adapters.legacy_to_proto.user_adapter.wrap_for_event_store
+  callee: adapters.legacy_to_proto.user_adapter.legacy_to_proto
+  call_type: resolved
+- caller: scratch.swop_scan_c2004.collect_ground_truth
+  callee: scratch.swop_scan_c2004._base_names
+  call_type: resolved
+- caller: scratch.swop_scan_c2004.collect_ground_truth
+  callee: scratch.swop_scan_c2004._kind_by_suffix
+  call_type: resolved
+- caller: scratch.swop_scan_c2004.collect_ground_truth
+  callee: scratch.swop_scan_c2004._kind_by_base
+  call_type: resolved
+- caller: scratch.swop_scan_c2004.main
+  callee: scratch.swop_scan_c2004.collect_ground_truth
+  call_type: resolved
+- caller: scratch.swop_scan_c2004.main
+  callee: scratch.swop_scan_c2004.run_swop_scan
+  call_type: resolved
+- caller: protogate.cli.cmd_generate
+  callee: protogate.cli.run_command
+  call_type: resolved
+- caller: protogate.cli.cmd_registry
+  callee: protogate.cli.run_command
+  call_type: resolved
+- caller: protogate.cli.cmd_legacy
+  callee: protogate.cli.run_command
+  call_type: resolved
+- caller: protogate.cli.cmd_gateway
+  callee: protogate.cli.run_command
+  call_type: resolved
+- caller: protogate.cli.cmd_ci
+  callee: protogate.cli.run_command
+  call_type: resolved
+- caller: protogate.cli.cmd_discovery
+  callee: protogate.cli.run_command
+  call_type: resolved
+- caller: protogate.cli.cmd_clean
+  callee: protogate.cli.run_command
+  call_type: resolved
+- caller: protogate.cli.cmd_generate_pydantic
+  callee: protogate.cli._batch_generate
+  call_type: resolved
+- caller: protogate.cli.cmd_generate_zod
+  callee: protogate.cli._batch_generate
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering._append_detail_section
+  callee: scripts.legacy_bridge.report_rendering._format_detail_value
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_summary_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_simple_list_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_summary_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_reason_counts_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_summary_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_artifacts_table
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_excluded_candidates_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_reason_counts_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_excluded_candidates_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_detail_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_delegation_decisions_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_reason_counts_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_delegation_decisions_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_detail_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_service_boundary_decisions_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_reason_counts_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.report_rendering.render_service_boundary_decisions_markdown
+  callee: scripts.legacy_bridge.report_rendering._append_detail_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.swop_integration.infer_contexts_from_service_boundaries
+  callee: scripts.legacy_bridge.swop_integration._eligible_groups
+  call_type: resolved
+- caller: scripts.legacy_bridge.swop_integration.infer_contexts_from_service_boundaries
+  callee: scripts.legacy_bridge.swop_integration._context_score
+  call_type: resolved
+- caller: scripts.legacy_bridge.swop_integration._context_score
+  callee: scripts.legacy_bridge.swop_integration._group_match_score
+  call_type: resolved
+- caller: scripts.legacy_bridge.swop_integration._group_match_score
+  callee: scripts.legacy_bridge.swop_integration._normalize_token
+  call_type: resolved
+- caller: scripts.legacy_bridge.swop_integration._group_match_score
+  callee: scripts.legacy_bridge.swop_integration._name_tokens
+  call_type: resolved
+- caller: scripts.legacy_bridge.swop_integration._name_tokens
+  callee: scripts.legacy_bridge.swop_integration._normalize_token
+  call_type: resolved
+- caller: scripts.legacy_bridge.swop_integration.run_swop_pipeline
+  callee: scripts.legacy_bridge.swop_integration.infer_contexts_from_service_boundaries
+  call_type: resolved
+- caller: scripts.legacy_bridge.generate_delegation_plan.dedupe_candidates
+  callee: scripts.legacy_bridge.candidate_selection.parse_score
+  call_type: resolved
+- caller: scripts.legacy_bridge.generate_delegation_plan.main
+  callee: scripts.legacy_bridge.generate_delegation_plan.parse_args
+  call_type: resolved
+- caller: scripts.legacy_bridge.generate_delegation_plan.main
+  callee: scripts.legacy_bridge.generate_delegation_plan.load_clusters
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery._parse_score
+  callee: scripts.legacy_bridge.candidate_selection.parse_score
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report
+  callee: scripts.legacy_bridge.candidate_selection.get_candidate_exclusion_reasons
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report
+  callee: scripts.legacy_bridge.run_arch_migration_discovery._parse_score
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report
+  callee: scripts.legacy_bridge.run_arch_migration_discovery._parse_score
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan
+  callee: scripts.legacy_bridge.delegation_plan.build_output_row
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan
+  callee: scripts.legacy_bridge.candidate_selection.is_delegable_candidate
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.write_json
+  callee: scripts.legacy_bridge.run_arch_migration_discovery.write_text
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
+  callee: scripts.legacy_bridge.run_arch_migration_discovery.profile_repository
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
+  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
+  callee: scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
+  callee: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.main
+  callee: scripts.legacy_bridge.run_arch_migration_discovery.parse_args
+  call_type: resolved
+- caller: scripts.legacy_bridge.run_arch_migration_discovery.main
+  callee: scripts.legacy_bridge.run_arch_migration_discovery.resolve_output_dir
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.discover_candidate_paths
+  callee: scripts.detect_migration_candidates.has_candidate_markers
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.import_tokens
+  callee: scripts.detect_migration_candidates.normalize_token
+  call_type: resolved
+- caller: scripts.detect_migration_candidates._analyze_file_content
+  callee: scripts.detect_migration_candidates.count_api_routes
+  call_type: resolved
+- caller: scripts.detect_migration_candidates._analyze_file_content
+  callee: scripts.detect_migration_candidates.count_outbound_api_calls
+  call_type: resolved
+- caller: scripts.detect_migration_candidates._analyze_file_content
+  callee: scripts.detect_migration_candidates.extract_python_imports
+  call_type: resolved
+- caller: scripts.detect_migration_candidates._analyze_file_content
+  callee: scripts.detect_migration_candidates.import_tokens
+  call_type: resolved
+- caller: scripts.detect_migration_candidates._analyze_file_content
+  callee: scripts.detect_migration_candidates.normalize_token
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_candidate
+  callee: scripts.detect_migration_candidates.normalize_token
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_candidate
+  callee: scripts.detect_migration_candidates._check_candidate_flags
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_candidate
+  callee: scripts.detect_migration_candidates.iter_files
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_candidate
+  callee: scripts.detect_migration_candidates.read_text
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_candidate
+  callee: scripts.detect_migration_candidates._analyze_file_content
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_candidate
+  callee: scripts.detect_migration_candidates.extract_python_imports
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_candidate
+  callee: scripts.detect_migration_candidates.import_tokens
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.build_output_row
+  callee: scripts.detect_migration_candidates.score_migration_candidate
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.build_output_row
+  callee: scripts.detect_migration_candidates.classify_extraction_target
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_repository
+  callee: scripts.detect_migration_candidates.discover_candidate_paths
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_repository
+  callee: scripts.detect_migration_candidates.analyze_candidate
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.analyze_repository
+  callee: scripts.detect_migration_candidates.build_output_row
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.main
+  callee: scripts.detect_migration_candidates.parse_args
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.main
+  callee: scripts.detect_migration_candidates.analyze_repository
+  call_type: resolved
+- caller: scripts.detect_migration_candidates.main
+  callee: scripts.detect_migration_candidates.get_service_candidates
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.load_config
+  callee: scripts.legacy_bridge.analyze_service_boundaries.deep_merge
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.iter_files
+  callee: scripts.legacy_bridge.analyze_service_boundaries.is_ignored
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.extract_prefixed_module
+  callee: scripts.legacy_bridge.analyze_service_boundaries.strip_source_suffix
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.detect_frontend_module
+  callee: scripts.legacy_bridge.analyze_service_boundaries.extract_prefixed_module
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.resolve_ts_import
+  callee: scripts.legacy_bridge.analyze_service_boundaries.resolve_candidate_file
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.extract_api_groups
+  callee: scripts.legacy_bridge.analyze_service_boundaries.normalize_api_group
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_ts_index
+  callee: scripts.legacy_bridge.analyze_service_boundaries.iter_files
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.parse_router_prefixes
+  callee: scripts.legacy_bridge.analyze_service_boundaries.const_str
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.merge_named_rows
+  callee: scripts.legacy_bridge.analyze_service_boundaries.counter_rows
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
+  callee: scripts.legacy_bridge.analyze_service_boundaries.iter_files
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
+  callee: scripts.legacy_bridge.analyze_service_boundaries.read_text
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
+  callee: scripts.legacy_bridge.analyze_service_boundaries.parse_router_prefixes
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.backend_group_summary
+  callee: scripts.legacy_bridge.analyze_service_boundaries.counter_rows
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries._build_component_row
+  callee: scripts.legacy_bridge.analyze_service_boundaries.choose_component_anchor
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries._build_component_row
+  callee: scripts.legacy_bridge.analyze_service_boundaries._determine_component_action
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_service_components
+  callee: scripts.legacy_bridge.analyze_service_boundaries._build_eligible_modules
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_service_components
+  callee: scripts.legacy_bridge.analyze_service_boundaries._apply_merge_hints
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_service_components
+  callee: scripts.legacy_bridge.analyze_service_boundaries._build_component_row
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries._calculate_module_stats
+  callee: scripts.legacy_bridge.analyze_service_boundaries.transitive_closure
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  callee: scripts.legacy_bridge.analyze_service_boundaries._build_module_index
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  callee: scripts.legacy_bridge.analyze_service_boundaries.backend_group_summary
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  callee: scripts.legacy_bridge.analyze_service_boundaries._generate_merge_hints
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  callee: scripts.legacy_bridge.analyze_service_boundaries.build_service_components
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  callee: scripts.legacy_bridge.analyze_service_boundaries.select_execution_plan
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  callee: scripts.legacy_bridge.analyze_service_boundaries.build_target_structure
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  callee: scripts.legacy_bridge.analyze_service_boundaries.build_cleanup_checklist
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_markdown
+  callee: scripts.legacy_bridge.analyze_service_boundaries._append_execution_plan_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_markdown
+  callee: scripts.legacy_bridge.analyze_service_boundaries._append_service_components_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_markdown
+  callee: scripts.legacy_bridge.analyze_service_boundaries._append_recommended_candidates_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_markdown
+  callee: scripts.legacy_bridge.analyze_service_boundaries._append_merge_hints_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_markdown
+  callee: scripts.legacy_bridge.analyze_service_boundaries._append_frontend_modules_section
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.build_service_blueprint_markdown
+  callee: scripts.legacy_bridge.analyze_service_boundaries._build_cqrs_endpoint_templates
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze
+  callee: scripts.legacy_bridge.analyze_service_boundaries.build_ts_index
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze
+  callee: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze
+  callee: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.write_outputs
+  callee: scripts.legacy_bridge.analyze_service_boundaries.build_markdown
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.write_outputs
+  callee: scripts.legacy_bridge.analyze_service_boundaries.build_execution_plan_markdown
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.main
+  callee: scripts.legacy_bridge.analyze_service_boundaries.parse_args
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.main
+  callee: scripts.legacy_bridge.analyze_service_boundaries.analyze
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.main
+  callee: scripts.legacy_bridge.analyze_service_boundaries.write_outputs
+  call_type: resolved
+- caller: scripts.legacy_bridge.analyze_service_boundaries.main
+  callee: scripts.legacy_bridge.analyze_service_boundaries.load_config
   call_type: resolved
 - caller: gateway.main.health
   callee: gateway.delegation.get_delegation_health
@@ -1171,331 +2040,7 @@ edges:
 - caller: gateway.main.query_search
   callee: gateway.search_handler.handle_search
   call_type: resolved
-- caller: scratch.swop_scan_c2004.collect_ground_truth
-  callee: scratch.swop_scan_c2004._base_names
-  call_type: resolved
-- caller: scratch.swop_scan_c2004.collect_ground_truth
-  callee: scratch.swop_scan_c2004._kind_by_suffix
-  call_type: resolved
-- caller: scratch.swop_scan_c2004.collect_ground_truth
-  callee: scratch.swop_scan_c2004._kind_by_base
-  call_type: resolved
-- caller: scratch.swop_scan_c2004.main
-  callee: scratch.swop_scan_c2004.collect_ground_truth
-  call_type: resolved
-- caller: scratch.swop_scan_c2004.main
-  callee: scratch.swop_scan_c2004.run_swop_scan
-  call_type: resolved
-- caller: scripts.generate_incremental.should_regenerate
-  callee: scripts.generate_incremental.file_hash
-  call_type: resolved
-- caller: scripts.generate_incremental.regenerate
-  callee: scripts.generate_incremental._stem
-  call_type: resolved
-- caller: scripts.generate_incremental.regenerate
-  callee: SUMD.parse_proto
-  call_type: resolved
-- caller: scripts.generate_incremental.regenerate
-  callee: scripts.generate_incremental._write
-  call_type: resolved
-- caller: scripts.generate_incremental.regenerate
-  callee: SUMD.to_zod
-  call_type: resolved
-- caller: scripts.generate_incremental.main
-  callee: scripts.generate_incremental.load_cache
-  call_type: resolved
-- caller: scripts.generate_incremental.main
-  callee: scripts.generate_incremental.should_regenerate
-  call_type: resolved
-- caller: scripts.generate_incremental.main
-  callee: scripts.generate_incremental.save_cache
-  call_type: resolved
-- caller: scripts.generate_sql.generate_sql
-  callee: scripts.generate_sql._table_name
-  call_type: resolved
-- caller: scripts.generate_sql.main
-  callee: SUMD.parse_proto
-  call_type: resolved
-- caller: scripts.generate_sql.main
-  callee: scripts.generate_sql.generate_sql
-  call_type: resolved
-- caller: scripts.schema_registry.check_compatibility
-  callee: scripts.schema_registry._diff_messages
-  call_type: resolved
-- caller: scripts.schema_registry.SchemaRegistry.__init__
-  callee: scripts.schema_registry._connect
-  call_type: resolved
-- caller: scripts.schema_registry.SchemaRegistry.register
-  callee: SUMD.parse_proto
-  call_type: resolved
-- caller: scripts.schema_registry.SchemaRegistry.register
-  callee: scripts.schema_registry._sha256_file
-  call_type: resolved
-- caller: scripts.generate_json_schema.main
-  callee: SUMD.parse_proto
-  call_type: resolved
-- caller: scripts.generate_json_schema.main
-  callee: scripts.generate_json_schema.generate
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.discover_candidate_paths
-  callee: scripts.detect_migration_candidates.has_candidate_markers
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.import_tokens
-  callee: scripts.detect_migration_candidates.normalize_token
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.analyze_candidate
-  callee: scripts.detect_migration_candidates.normalize_token
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.analyze_candidate
-  callee: scripts.detect_migration_candidates.iter_files
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.build_output_row
-  callee: scripts.detect_migration_candidates.score_migration_candidate
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.build_output_row
-  callee: scripts.detect_migration_candidates.classify_extraction_target
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.analyze_repository
-  callee: scripts.detect_migration_candidates.discover_candidate_paths
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.analyze_repository
-  callee: scripts.detect_migration_candidates.analyze_candidate
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.analyze_repository
-  callee: scripts.detect_migration_candidates.build_output_row
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.main
-  callee: scripts.detect_migration_candidates.parse_args
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.main
-  callee: scripts.detect_migration_candidates.analyze_repository
-  call_type: resolved
-- caller: scripts.detect_migration_candidates.main
-  callee: scripts.detect_migration_candidates.get_service_candidates
-  call_type: resolved
-- caller: scripts.conflict_resolver.ConflictResolver.resolve_merge
-  callee: scripts.conflict_resolver._field_effects
-  call_type: resolved
-- caller: scripts.event_store.EventStore.__init__
-  callee: scripts.schema_registry._connect
-  call_type: resolved
-- caller: scripts.legacy_bridge.delegation_plan.build_steps
-  callee: scripts.legacy_bridge.delegation_plan.to_slice_name
-  call_type: resolved
-- caller: scripts.legacy_bridge.delegation_plan.build_slice_blueprint
-  callee: scripts.legacy_bridge.delegation_plan.to_slice_name
-  call_type: resolved
-- caller: scripts.legacy_bridge.delegation_plan.build_slice_blueprint
-  callee: scripts.legacy_bridge.delegation_plan.build_steps
-  call_type: resolved
-- caller: scripts.legacy_bridge.delegation_plan.build_output_row
-  callee: scripts.legacy_bridge.delegation_plan._normalize_shared_types_package
-  call_type: resolved
-- caller: scripts.legacy_bridge.delegation_plan.build_output_row
-  callee: scripts.legacy_bridge.delegation_plan._to_float
-  call_type: resolved
-- caller: scripts.legacy_bridge.delegation_plan.render_markdown
-  callee: scripts.legacy_bridge.delegation_plan.build_output_row
-  call_type: resolved
-- caller: scripts.legacy_bridge.generate_delegation_plan.dedupe_candidates
-  callee: scripts.legacy_bridge.generate_delegation_plan.parse_score
-  call_type: resolved
-- caller: scripts.legacy_bridge.generate_delegation_plan.main
-  callee: scripts.legacy_bridge.generate_delegation_plan.parse_args
-  call_type: resolved
-- caller: scripts.legacy_bridge.generate_delegation_plan.main
-  callee: scripts.legacy_bridge.generate_delegation_plan.load_clusters
-  call_type: resolved
-- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.load_config
-  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge
-  call_type: resolved
-- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config
-  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.deep_merge
-  call_type: resolved
-- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.shared_tokens_for_module
-  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.read_text
-  call_type: resolved
-- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
-  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.normalize_config
-  call_type: resolved
-- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
-  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.assign_clusters
-  call_type: resolved
-- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.main
-  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.parse_args
-  call_type: resolved
-- caller: scripts.legacy_bridge.detect_cqrs_pattern_clusters.main
-  callee: scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository
-  call_type: resolved
-- caller: scripts.legacy_bridge.sync_check.main
-  callee: scripts.legacy_bridge.normalizer.normalize_json_schema
-  call_type: resolved
-- caller: scripts.legacy_bridge.sync_check.main
-  callee: scripts.legacy_bridge.normalizer.normalize_proto_ast
-  call_type: resolved
-- caller: scripts.legacy_bridge.sync_check.main
-  callee: scripts.legacy_bridge.diff_engine.diff_fields
-  call_type: resolved
-- caller: scripts.legacy_bridge.migrator.main
-  callee: scripts.legacy_bridge.migrator.migrate_users
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.load_config
-  callee: scripts.legacy_bridge.analyze_service_boundaries.deep_merge
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.iter_files
-  callee: scripts.legacy_bridge.analyze_service_boundaries.is_ignored
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.extract_prefixed_module
-  callee: scripts.legacy_bridge.analyze_service_boundaries.strip_source_suffix
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.detect_frontend_module
-  callee: scripts.legacy_bridge.analyze_service_boundaries.extract_prefixed_module
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.resolve_ts_import
-  callee: scripts.legacy_bridge.analyze_service_boundaries.resolve_candidate_file
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.extract_api_groups
-  callee: scripts.legacy_bridge.analyze_service_boundaries.normalize_api_group
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.build_ts_index
-  callee: scripts.legacy_bridge.analyze_service_boundaries.iter_files
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.parse_router_prefixes
-  callee: scripts.legacy_bridge.analyze_service_boundaries.const_str
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.merge_named_rows
-  callee: scripts.legacy_bridge.analyze_service_boundaries.counter_rows
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
-  callee: scripts.legacy_bridge.analyze_service_boundaries.iter_files
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
-  callee: scripts.legacy_bridge.analyze_service_boundaries.read_text
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
-  callee: scripts.legacy_bridge.analyze_service_boundaries.parse_router_prefixes
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.backend_group_summary
-  callee: scripts.legacy_bridge.analyze_service_boundaries.counter_rows
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.build_service_components
-  callee: scripts.legacy_bridge.analyze_service_boundaries.choose_component_anchor
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
-  callee: scripts.legacy_bridge.analyze_service_boundaries.backend_group_summary
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
-  callee: scripts.legacy_bridge.analyze_service_boundaries.build_service_components
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
-  callee: scripts.legacy_bridge.analyze_service_boundaries.select_execution_plan
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
-  callee: scripts.legacy_bridge.analyze_service_boundaries.build_target_structure
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
-  callee: scripts.legacy_bridge.analyze_service_boundaries.build_cleanup_checklist
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze
-  callee: scripts.legacy_bridge.analyze_service_boundaries.build_ts_index
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze
-  callee: scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.analyze
-  callee: scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.main
-  callee: scripts.legacy_bridge.analyze_service_boundaries.parse_args
-  call_type: resolved
-- caller: scripts.legacy_bridge.analyze_service_boundaries.main
-  callee: scripts.legacy_bridge.analyze_service_boundaries.analyze
-  call_type: resolved
-- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
-  callee: scripts.legacy_bridge.generate_migration_wave_plan.parse_args
-  call_type: resolved
-- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
-  callee: scripts.legacy_bridge.generate_migration_wave_plan.resolve_path
-  call_type: resolved
-- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
-  callee: scripts.legacy_bridge.generate_migration_wave_plan.load_json
-  call_type: resolved
-- caller: scripts.legacy_bridge.generate_migration_wave_plan.main
-  callee: scripts.legacy_bridge.generate_migration_wave_plan.build_waves
-  call_type: resolved
-- caller: adapters.legacy_to_proto.user_adapter.wrap_for_event_store
-  callee: adapters.legacy_to_proto.user_adapter.legacy_to_proto
-  call_type: resolved
-- caller: scripts.generate_pydantic.generate
-  callee: scripts.generate_pydantic._flatten_enums
-  call_type: resolved
-- caller: scripts.generate_pydantic.generate
-  callee: scripts.generate_pydantic._flatten_messages
-  call_type: resolved
-- caller: scripts.generate_pydantic.main
-  callee: SUMD.parse_proto
-  call_type: resolved
-- caller: scripts.generate_pydantic.main
-  callee: scripts.generate_pydantic.generate
-  call_type: resolved
-- caller: scripts.generate_zod.to_zod
-  callee: scripts.generate_zod._flatten_enums
-  call_type: resolved
-- caller: scripts.generate_zod.to_zod
-  callee: scripts.generate_zod._flatten_messages
-  call_type: resolved
-- caller: scripts.generate_zod.main
-  callee: SUMD.parse_proto
-  call_type: resolved
-- caller: scripts.generate_zod.main
-  callee: scripts.generate_zod.to_zod
-  call_type: resolved
-- caller: scripts.parse_proto.parse_proto
-  callee: scripts.parse_proto._to_dict
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.is_delegable_candidate
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.get_candidate_exclusion_reasons
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.get_candidate_exclusion_reasons
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report
-  callee: scripts.legacy_bridge.run_arch_migration_discovery._parse_score
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report
-  callee: scripts.legacy_bridge.run_arch_migration_discovery._parse_score
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan
-  callee: scripts.detect_migration_candidates.build_output_row
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.is_delegable_candidate
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.write_json
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.write_text
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.profile_repository
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
-  callee: scripts.detect_migration_candidates.analyze_repository
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.main
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.parse_args
-  call_type: resolved
-- caller: scripts.legacy_bridge.run_arch_migration_discovery.main
-  callee: scripts.legacy_bridge.run_arch_migration_discovery.resolve_output_dir
-  call_type: resolved
 modules:
-  SUMD:
-  - SUMD.parse_proto
-  - SUMD.to_zod
   adapters.legacy_to_proto.user_adapter:
   - adapters.legacy_to_proto.user_adapter.legacy_to_proto
   - adapters.legacy_to_proto.user_adapter.wrap_for_event_store
@@ -1533,6 +2078,18 @@ modules:
   - gateway.user_handler.handle_dual_write_user
   - gateway.user_handler.handle_get_user
   - gateway.user_handler.handle_list_events
+  protogate.cli:
+  - protogate.cli._batch_generate
+  - protogate.cli.cmd_ci
+  - protogate.cli.cmd_clean
+  - protogate.cli.cmd_discovery
+  - protogate.cli.cmd_gateway
+  - protogate.cli.cmd_generate
+  - protogate.cli.cmd_generate_pydantic
+  - protogate.cli.cmd_generate_zod
+  - protogate.cli.cmd_legacy
+  - protogate.cli.cmd_registry
+  - protogate.cli.run_command
   scratch.swop_scan_c2004:
   - scratch.swop_scan_c2004._base_names
   - scratch.swop_scan_c2004._kind_by_base
@@ -1541,14 +2098,19 @@ modules:
   - scratch.swop_scan_c2004.main
   - scratch.swop_scan_c2004.run_swop_scan
   scripts.conflict_resolver:
-  - scripts.conflict_resolver.ConflictResolver.resolve_merge
+  - scripts.conflict_resolver.ConflictResolver._check_field_conflicts
   - scripts.conflict_resolver._field_effects
   scripts.detect_migration_candidates:
+  - scripts.detect_migration_candidates._analyze_file_content
+  - scripts.detect_migration_candidates._check_candidate_flags
   - scripts.detect_migration_candidates.analyze_candidate
   - scripts.detect_migration_candidates.analyze_repository
   - scripts.detect_migration_candidates.build_output_row
   - scripts.detect_migration_candidates.classify_extraction_target
+  - scripts.detect_migration_candidates.count_api_routes
+  - scripts.detect_migration_candidates.count_outbound_api_calls
   - scripts.detect_migration_candidates.discover_candidate_paths
+  - scripts.detect_migration_candidates.extract_python_imports
   - scripts.detect_migration_candidates.get_service_candidates
   - scripts.detect_migration_candidates.has_candidate_markers
   - scripts.detect_migration_candidates.import_tokens
@@ -1556,6 +2118,7 @@ modules:
   - scripts.detect_migration_candidates.main
   - scripts.detect_migration_candidates.normalize_token
   - scripts.detect_migration_candidates.parse_args
+  - scripts.detect_migration_candidates.read_text
   - scripts.detect_migration_candidates.score_migration_candidate
   scripts.event_store:
   - scripts.event_store.EventStore.__init__
@@ -1586,11 +2149,27 @@ modules:
   - scripts.generate_zod.main
   - scripts.generate_zod.to_zod
   scripts.legacy_bridge.analyze_service_boundaries:
+  - scripts.legacy_bridge.analyze_service_boundaries._append_execution_plan_section
+  - scripts.legacy_bridge.analyze_service_boundaries._append_frontend_modules_section
+  - scripts.legacy_bridge.analyze_service_boundaries._append_merge_hints_section
+  - scripts.legacy_bridge.analyze_service_boundaries._append_recommended_candidates_section
+  - scripts.legacy_bridge.analyze_service_boundaries._append_service_components_section
+  - scripts.legacy_bridge.analyze_service_boundaries._apply_merge_hints
+  - scripts.legacy_bridge.analyze_service_boundaries._build_component_row
+  - scripts.legacy_bridge.analyze_service_boundaries._build_cqrs_endpoint_templates
+  - scripts.legacy_bridge.analyze_service_boundaries._build_eligible_modules
+  - scripts.legacy_bridge.analyze_service_boundaries._build_module_index
+  - scripts.legacy_bridge.analyze_service_boundaries._calculate_module_stats
+  - scripts.legacy_bridge.analyze_service_boundaries._determine_component_action
+  - scripts.legacy_bridge.analyze_service_boundaries._generate_merge_hints
   - scripts.legacy_bridge.analyze_service_boundaries.analyze
   - scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules
   - scripts.legacy_bridge.analyze_service_boundaries.backend_group_summary
   - scripts.legacy_bridge.analyze_service_boundaries.build_backend_index
   - scripts.legacy_bridge.analyze_service_boundaries.build_cleanup_checklist
+  - scripts.legacy_bridge.analyze_service_boundaries.build_execution_plan_markdown
+  - scripts.legacy_bridge.analyze_service_boundaries.build_markdown
+  - scripts.legacy_bridge.analyze_service_boundaries.build_service_blueprint_markdown
   - scripts.legacy_bridge.analyze_service_boundaries.build_service_components
   - scripts.legacy_bridge.analyze_service_boundaries.build_target_structure
   - scripts.legacy_bridge.analyze_service_boundaries.build_ts_index
@@ -1614,6 +2193,12 @@ modules:
   - scripts.legacy_bridge.analyze_service_boundaries.resolve_ts_import
   - scripts.legacy_bridge.analyze_service_boundaries.select_execution_plan
   - scripts.legacy_bridge.analyze_service_boundaries.strip_source_suffix
+  - scripts.legacy_bridge.analyze_service_boundaries.transitive_closure
+  - scripts.legacy_bridge.analyze_service_boundaries.write_outputs
+  scripts.legacy_bridge.candidate_selection:
+  - scripts.legacy_bridge.candidate_selection.get_candidate_exclusion_reasons
+  - scripts.legacy_bridge.candidate_selection.is_delegable_candidate
+  - scripts.legacy_bridge.candidate_selection.parse_score
   scripts.legacy_bridge.delegation_plan:
   - scripts.legacy_bridge.delegation_plan._normalize_shared_types_package
   - scripts.legacy_bridge.delegation_plan._to_float
@@ -1639,7 +2224,6 @@ modules:
   - scripts.legacy_bridge.generate_delegation_plan.load_clusters
   - scripts.legacy_bridge.generate_delegation_plan.main
   - scripts.legacy_bridge.generate_delegation_plan.parse_args
-  - scripts.legacy_bridge.generate_delegation_plan.parse_score
   scripts.legacy_bridge.generate_migration_wave_plan:
   - scripts.legacy_bridge.generate_migration_wave_plan.build_waves
   - scripts.legacy_bridge.generate_migration_wave_plan.load_json
@@ -1652,13 +2236,21 @@ modules:
   scripts.legacy_bridge.normalizer:
   - scripts.legacy_bridge.normalizer.normalize_json_schema
   - scripts.legacy_bridge.normalizer.normalize_proto_ast
+  scripts.legacy_bridge.report_rendering:
+  - scripts.legacy_bridge.report_rendering._append_artifacts_table
+  - scripts.legacy_bridge.report_rendering._append_detail_section
+  - scripts.legacy_bridge.report_rendering._append_reason_counts_section
+  - scripts.legacy_bridge.report_rendering._append_simple_list_section
+  - scripts.legacy_bridge.report_rendering._format_detail_value
+  - scripts.legacy_bridge.report_rendering.render_delegation_decisions_markdown
+  - scripts.legacy_bridge.report_rendering.render_excluded_candidates_markdown
+  - scripts.legacy_bridge.report_rendering.render_service_boundary_decisions_markdown
+  - scripts.legacy_bridge.report_rendering.render_summary_markdown
   scripts.legacy_bridge.run_arch_migration_discovery:
   - scripts.legacy_bridge.run_arch_migration_discovery._parse_score
   - scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report
   - scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_plan
   - scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report
-  - scripts.legacy_bridge.run_arch_migration_discovery.get_candidate_exclusion_reasons
-  - scripts.legacy_bridge.run_arch_migration_discovery.is_delegable_candidate
   - scripts.legacy_bridge.run_arch_migration_discovery.main
   - scripts.legacy_bridge.run_arch_migration_discovery.parse_args
   - scripts.legacy_bridge.run_arch_migration_discovery.profile_repository
@@ -1666,9 +2258,21 @@ modules:
   - scripts.legacy_bridge.run_arch_migration_discovery.run_discovery
   - scripts.legacy_bridge.run_arch_migration_discovery.write_json
   - scripts.legacy_bridge.run_arch_migration_discovery.write_text
+  scripts.legacy_bridge.swop_integration:
+  - scripts.legacy_bridge.swop_integration._context_score
+  - scripts.legacy_bridge.swop_integration._eligible_groups
+  - scripts.legacy_bridge.swop_integration._group_match_score
+  - scripts.legacy_bridge.swop_integration._name_tokens
+  - scripts.legacy_bridge.swop_integration._normalize_token
+  - scripts.legacy_bridge.swop_integration.infer_contexts_from_service_boundaries
+  - scripts.legacy_bridge.swop_integration.run_swop_pipeline
   scripts.legacy_bridge.sync_check:
   - scripts.legacy_bridge.sync_check.main
   scripts.parse_proto:
+  - scripts.parse_proto._handle_block_end
+  - scripts.parse_proto._handle_enum_start
+  - scripts.parse_proto._handle_message_start
+  - scripts.parse_proto._parse_top_level_declarations
   - scripts.parse_proto._to_dict
   - scripts.parse_proto.parse_proto
   scripts.schema_registry:
@@ -1679,15 +2283,34 @@ modules:
   - scripts.schema_registry._sha256_file
   - scripts.schema_registry.check_compatibility
 entry_points:
+- SUMD._analyze_file_content
+- SUMD._append_artifacts_table
+- SUMD._append_detail_section
+- SUMD._append_reason_counts_section
+- SUMD._append_simple_list_section
+- SUMD._apply_merge_hints
 - SUMD._base_names
+- SUMD._build_component_row
+- SUMD._build_eligible_modules
+- SUMD._build_module_index
+- SUMD._calculate_module_stats
+- SUMD._check_candidate_flags
 - SUMD._cli
 - SUMD._connect
+- SUMD._create_stub_swop_repo
+- SUMD._determine_component_action
 - SUMD._diff_messages
 - SUMD._event
 - SUMD._field
 - SUMD._field_effects
 - SUMD._flatten_enums
 - SUMD._flatten_messages
+- SUMD._generate_merge_hints
+- SUMD._handle_block_end
+- SUMD._handle_enum_start
+- SUMD._handle_enum_value
+- SUMD._handle_message_fields
+- SUMD._handle_message_start
 - SUMD._kind_by_base
 - SUMD._kind_by_suffix
 - SUMD._make_ast
@@ -1696,9 +2319,12 @@ entry_points:
 - SUMD._normalize_shared_types_package
 - SUMD._parse_reserved_numbers
 - SUMD._parse_score
+- SUMD._parse_top_level_declarations
 - SUMD._py_type
+- SUMD._relative_path
 - SUMD._sha256_file
 - SUMD._stem
+- SUMD._swop_sys_path
 - SUMD._table_name
 - SUMD._to_dict
 - SUMD._to_float
@@ -1713,9 +2339,12 @@ entry_points:
 - SUMD.backend_group_summary
 - SUMD.build_backend_index
 - SUMD.build_cleanup_checklist
+- SUMD.build_delegation_decision_report
 - SUMD.build_delegation_plan
+- SUMD.build_excluded_candidates_report
 - SUMD.build_markdown
 - SUMD.build_output_row
+- SUMD.build_service_boundary_decision_report
 - SUMD.build_service_components
 - SUMD.build_slice_blueprint
 - SUMD.build_steps
@@ -1730,10 +2359,17 @@ entry_points:
 - SUMD.classify_pattern
 - SUMD.clean_dbs
 - SUMD.cmd_change_email
+- SUMD.cmd_ci
+- SUMD.cmd_clean
 - SUMD.cmd_create_user
 - SUMD.cmd_deactivate_user
+- SUMD.cmd_discovery
 - SUMD.cmd_dual_create_user
+- SUMD.cmd_gateway
+- SUMD.cmd_generate
 - SUMD.cmd_index_search_entry
+- SUMD.cmd_legacy
+- SUMD.cmd_registry
 - SUMD.collect_ground_truth
 - SUMD.const_str
 - SUMD.count_api_routes
@@ -1758,6 +2394,7 @@ entry_points:
 - SUMD.generate
 - SUMD.generate_markdown_report
 - SUMD.generate_sql
+- SUMD.get_candidate_exclusion_reasons
 - SUMD.get_delegated_slice
 - SUMD.get_delegation_health
 - SUMD.get_migration_summary
@@ -1775,6 +2412,7 @@ entry_points:
 - SUMD.health_module
 - SUMD.health_modules
 - SUMD.import_tokens
+- SUMD.infer_contexts_from_service_boundaries
 - SUMD.infer_kind
 - SUMD.is_delegable_candidate
 - SUMD.is_ignored
@@ -1802,6 +2440,7 @@ entry_points:
 - SUMD.normalize_proto_ast
 - SUMD.normalize_token
 - SUMD.parse_args
+- SUMD.parse_proto
 - SUMD.parse_python_imports
 - SUMD.parse_router_prefixes
 - SUMD.parse_score
@@ -1818,7 +2457,7 @@ entry_points:
 - SUMD.render_markdown
 - SUMD.render_module_candidates_markdown
 - SUMD.render_repository_profile_markdown
-- SUMD.render_summary_markdown
+- SUMD.render_swop_json
 - SUMD.resolve_candidate_file
 - SUMD.resolve_output_dir
 - SUMD.resolve_path
@@ -1826,6 +2465,7 @@ entry_points:
 - SUMD.resolver
 - SUMD.route_group_from_api_group
 - SUMD.route_group_from_prefixes
+- SUMD.run_command
 - SUMD.run_discovery
 - SUMD.run_swop_scan
 - SUMD.save_cache
@@ -1841,14 +2481,18 @@ entry_points:
 - SUMD.subscribe
 - SUMD.suggest_proto_additions
 - SUMD.test_aggregate_delegation_health_returns_counts
+- SUMD.test_analyze_file_content
 - SUMD.test_analyze_repository_identifies_delegated_slice_candidate
 - SUMD.test_analyze_service_boundaries_detects_iframe_candidates
 - SUMD.test_build_markdown_contains_expected_sections
+- SUMD.test_build_module_index_creates_correct_structure
 - SUMD.test_build_output_row_keeps_original_fields_and_adds_slice
 - SUMD.test_build_slice_blueprint_normalizes_module_name
 - SUMD.test_build_waves_groups_by_pattern_priority
+- SUMD.test_check_candidate_flags
 - SUMD.test_delegated_slice_health_marks_missing_required_assets
 - SUMD.test_detect_cqrs_pattern_clusters_identifies_data_grid_cluster
+- SUMD.test_determine_component_action
 - SUMD.test_different_formats_independent
 - SUMD.test_dual_write_success
 - SUMD.test_estimate_effort
@@ -1864,10 +2508,12 @@ entry_points:
 - SUMD.test_registry_contains_existing_slices
 - SUMD.test_render_markdown_includes_slice_blueprints_section
 - SUMD.test_repeated_mismatch
+- SUMD.test_run_discovery_can_run_optional_swop_pipeline
 - SUMD.test_run_discovery_writes_expected_artifacts
 - SUMD.test_search_slice_reports_static_frontend_asset
 - SUMD.test_type_mismatch
 - SUMD.to_slice_name
+- SUMD.to_zod
 - SUMD.transitive_closure
 - SUMD.unsubscribe
 - SUMD.user_engine
@@ -1877,6 +2523,7 @@ entry_points:
 - SUMD.write_text
 - adapters.legacy_to_proto.user_adapter.wrap_for_event_store
 - adapters.proto_to_legacy.user_adapter.proto_to_legacy
+- docs.protogate-integration.Klient
 - gateway.delegation.DelegatedSlice._path_checks
 - gateway.delegation.DelegatedSlice.detail
 - gateway.delegation.DelegatedSlice.health
@@ -1915,15 +2562,49 @@ entry_points:
 - generated.ts.zod.user_v2.CreateUserCommandSchema
 - generated.ts.zod.user_v2.GetUserQuerySchema
 - generated.ts.zod.user_v2.UserSchema
+- generated.ts_cli.examples_identification_v1_identification.IdentifyUserCommandSchema
+- generated.ts_cli.examples_identification_v1_identification.UserIdentificationReadModelSchema
+- generated.ts_cli.examples_identification_v1_identification.UserIdentifiedEventSchema
+- generated.ts_cli.legacy_bridge_user_legacy.v1.LegacyUserSchema
+- generated.ts_cli.search_v1_search.EntryIndexedSchema
+- generated.ts_cli.search_v1_search.IndexEntryCommandSchema
+- generated.ts_cli.search_v1_search.ResultSchema
+- generated.ts_cli.search_v1_search.SearchRequestSchema
+- generated.ts_cli.search_v1_search.SearchResponseSchema
+- generated.ts_cli.user_v1_user.CreateUserCommandSchema
+- generated.ts_cli.user_v1_user.GetUserQuerySchema
+- generated.ts_cli.user_v1_user.UserSchema
+- generated.ts_cli.user_v2_user.CreateUserCommandSchema
+- generated.ts_cli.user_v2_user.GetUserQuerySchema
+- generated.ts_cli.user_v2_user.UserSchema
+- project.map.toon._analyze_file_content
+- project.map.toon._append_artifacts_table
+- project.map.toon._append_detail_section
+- project.map.toon._append_reason_counts_section
+- project.map.toon._append_simple_list_section
+- project.map.toon._apply_merge_hints
 - project.map.toon._base_names
+- project.map.toon._build_component_row
+- project.map.toon._build_eligible_modules
+- project.map.toon._build_module_index
+- project.map.toon._calculate_module_stats
+- project.map.toon._check_candidate_flags
 - project.map.toon._cli
 - project.map.toon._connect
+- project.map.toon._create_stub_swop_repo
+- project.map.toon._determine_component_action
 - project.map.toon._diff_messages
 - project.map.toon._event
 - project.map.toon._field
 - project.map.toon._field_effects
 - project.map.toon._flatten_enums
 - project.map.toon._flatten_messages
+- project.map.toon._generate_merge_hints
+- project.map.toon._handle_block_end
+- project.map.toon._handle_enum_start
+- project.map.toon._handle_enum_value
+- project.map.toon._handle_message_fields
+- project.map.toon._handle_message_start
 - project.map.toon._kind_by_base
 - project.map.toon._kind_by_suffix
 - project.map.toon._make_ast
@@ -1932,9 +2613,12 @@ entry_points:
 - project.map.toon._normalize_shared_types_package
 - project.map.toon._parse_reserved_numbers
 - project.map.toon._parse_score
+- project.map.toon._parse_top_level_declarations
 - project.map.toon._py_type
+- project.map.toon._relative_path
 - project.map.toon._sha256_file
 - project.map.toon._stem
+- project.map.toon._swop_sys_path
 - project.map.toon._table_name
 - project.map.toon._to_dict
 - project.map.toon._to_float
@@ -1949,9 +2633,12 @@ entry_points:
 - project.map.toon.backend_group_summary
 - project.map.toon.build_backend_index
 - project.map.toon.build_cleanup_checklist
+- project.map.toon.build_delegation_decision_report
 - project.map.toon.build_delegation_plan
+- project.map.toon.build_excluded_candidates_report
 - project.map.toon.build_markdown
 - project.map.toon.build_output_row
+- project.map.toon.build_service_boundary_decision_report
 - project.map.toon.build_service_components
 - project.map.toon.build_slice_blueprint
 - project.map.toon.build_steps
@@ -1966,10 +2653,17 @@ entry_points:
 - project.map.toon.classify_pattern
 - project.map.toon.clean_dbs
 - project.map.toon.cmd_change_email
+- project.map.toon.cmd_ci
+- project.map.toon.cmd_clean
 - project.map.toon.cmd_create_user
 - project.map.toon.cmd_deactivate_user
+- project.map.toon.cmd_discovery
 - project.map.toon.cmd_dual_create_user
+- project.map.toon.cmd_gateway
+- project.map.toon.cmd_generate
 - project.map.toon.cmd_index_search_entry
+- project.map.toon.cmd_legacy
+- project.map.toon.cmd_registry
 - project.map.toon.collect_ground_truth
 - project.map.toon.const_str
 - project.map.toon.count_api_routes
@@ -1994,6 +2688,7 @@ entry_points:
 - project.map.toon.generate
 - project.map.toon.generate_markdown_report
 - project.map.toon.generate_sql
+- project.map.toon.get_candidate_exclusion_reasons
 - project.map.toon.get_delegated_slice
 - project.map.toon.get_delegation_health
 - project.map.toon.get_migration_summary
@@ -2011,6 +2706,7 @@ entry_points:
 - project.map.toon.health_module
 - project.map.toon.health_modules
 - project.map.toon.import_tokens
+- project.map.toon.infer_contexts_from_service_boundaries
 - project.map.toon.infer_kind
 - project.map.toon.is_delegable_candidate
 - project.map.toon.is_ignored
@@ -2052,10 +2748,15 @@ entry_points:
 - project.map.toon.regenerate
 - project.map.toon.registry
 - project.map.toon.relative_artifact_path
+- project.map.toon.render_delegation_decisions_markdown
+- project.map.toon.render_excluded_candidates_markdown
 - project.map.toon.render_markdown
 - project.map.toon.render_module_candidates_markdown
 - project.map.toon.render_repository_profile_markdown
+- project.map.toon.render_service_boundary_decisions_markdown
 - project.map.toon.render_summary_markdown
+- project.map.toon.render_swop_json
+- project.map.toon.render_swop_markdown
 - project.map.toon.resolve_candidate_file
 - project.map.toon.resolve_output_dir
 - project.map.toon.resolve_path
@@ -2063,7 +2764,9 @@ entry_points:
 - project.map.toon.resolver
 - project.map.toon.route_group_from_api_group
 - project.map.toon.route_group_from_prefixes
+- project.map.toon.run_command
 - project.map.toon.run_discovery
+- project.map.toon.run_swop_pipeline
 - project.map.toon.run_swop_scan
 - project.map.toon.save_cache
 - project.map.toon.score_migration_candidate
@@ -2078,14 +2781,18 @@ entry_points:
 - project.map.toon.subscribe
 - project.map.toon.suggest_proto_additions
 - project.map.toon.test_aggregate_delegation_health_returns_counts
+- project.map.toon.test_analyze_file_content
 - project.map.toon.test_analyze_repository_identifies_delegated_slice_candidate
 - project.map.toon.test_analyze_service_boundaries_detects_iframe_candidates
 - project.map.toon.test_build_markdown_contains_expected_sections
+- project.map.toon.test_build_module_index_creates_correct_structure
 - project.map.toon.test_build_output_row_keeps_original_fields_and_adds_slice
 - project.map.toon.test_build_slice_blueprint_normalizes_module_name
 - project.map.toon.test_build_waves_groups_by_pattern_priority
+- project.map.toon.test_check_candidate_flags
 - project.map.toon.test_delegated_slice_health_marks_missing_required_assets
 - project.map.toon.test_detect_cqrs_pattern_clusters_identifies_data_grid_cluster
+- project.map.toon.test_determine_component_action
 - project.map.toon.test_different_formats_independent
 - project.map.toon.test_dual_write_success
 - project.map.toon.test_estimate_effort
@@ -2101,6 +2808,7 @@ entry_points:
 - project.map.toon.test_registry_contains_existing_slices
 - project.map.toon.test_render_markdown_includes_slice_blueprints_section
 - project.map.toon.test_repeated_mismatch
+- project.map.toon.test_run_discovery_can_run_optional_swop_pipeline
 - project.map.toon.test_run_discovery_writes_expected_artifacts
 - project.map.toon.test_search_slice_reports_static_frontend_asset
 - project.map.toon.test_type_mismatch
@@ -2113,9 +2821,21 @@ entry_points:
 - project.map.toon.wrap_for_event_store
 - project.map.toon.write_json
 - project.map.toon.write_text
+- protogate.cli.cmd_ci
+- protogate.cli.cmd_clean
+- protogate.cli.cmd_discovery
+- protogate.cli.cmd_gateway
+- protogate.cli.cmd_generate
+- protogate.cli.cmd_generate_pydantic
+- protogate.cli.cmd_generate_zod
+- protogate.cli.cmd_legacy
+- protogate.cli.cmd_registry
+- protogate.cli.main
 - scratch.swop_pipeline_service_id.main
 - scratch.swop_scan_c2004.main
 - scripts.conflict_resolver.ConflictResolver.__post_init__
+- scripts.conflict_resolver.ConflictResolver._check_exclusive_event_pairs
+- scripts.conflict_resolver.ConflictResolver._check_field_conflicts
 - scripts.conflict_resolver.ConflictResolver.resolve_lww
 - scripts.conflict_resolver.ConflictResolver.resolve_merge
 - scripts.conflict_resolver.UnresolvableConflictError.__init__
@@ -2154,7 +2874,15 @@ entry_points:
 - scripts.legacy_bridge.generate_delegation_plan.main
 - scripts.legacy_bridge.generate_migration_wave_plan.main
 - scripts.legacy_bridge.migrator.main
+- scripts.legacy_bridge.report_rendering.render_delegation_decisions_markdown
+- scripts.legacy_bridge.report_rendering.render_excluded_candidates_markdown
+- scripts.legacy_bridge.report_rendering.render_service_boundary_decisions_markdown
+- scripts.legacy_bridge.report_rendering.render_summary_markdown
 - scripts.legacy_bridge.run_arch_migration_discovery.main
+- scripts.legacy_bridge.swop_integration._relative_path
+- scripts.legacy_bridge.swop_integration.render_swop_json
+- scripts.legacy_bridge.swop_integration.render_swop_markdown
+- scripts.legacy_bridge.swop_integration.run_swop_pipeline
 - scripts.legacy_bridge.sync_check.main
 - scripts.legacy_registry.LegacySchemaRegistry.__init__
 - scripts.legacy_registry.LegacySchemaRegistry._get_next_version
@@ -2164,7 +2892,6 @@ entry_points:
 - scripts.legacy_registry.LegacySchemaRegistry.list_schemas
 - scripts.legacy_registry.LegacySchemaRegistry.register
 - scripts.legacy_registry.main
-- scripts.parse_proto.parse_proto
 - scripts.schema_registry.IncompatibleSchemaError.__init__
 - scripts.schema_registry.SchemaRegistry.__init__
 - scripts.schema_registry.SchemaRegistry._all_versions

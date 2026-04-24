@@ -3,23 +3,42 @@ flowchart TD
     %% Entry points (blue)
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
 
+    subgraph CLI
+        generated__ts_cli__user_v2_user__CreateUserCommandSchema["CreateUserCommandSchema"]
+        generated__ts_cli__user_v2_user__GetUserQuerySchema["GetUserQuerySchema"]
+        generated__ts_cli__user_v2_user__UserSchema["UserSchema"]
+        generated__ts_cli__legacy_bridge_user_legacy__v1__LegacyUserSchema["LegacyUserSchema"]
+        generated__ts_cli__search_v1_search__IndexEntryCommandSchema["IndexEntryCommandSchema"]
+        generated__ts_cli__search_v1_search__EntryIndexedSchema["EntryIndexedSchema"]
+        generated__ts_cli__search_v1_search__SearchRequestSchema["SearchRequestSchema"]
+        generated__ts_cli__search_v1_search__SearchResponseSchema["SearchResponseSchema"]
+        generated__ts_cli__search_v1_search__ResultSchema["ResultSchema"]
+        generated__ts_cli__user_v1_user__CreateUserCommandSchema["CreateUserCommandSchema"]
+        generated__ts_cli__user_v1_user__GetUserQuerySchema["GetUserQuerySchema"]
+        generated__ts_cli__user_v1_user__UserSchema["UserSchema"]
+        generated__ts_cli__examples_identification_v1_identification__IdentifyUserCommandSchema["IdentifyUserCommandSchema"]
+        generated__ts_cli__examples_identification_v1_identification__UserIdentificationReadModelSchema["UserIdentificationReadModelSch"]
+        generated__ts_cli__examples_identification_v1_identification__UserIdentifiedEventSchema["UserIdentifiedEventSchema"]
+        ...["+13 more"]
+    end
+
     subgraph Core
         generated__ts__zod__user_v1__CreateUserCommandSchema["CreateUserCommandSchema"]
         generated__ts__zod__user_v1__GetUserQuerySchema["GetUserQuerySchema"]
         generated__ts__zod__user_v1__UserSchema["UserSchema"]
+        generated__ts__zod__user_v2__CreateUserCommandSchema["CreateUserCommandSchema"]
+        generated__ts__zod__user_v2__GetUserQuerySchema["GetUserQuerySchema"]
+        generated__ts__zod__user_v2__UserSchema["UserSchema"]
+        generated__ts__zod__search_v1__IndexEntryCommandSchema["IndexEntryCommandSchema"]
+        generated__ts__zod__search_v1__EntryIndexedSchema["EntryIndexedSchema"]
+        generated__ts__zod__search_v1__SearchRequestSchema["SearchRequestSchema"]
+        generated__ts__zod__search_v1__SearchResponseSchema["SearchResponseSchema"]
+        generated__ts__zod__search_v1__ResultSchema["ResultSchema"]
+        generated__ts__zod__identification_v1__IdentifyUserCommandSchema["IdentifyUserCommandSchema"]
+        generated__ts__zod__identification_v1__UserIdentificationReadModelSchema["UserIdentificationReadModelSch"]
+        generated__ts__zod__identification_v1__UserIdentifiedEventSchema["UserIdentifiedEventSchema"]
         gateway__ws__ConnectionManager__connect["connect"]
-        gateway__ws__ConnectionManager__disconnect["disconnect"]
-        gateway__ws__ConnectionManager__broadcast["broadcast"]
-        gateway__delegation__DelegatedSlice___path_checks["_path_checks"]
-        gateway__delegation__DelegatedSlice__health["health"]
-        gateway__delegation__DelegatedSlice__summary["summary"]
-        gateway__delegation__DelegatedSlice__detail["detail"]
-        gateway__delegation__list_delegated_slices["list_delegated_slices"]
-        gateway__delegation__get_delegation_health["get_delegation_health"]
-        gateway__main__lifespan["lifespan"]
-        gateway__main__health["health"]
-        gateway__main__health_modules["health_modules"]
-        ...["+422 more"]
+        ...["+509 more"]
     end
 
-    class generated__ts__zod__user_v1__CreateUserCommandSchema,generated__ts__zod__user_v1__GetUserQuerySchema,generated__ts__zod__user_v1__UserSchema,gateway__ws__ConnectionManager__connect,gateway__ws__ConnectionManager__disconnect,gateway__ws__ConnectionManager__broadcast,gateway__delegation__DelegatedSlice___path_checks,gateway__delegation__DelegatedSlice__health,gateway__delegation__DelegatedSlice__summary,gateway__delegation__DelegatedSlice__detail entry
+    class generated__ts__zod__user_v1__CreateUserCommandSchema,generated__ts__zod__user_v1__GetUserQuerySchema,generated__ts__zod__user_v1__UserSchema,generated__ts__zod__user_v2__CreateUserCommandSchema,generated__ts__zod__user_v2__GetUserQuerySchema,generated__ts__zod__user_v2__UserSchema,generated__ts__zod__search_v1__IndexEntryCommandSchema,generated__ts__zod__search_v1__EntryIndexedSchema,generated__ts__zod__search_v1__SearchRequestSchema,generated__ts__zod__search_v1__SearchResponseSchema entry

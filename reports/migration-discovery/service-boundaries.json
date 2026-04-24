@@ -15982,7 +15982,7 @@
   },
   "meta": {
     "tool": "analyze-service-boundaries",
-    "generated_at": "2026-04-24T14:39:31.972743+00:00",
+    "generated_at": "2026-04-24T15:03:18.472997+00:00",
     "workspace_root": "/home/tom/github/maskservice/c2004",
     "config": {
       "ignore_dirs": [

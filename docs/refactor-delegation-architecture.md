@@ -1,14 +1,14 @@
-# Protos Delegation Architecture - Refactor Notes
+# Protogate Delegation Architecture - Refactor Notes
 
 ## Why previous migration felt incomplete
 
 1. c2004 still contained too much module logic after iframe cutover.
-2. Delegated frontend was not yet standardized as a TypeScript module model in protos.
+2. Delegated frontend was not yet standardized as a TypeScript module model in protogate.
 3. Migration steps were not automated from candidate detection to execution plan.
 
 ## Design principles for better delegation
 
-1. One bounded module, one vertical slice in protos.
+1. One bounded module, one vertical slice in protogate.
 2. Stable contracts first, handlers second, UI third.
 3. Host app keeps navigation and auth/session bridge only.
 4. Data ownership moves with the module.
@@ -18,13 +18,13 @@
 
 ### Backend dependencies
 
-1. Keep protos runtime dependencies minimal and explicit in gateway requirements.
+1. Keep protogate runtime dependencies minimal and explicit in gateway requirements.
 2. Isolate module-specific persistence/read model dependencies per slice.
-3. Avoid importing legacy app internals directly into protos handlers.
+3. Avoid importing legacy app internals directly into protogate handlers.
 
 ### Frontend dependencies
 
-1. Keep delegated frontend dependencies inside protos delegated apps.
+1. Keep delegated frontend dependencies inside protogate delegated apps.
 2. Move duplicated cross-app TypeScript helpers to shared packages.
 3. Version shared packages independently from app release cadence.
 
@@ -45,12 +45,12 @@
 - @semcod/contracts-types:manager-core
 - @semcod/contracts-types:scenario-core
 
-1. Once stable, mirror or publish packages for protos delegated frontend use.
+1. Once stable, mirror or publish packages for protogate delegated frontend use.
 
 ## Delegation execution flow
 
 1. Generate c2004 module candidates.
-2. Generate protos delegation plan from candidate report.
+2. Generate protogate delegation plan from candidate report.
 3. Pick top phase-1 module.
 4. Implement contract, CQRS handlers, read model, delegated UI.
 5. Flip c2004 route to iframe host.
@@ -66,7 +66,7 @@
 - scripts/run_arch_migration_discovery.sh
 - scripts/scaffold_shared_ts_packages.py
 
-1. protos side:
+1. protogate side:
 
 - `scripts/legacy_bridge/generate_delegation_plan.py` – generates delegation plan from c2004 reports
 - `scripts/legacy_bridge/delegation_plan.py` – shared blueprint model (runtime + docs)

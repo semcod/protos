@@ -144,6 +144,63 @@ class ConflictResolver:
     # MERGE strategy
     # ------------------------------------------------------------------
 
+    def _check_exclusive_event_pairs(
+        self,
+        server_events: list[Any],
+        branch_events: list[Any],
+    ) -> list[dict[str, Any]]:
+        """Check for mutually-exclusive event type pairs."""
+        assert self.exclusive_pairs is not None
+        
+        conflicts: list[dict[str, Any]] = []
+        server_types = {e.event_type for e in server_events}
+        branch_types = {e.event_type for e in branch_events}
+
+        for pair in self.exclusive_pairs:
+            pair_list = list(pair)
+            server_has = {t for t in pair_list if t in server_types}
+            branch_has = {t for t in pair_list if t in branch_types}
+            if server_has and branch_has:
+                conflicts.append(
+                    {
+                        "kind": "exclusive_event_pair",
+                        "types": pair_list,
+                    }
+                )
+        return conflicts
+
+    def _check_field_conflicts(
+        self,
+        server_events: list[Any],
+        branch_events: list[Any],
+    ) -> list[dict[str, Any]]:
+        """Check for field-level conflicts between concurrent events."""
+        assert self.field_effect_map is not None
+        
+        conflicts: list[dict[str, Any]] = []
+        for s_evt in server_events:
+            s_effects = _field_effects(s_evt.event_type, s_evt.payload, self.field_effect_map)
+            for b_evt in branch_events:
+                b_effects = _field_effects(b_evt.event_type, b_evt.payload, self.field_effect_map)
+                shared_fields = s_effects & b_effects
+                for fld in shared_fields:
+                    s_val = s_evt.payload.get(fld)
+                    b_val = b_evt.payload.get(fld)
+                    s_present = fld in s_evt.payload
+                    b_present = fld in b_evt.payload
+                    if s_present and b_present and s_val != b_val:
+                        conflicts.append(
+                            {
+                                "kind": "field_value_conflict",
+                                "field": fld,
+                                "server_event": s_evt.event_type,
+                                "branch_event": b_evt.event_type,
+                                "server_value": s_val,
+                                "branch_value": b_val,
+                            }
+                        )
+        return conflicts
+
     def resolve_merge(
         self,
         server_events: list[Any],
@@ -166,29 +223,8 @@ class ConflictResolver:
         UnresolvableConflictError
             On the first detected unresolvable conflict.
         """
-        assert self.field_effect_map is not None  # set in __post_init__
-        assert self.exclusive_pairs is not None
-
-        conflicts: list[dict[str, Any]] = []
-
-        # --- check mutually-exclusive event type pairs -------------------
-        server_types = {e.event_type for e in server_events}
-        branch_types = {e.event_type for e in branch_events}
-
-        for pair in self.exclusive_pairs:
-            pair_list = list(pair)
-            # A conflict requires one event type from the pair present in the
-            # server stream and the other in the branch stream.
-            server_has = {t for t in pair_list if t in server_types}
-            branch_has = {t for t in pair_list if t in branch_types}
-            if server_has and branch_has:
-                conflicts.append(
-                    {
-                        "kind": "exclusive_event_pair",
-                        "types": pair_list,
-                    }
-                )
-
+        # Check mutually-exclusive event type pairs
+        conflicts = self._check_exclusive_event_pairs(server_events, branch_events)
         if conflicts:
             raise UnresolvableConflictError(
                 "Mutually exclusive events cannot be merged: "
@@ -196,34 +232,8 @@ class ConflictResolver:
                 conflicts,
             )
 
-        # --- check field-level conflicts ---------------------------------
-        # For each pair of (server_event, branch_event), check if they write
-        # the same field with different values.
-        for s_evt in server_events:
-            s_effects = _field_effects(s_evt.event_type, s_evt.payload, self.field_effect_map)
-            for b_evt in branch_events:
-                b_effects = _field_effects(b_evt.event_type, b_evt.payload, self.field_effect_map)
-                shared_fields = s_effects & b_effects
-                for fld in shared_fields:
-                    s_val = s_evt.payload.get(fld)
-                    b_val = b_evt.payload.get(fld)
-                    # Conflict when both events carry an explicit value for the
-                    # same field and those values differ (None counts as a
-                    # distinct value – one event deletes the field, the other sets it).
-                    s_present = fld in s_evt.payload
-                    b_present = fld in b_evt.payload
-                    if s_present and b_present and s_val != b_val:
-                        conflicts.append(
-                            {
-                                "kind": "field_value_conflict",
-                                "field": fld,
-                                "server_event": s_evt.event_type,
-                                "branch_event": b_evt.event_type,
-                                "server_value": s_val,
-                                "branch_value": b_val,
-                            }
-                        )
-
+        # Check field-level conflicts
+        conflicts = self._check_field_conflicts(server_events, branch_events)
         if conflicts:
             raise UnresolvableConflictError(
                 "Concurrent events write conflicting values to the same fields: "
@@ -231,6 +241,6 @@ class ConflictResolver:
                 conflicts,
             )
 
-        # --- no conflicts: merge both streams chronologically ------------
+        # No conflicts: merge both streams chronologically
         combined = list(server_events) + list(branch_events)
         return sorted(combined, key=lambda e: e.timestamp)

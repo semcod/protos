@@ -1,6 +1,6 @@
 # Migration Discovery Summary
 
-Generated at: 2026-04-24T14:39:31.987462+00:00
+Generated at: 2026-04-24T15:03:18.483224+00:00
 
 - Repository root: `/home/tom/github/maskservice/c2004`
 - Languages: `typescript, python, javascript, protobuf`
@@ -20,6 +20,8 @@ Generated at: 2026-04-24T14:39:31.987462+00:00
 | migration_waves | 5 |
 | recommended_services | 4 |
 | delegation_plan_modules | 6 |
+| swop_contexts | 0 |
+| swop_proto_files | 0 |
 
 ## Top delegable candidates
 
@@ -87,6 +89,10 @@ Generated at: 2026-04-24T14:39:31.987462+00:00
 - `connect-devtools`
 - `connect-id`
 - `connect-manager`
+
+## Top swop contexts
+
+- `none`
 
 ## Artifacts
 

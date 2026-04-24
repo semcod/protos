@@ -4,46 +4,46 @@
 
 - **Project**: /home/tom/github/semcod/protos
 - **Primary Language**: python
-- **Languages**: python: 44, yaml: 11, md: 11, json: 8, proto: 5
+- **Languages**: python: 54, md: 14, yaml: 11, typescript: 9, json: 8
 - **Analysis Mode**: static
-- **Total Functions**: 675
-- **Total Classes**: 52
-- **Modules**: 93
-- **Entry Points**: 511
+- **Total Functions**: 843
+- **Total Classes**: 68
+- **Modules**: 112
+- **Entry Points**: 634
 
 ## Architecture by Module
 
 ### SUMD
-- **Functions**: 235
+- **Functions**: 282
 - **File**: `SUMD.md`
 
 ### project.map.toon
-- **Functions**: 235
+- **Functions**: 282
 - **File**: `map.toon.yaml`
 
 ### scripts.legacy_bridge.analyze_service_boundaries
-- **Functions**: 37
+- **Functions**: 56
 - **Classes**: 2
 - **File**: `analyze_service_boundaries.py`
 
-### scripts.legacy_bridge.run_arch_migration_discovery
-- **Functions**: 21
-- **File**: `run_arch_migration_discovery.py`
-
 ### scripts.detect_migration_candidates
-- **Functions**: 19
+- **Functions**: 21
 - **Classes**: 2
 - **File**: `detect_migration_candidates.py`
 
-### gateway.main
-- **Functions**: 16
-- **Classes**: 4
-- **File**: `main.py`
+### scripts.legacy_bridge.run_arch_migration_discovery
+- **Functions**: 17
+- **File**: `run_arch_migration_discovery.py`
 
 ### scripts.schema_registry
 - **Functions**: 16
 - **Classes**: 3
 - **File**: `schema_registry.py`
+
+### gateway.main
+- **Functions**: 16
+- **Classes**: 4
+- **File**: `main.py`
 
 ### scripts.legacy_bridge.detect_cqrs_pattern_clusters
 - **Functions**: 15
@@ -55,10 +55,27 @@
 - **Classes**: 4
 - **File**: `event_store.py`
 
+### protogate.cli
+- **Functions**: 13
+- **File**: `cli.py`
+
+### scripts.legacy_bridge.swop_integration
+- **Functions**: 12
+- **File**: `swop_integration.py`
+
+### scripts.parse_proto
+- **Functions**: 9
+- **Classes**: 4
+- **File**: `parse_proto.py`
+
 ### scripts.vector_clock
 - **Functions**: 9
 - **Classes**: 1
 - **File**: `vector_clock.py`
+
+### scripts.legacy_bridge.report_rendering
+- **Functions**: 9
+- **File**: `report_rendering.py`
 
 ### scripts.legacy_registry
 - **Functions**: 8
@@ -83,47 +100,23 @@
 - **Classes**: 1
 - **File**: `delegation.py`
 
-### scripts.legacy_bridge.generate_delegation_plan
+### scripts.conflict_resolver
 - **Functions**: 7
-- **File**: `generate_delegation_plan.py`
-
-### gateway.user_handler
-- **Functions**: 6
-- **File**: `user_handler.py`
-
-### scratch.swop_scan_c2004
-- **Functions**: 6
-- **File**: `swop_scan_c2004.py`
-
-### scripts.dual_writer
-- **Functions**: 6
 - **Classes**: 2
-- **File**: `dual_writer.py`
-
-### scripts.idempotency_store
-- **Functions**: 5
-- **Classes**: 1
-- **File**: `idempotency_store.py`
+- **File**: `conflict_resolver.py`
 
 ## Key Entry Points
 
 Main execution flows into the system:
-
-### scripts.parse_proto.parse_proto
-> Parse a .proto file and return a simplified AST dict.
-
-Returns
--------
-{
-    "package": "user.v1",
-    "imports": ["google/protobuf/timestamp.proto"],
-- **Calls**: _PACKAGE_RE.match, _IMPORT_RE.match, _MESSAGE_START_RE.match, _ENUM_START_RE.match, stack.pop, scripts.parse_proto._to_dict, open, fh.readlines
 
 ### scratch.swop_scan_c2004.main
 - **Calls**: scratch.swop_scan_c2004.collect_ground_truth, print, print, scratch.swop_scan_c2004.run_swop_scan, print, print, print, set
 
 ### scripts.legacy_registry.main
 - **Calls**: argparse.ArgumentParser, parser.add_subparsers, sub.add_parser, reg_json.add_argument, reg_json.add_argument, reg_json.add_argument, reg_json.add_argument, sub.add_parser
+
+### protogate.cli.main
+- **Calls**: argparse.ArgumentParser, parser.add_subparsers, subparsers.add_parser, gen_parser.add_argument, gen_parser.set_defaults, subparsers.add_parser, reg_parser.add_argument, reg_parser.add_argument
 
 ### scratch.swop_pipeline_service_id.main
 - **Calls**: Path, out_root.exists, manifests_dir.mkdir, proto_dir.mkdir, SwopConfig, print, scan_project, print
@@ -140,14 +133,23 @@ Returns
 ### scripts.legacy_bridge.generate_delegation_plan.main
 - **Calls**: scripts.legacy_bridge.generate_delegation_plan.parse_args, None.resolve, None.resolve, scripts.legacy_bridge.generate_delegation_plan.load_clusters, rows.sort, max, out_dir.mkdir, out_json.write_text
 
+### scripts.legacy_bridge.run_arch_migration_discovery.main
+- **Calls**: scripts.legacy_bridge.run_arch_migration_discovery.parse_args, None.resolve, scripts.legacy_bridge.run_arch_migration_discovery.resolve_output_dir, print, print, print, print, print
+
+### scripts.legacy_bridge.swop_integration.run_swop_pipeline
+- **Calls**: repo_root.resolve, output_dir.resolve, swop_repo.resolve, sorted, None.resolve, subprocess.run, str, str
+
 ### scripts.generate_incremental.main
 - **Calls**: scripts.generate_incremental.load_cache, None.splitlines, os.path.exists, ln.strip, print, scripts.generate_incremental.should_regenerate, scripts.generate_incremental.save_cache, print
 
-### scripts.legacy_bridge.analyze_service_boundaries.main
-- **Calls**: scripts.legacy_bridge.analyze_service_boundaries.parse_args, None.resolve, scripts.legacy_bridge.analyze_service_boundaries.analyze, Path, output_dir.mkdir, out_json.write_text, out_md.write_text, print
+### scripts.legacy_bridge.swop_integration.render_swop_markdown
+- **Calls**: payload.get, lines.extend, payload.get, lines.extend, payload.get, lines.append, payload.get, lines.append
 
-### scripts.legacy_bridge.run_arch_migration_discovery.main
-- **Calls**: scripts.legacy_bridge.run_arch_migration_discovery.parse_args, None.resolve, scripts.legacy_bridge.run_arch_migration_discovery.resolve_output_dir, print, print, print, print, print
+### scripts.legacy_bridge.report_rendering.render_summary_markdown
+- **Calls**: None.items, scripts.legacy_bridge.report_rendering._append_simple_list_section, scripts.legacy_bridge.report_rendering._append_simple_list_section, scripts.legacy_bridge.report_rendering._append_simple_list_section, scripts.legacy_bridge.report_rendering._append_reason_counts_section, scripts.legacy_bridge.report_rendering._append_reason_counts_section, scripts.legacy_bridge.report_rendering._append_reason_counts_section, scripts.legacy_bridge.report_rendering._append_simple_list_section
+
+### scripts.legacy_bridge.analyze_service_boundaries.main
+- **Calls**: scripts.legacy_bridge.analyze_service_boundaries.parse_args, None.resolve, scripts.legacy_bridge.analyze_service_boundaries.analyze, Path, scripts.legacy_bridge.analyze_service_boundaries.write_outputs, print, print, None.resolve
 
 ### scripts.schema_registry.SchemaRegistry.register
 > Register a new schema version for the package declared in *proto_path*.
@@ -156,19 +158,10 @@ Parameters
 ----------
 proto_path:
     Path to the ``.proto`` file to register
-- **Calls**: SUMD.parse_proto, scripts.schema_registry._sha256_file, self._next_version, time.time, SchemaVersion, open, fh.read, self.get_compatibility
+- **Calls**: scripts.parse_proto.parse_proto, scripts.schema_registry._sha256_file, self._next_version, time.time, SchemaVersion, open, fh.read, self.get_compatibility
 
 ### scripts.detect_migration_candidates.main
 - **Calls**: scripts.detect_migration_candidates.parse_args, None.resolve, scripts.detect_migration_candidates.analyze_repository, None.resolve, output_path.parent.mkdir, output_path.write_text, print, print
-
-### scripts.conflict_resolver.ConflictResolver.resolve_merge
-> Field-level merge of concurrent event streams.
-
-Rules
------
-1. Mutually-exclusive event type pairs (e.g. UserDeactivated +
-   UserActivated) → ``Unres
-- **Calls**: sorted, list, UnresolvableConflictError, scripts.conflict_resolver._field_effects, UnresolvableConflictError, list, list, conflicts.append
 
 ### scripts.dual_writer.DualWriter.execute_create_user
 > Dual-write: EventStore + LegacyDB.
@@ -179,19 +172,32 @@ Uses command_id for idempotency.
 - **Calls**: LegacySchemaRegistry, reg.get_latest, reg.get_latest, scripts.legacy_bridge.normalizer.normalize_json_schema, scripts.legacy_bridge.normalizer.normalize_proto_ast, scripts.legacy_bridge.diff_engine.diff_fields, print, print
 
 ### scripts.generate_json_schema.main
-- **Calls**: SUMD.parse_proto, scripts.generate_json_schema.generate, os.makedirs, print, os.path.dirname, open, json.dump, fh.write
+- **Calls**: scripts.parse_proto.parse_proto, scripts.generate_json_schema.generate, os.makedirs, print, os.path.dirname, open, json.dump, fh.write
+
+### scripts.conflict_resolver.ConflictResolver.resolve_merge
+> Field-level merge of concurrent event streams.
+
+Rules
+-----
+1. Mutually-exclusive event type pairs (e.g. UserDeactivated +
+   UserActivated) → ``Unres
+- **Calls**: self._check_exclusive_event_pairs, self._check_field_conflicts, sorted, UnresolvableConflictError, UnresolvableConflictError, list, list, None.join
+
+### protogate.cli.cmd_discovery
+> Run the migration discovery orchestrator.
+- **Calls**: str, protogate.cli.run_command, str, cmd.extend, cmd.extend, cmd.extend, cmd.extend, cmd.extend
 
 ### scripts.search_index.SearchIndex.search
 - **Calls**: params.append, self.conn.execute, where_clauses.append, params.append, where_clauses.append, params.append, dict, None.join
 
 ### scripts.generate_sql.main
-- **Calls**: SUMD.parse_proto, scripts.generate_sql.generate_sql, os.makedirs, print, os.path.dirname, open, fh.write, len
+- **Calls**: scripts.parse_proto.parse_proto, scripts.generate_sql.generate_sql, os.makedirs, print, os.path.dirname, open, fh.write, len
 
 ### scripts.generate_pydantic.main
-- **Calls**: SUMD.parse_proto, scripts.generate_pydantic.generate, os.makedirs, print, os.path.dirname, open, fh.write, len
+- **Calls**: scripts.parse_proto.parse_proto, scripts.generate_pydantic.generate, os.makedirs, print, os.path.dirname, open, fh.write, len
 
 ### scripts.generate_zod.main
-- **Calls**: SUMD.parse_proto, scripts.generate_zod.to_zod, os.makedirs, print, os.path.dirname, open, fh.write, len
+- **Calls**: scripts.parse_proto.parse_proto, scripts.generate_zod.to_zod, os.makedirs, print, os.path.dirname, open, fh.write, len
 
 ### gateway.delegation.DelegatedSlice.detail
 - **Calls**: self.health, list, list, list, list, list, list, list
@@ -224,33 +230,11 @@ If a snapshot exists it is used as the starting point and only
 events newer than the sna
 - **Calls**: self.event_store.load_snapshot, self.event_store.get_stream, dict, dict, self.handlers.get, handler, self.event_store.save_snapshot
 
-### scripts.legacy_bridge.migrator.main
-- **Calls**: os.getenv, os.getenv, log.info, LegacyDB, EventStore, scripts.legacy_bridge.migrator.migrate_users, log.info
-
-### adapters.proto_to_legacy.user_adapter.proto_to_legacy
-> Map proto fields back to legacy fields.
-- **Calls**: proto_dict.get, proto_dict.get, proto_dict.get, proto_dict.get, proto_dict.get, proto_dict.get, proto_dict.get
-
-### gateway.ws.ConnectionManager.broadcast
-> Send a JSON message to every connected client.
-
-Clients that fail to receive the message are silently removed.
-- **Calls**: json.dumps, list, ws.send_text, log.warning, dead.append, self._active.remove
-
-### scripts.vector_clock.VectorClock.merge
-> Return the element-wise maximum of *self* and *other*.
-- **Calls**: VectorClock, set, set, max, self.clocks.get, other.clocks.get
-
 ## Process Flows
 
 Key execution flows identified:
 
-### Flow 1: parse_proto
-```
-parse_proto [scripts.parse_proto]
-```
-
-### Flow 2: main
+### Flow 1: main
 ```
 main [scratch.swop_scan_c2004]
   └─> collect_ground_truth
@@ -259,32 +243,45 @@ main [scratch.swop_scan_c2004]
   └─> run_swop_scan
 ```
 
-### Flow 3: _cli
+### Flow 2: _cli
 ```
 _cli [scripts.schema_registry]
 ```
 
-### Flow 4: register
+### Flow 3: run_swop_pipeline
+```
+run_swop_pipeline [scripts.legacy_bridge.swop_integration]
+```
+
+### Flow 4: render_swop_markdown
+```
+render_swop_markdown [scripts.legacy_bridge.swop_integration]
+```
+
+### Flow 5: render_summary_markdown
+```
+render_summary_markdown [scripts.legacy_bridge.report_rendering]
+  └─> _append_simple_list_section
+  └─> _append_simple_list_section
+```
+
+### Flow 6: register
 ```
 register [scripts.schema_registry.SchemaRegistry]
   └─ →> parse_proto
+      └─> _handle_message_start
+      └─> _handle_enum_start
   └─ →> _sha256_file
 ```
 
-### Flow 5: resolve_merge
-```
-resolve_merge [scripts.conflict_resolver.ConflictResolver]
-  └─ →> _field_effects
-```
-
-### Flow 6: execute_create_user
+### Flow 7: execute_create_user
 ```
 execute_create_user [scripts.dual_writer.DualWriter]
 ```
 
-### Flow 7: search
+### Flow 8: resolve_merge
 ```
-search [scripts.search_index.SearchIndex]
+resolve_merge [scripts.conflict_resolver.ConflictResolver]
 ```
 
 ## Key Classes
@@ -317,6 +314,16 @@ clocks:
 - **Methods**: 5
 - **Key Methods**: scripts.idempotency_store.IdempotencyStore.__init__, scripts.idempotency_store.IdempotencyStore._init_db, scripts.idempotency_store.IdempotencyStore.is_processed, scripts.idempotency_store.IdempotencyStore.mark_processed, scripts.idempotency_store.IdempotencyStore.get_response
 
+### scripts.conflict_resolver.ConflictResolver
+> Resolves conflicts between concurrent event streams.
+
+Parameters
+----------
+field_effect_map:
+    Ma
+- **Methods**: 5
+- **Key Methods**: scripts.conflict_resolver.ConflictResolver.__post_init__, scripts.conflict_resolver.ConflictResolver.resolve_lww, scripts.conflict_resolver.ConflictResolver._check_exclusive_event_pairs, scripts.conflict_resolver.ConflictResolver._check_field_conflicts, scripts.conflict_resolver.ConflictResolver.resolve_merge
+
 ### gateway.ws.ConnectionManager
 > Thread-safe (asyncio-safe) WebSocket broadcast pool.
 - **Methods**: 4
@@ -334,16 +341,6 @@ clocks:
 > Simulated legacy database.
 - **Methods**: 4
 - **Key Methods**: scripts.dual_writer.LegacyDB.__init__, scripts.dual_writer.LegacyDB._init_db, scripts.dual_writer.LegacyDB.upsert_user, scripts.dual_writer.LegacyDB.get_all_users
-
-### scripts.conflict_resolver.ConflictResolver
-> Resolves conflicts between concurrent event streams.
-
-Parameters
-----------
-field_effect_map:
-    Ma
-- **Methods**: 3
-- **Key Methods**: scripts.conflict_resolver.ConflictResolver.__post_init__, scripts.conflict_resolver.ConflictResolver.resolve_lww, scripts.conflict_resolver.ConflictResolver.resolve_merge
 
 ### scripts.dual_writer.DualWriter
 - **Methods**: 2
@@ -370,33 +367,51 @@ event_store
 - **Key Methods**: scripts.conflict_resolver.UnresolvableConflictError.__init__
 - **Inherits**: Exception
 
-### generated.python.user_v1_models.CreateUserCommand
+### generated.python.search_v1_models.IndexEntryCommand
 - **Methods**: 0
 - **Inherits**: BaseModel
 
-### generated.python.user_v1_models.GetUserQuery
+### generated.python.search_v1_models.EntryIndexed
 - **Methods**: 0
 - **Inherits**: BaseModel
 
-### generated.python.user_v1_models.User
+### generated.python.search_v1_models.SearchRequest
 - **Methods**: 0
 - **Inherits**: BaseModel
 
-### gateway.main.CreateUserRequest
+### generated.python.search_v1_models.SearchResponse
 - **Methods**: 0
 - **Inherits**: BaseModel
 
-### gateway.main.DualCreateUserRequest
-- **Methods**: 0
-- **Inherits**: CreateUserRequest
-
-### gateway.main.IndexEntryRequest
+### generated.python.search_v1_models.Result
 - **Methods**: 0
 - **Inherits**: BaseModel
+
+### generated.python.identification_v1_models.IdentifierType
+- **Methods**: 0
+- **Inherits**: Enum
 
 ## Data Transformation Functions
 
 Key functions that process and transform data:
+
+### scripts.parse_proto._parse_reserved_numbers
+> Parse a reserved-numbers token such as ``1, 2, 3`` or ``1 to 5``.
+- **Output to**: token.split, part.strip, part.split, numbers.extend, part.isdigit
+
+### scripts.parse_proto._parse_top_level_declarations
+> Parse package and import declarations. Returns True if matched.
+- **Output to**: _PACKAGE_RE.match, _IMPORT_RE.match, pkg_match.group, None.append, import_match.group
+
+### scripts.parse_proto.parse_proto
+> Parse a .proto file and return a simplified AST dict.
+
+Returns
+-------
+{
+    "package": "user.v1",
+ 
+- **Output to**: scripts.parse_proto._handle_message_start, scripts.parse_proto._handle_enum_start, scripts.parse_proto._handle_block_end, stack.pop, scripts.parse_proto._to_dict
 
 ### scripts.idempotency_store.IdempotencyStore.is_processed
 - **Output to**: None.fetchone, self.conn.execute
@@ -404,29 +419,11 @@ Key functions that process and transform data:
 ### scripts.idempotency_store.IdempotencyStore.mark_processed
 - **Output to**: self.conn.execute, time.time
 
-### scripts.detect_migration_candidates.parse_args
-- **Output to**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
-
-### scripts.legacy_bridge.generate_delegation_plan.parse_score
-- **Output to**: float, row.get
-
-### scripts.legacy_bridge.generate_delegation_plan.parse_args
-- **Output to**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
-
 ### scripts.legacy_bridge.detect_cqrs_pattern_clusters.parse_args
 - **Output to**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
 
-### scripts.legacy_bridge.analyze_service_boundaries.parse_args
-- **Output to**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
-
-### scripts.legacy_bridge.analyze_service_boundaries.parse_ts_import_specs
-- **Output to**: TS_IMPORT_RE.finditer, match.group, match.group, specs.append
-
-### scripts.legacy_bridge.analyze_service_boundaries.parse_router_prefixes
-- **Output to**: ast.walk, isinstance, isinstance, scripts.legacy_bridge.analyze_service_boundaries.const_str, prefixes.append
-
-### scripts.legacy_bridge.analyze_service_boundaries.parse_python_imports
-- **Output to**: set, ast.walk, isinstance, isinstance, imports.add
+### scripts.legacy_bridge.candidate_selection.parse_score
+- **Output to**: float, row.get
 
 ### scripts.legacy_bridge.generate_migration_wave_plan.parse_args
 - **Output to**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
@@ -445,6 +442,8 @@ Key functions that process and transform data:
 
 ### SUMD._parse_reserved_numbers
 
+### SUMD._parse_top_level_declarations
+
 ### SUMD.parse_proto
 
 ### SUMD.test_different_formats_independent
@@ -459,7 +458,16 @@ Key functions that process and transform data:
 
 ### project.map.toon.parse_score
 
+### project.map.toon._parse_score
+
+### project.map.toon._parse_reserved_numbers
+
 ## Behavioral Patterns
+
+### recursion__to_dict
+- **Type**: recursion
+- **Confidence**: 0.90
+- **Functions**: scripts.parse_proto._to_dict
 
 ### recursion_deep_merge
 - **Type**: recursion
@@ -471,11 +479,6 @@ Key functions that process and transform data:
 - **Confidence**: 0.90
 - **Functions**: scripts.legacy_bridge.analyze_service_boundaries.deep_merge
 
-### recursion__to_dict
-- **Type**: recursion
-- **Confidence**: 0.90
-- **Functions**: scripts.parse_proto._to_dict
-
 ### state_machine_ConnectionManager
 - **Type**: state_machine
 - **Confidence**: 0.70
@@ -485,46 +488,46 @@ Key functions that process and transform data:
 
 Functions exposed as public API (no underscore prefix):
 
-- `scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules` - 66 calls
-- `scripts.legacy_bridge.run_arch_migration_discovery.run_discovery` - 57 calls
-- `scripts.parse_proto.parse_proto` - 55 calls
+- `scripts.legacy_bridge.run_arch_migration_discovery.run_discovery` - 77 calls
 - `scratch.swop_scan_c2004.main` - 53 calls
 - `scripts.legacy_registry.main` - 52 calls
+- `scripts.legacy_bridge.run_arch_migration_discovery.build_service_boundary_decision_report` - 45 calls
 - `scripts.legacy_bridge.run_arch_migration_discovery.build_delegation_decision_report` - 43 calls
+- `protogate.cli.main` - 41 calls
 - `scratch.swop_pipeline_service_id.main` - 37 calls
 - `scripts.legacy_bridge.detect_cqrs_pattern_clusters.analyze_repository` - 37 calls
-- `scripts.legacy_bridge.run_arch_migration_discovery.render_summary_markdown` - 34 calls
-- `scripts.detect_migration_candidates.discover_candidate_paths` - 33 calls
+- `scripts.legacy_bridge.run_arch_migration_discovery.build_summary` - 34 calls
 - `scripts.legacy_bridge.delegation_plan.render_markdown` - 33 calls
+- `scripts.legacy_bridge.candidate_selection.get_candidate_exclusion_reasons` - 33 calls
 - `scripts.legacy_bridge.generate_migration_wave_plan.main` - 33 calls
-- `scripts.legacy_bridge.run_arch_migration_discovery.get_candidate_exclusion_reasons` - 33 calls
 - `scripts.legacy_bridge.run_arch_migration_discovery.profile_repository` - 33 calls
-- `scripts.detect_migration_candidates.analyze_candidate` - 32 calls
-- `scripts.legacy_bridge.analyze_service_boundaries.build_service_components` - 32 calls
+- `scripts.detect_migration_candidates.discover_candidate_paths` - 33 calls
 - `scripts.legacy_bridge.detect_cqrs_pattern_clusters.main` - 31 calls
 - `scripts.legacy_bridge.generate_migration_wave_plan.build_waves` - 31 calls
 - `scripts.legacy_bridge.analyze_service_boundaries.build_ts_index` - 30 calls
 - `scripts.legacy_bridge.generate_delegation_plan.main` - 29 calls
-- `scripts.legacy_bridge.analyze_service_boundaries.build_markdown` - 26 calls
+- `scripts.legacy_bridge.run_arch_migration_discovery.main` - 29 calls
+- `scripts.legacy_bridge.analyze_service_boundaries.build_service_blueprint_markdown` - 26 calls
+- `scripts.legacy_bridge.swop_integration.run_swop_pipeline` - 25 calls
 - `scripts.generate_incremental.main` - 24 calls
-- `scripts.legacy_bridge.generate_delegation_plan.is_delegable_candidate` - 24 calls
-- `scripts.legacy_bridge.analyze_service_boundaries.main` - 24 calls
-- `scripts.legacy_bridge.run_arch_migration_discovery.build_summary` - 24 calls
-- `scripts.legacy_bridge.run_arch_migration_discovery.main` - 24 calls
+- `scripts.legacy_bridge.swop_integration.render_swop_markdown` - 24 calls
 - `scripts.legacy_bridge.delegation_plan.build_output_row` - 22 calls
 - `scripts.legacy_bridge.detect_cqrs_pattern_clusters.classify_pattern` - 21 calls
 - `scripts.legacy_bridge.generate_migration_wave_plan.render_markdown` - 21 calls
-- `scripts.legacy_bridge.run_arch_migration_discovery.render_delegation_decisions_markdown` - 21 calls
-- `scripts.legacy_bridge.run_arch_migration_discovery.render_excluded_candidates_markdown` - 20 calls
+- `scripts.legacy_bridge.swop_integration.infer_contexts_from_service_boundaries` - 21 calls
+- `scripts.legacy_bridge.report_rendering.render_summary_markdown` - 20 calls
+- `scripts.legacy_bridge.analyze_service_boundaries.analyze_frontend_modules` - 20 calls
 - `scripts.legacy_bridge.diff_engine.diff_fields` - 19 calls
 - `scripts.legacy_bridge.analyze_service_boundaries.build_backend_index` - 19 calls
+- `scripts.legacy_bridge.analyze_service_boundaries.main` - 19 calls
 - `scripts.schema_registry.SchemaRegistry.register` - 18 calls
 - `scripts.legacy_bridge.run_arch_migration_discovery.build_excluded_candidates_report` - 18 calls
+- `scripts.legacy_bridge.analyze_service_boundaries.write_outputs` - 18 calls
 - `scripts.detect_migration_candidates.main` - 17 calls
-- `scripts.legacy_bridge.analyze_service_boundaries.resolve_candidate_file` - 16 calls
 - `scripts.generate_pydantic.generate` - 16 calls
-- `scripts.conflict_resolver.ConflictResolver.resolve_merge` - 15 calls
+- `scripts.legacy_bridge.analyze_service_boundaries.resolve_candidate_file` - 16 calls
 - `scripts.generate_zod.to_zod` - 15 calls
+- `scripts.parse_proto.parse_proto` - 14 calls
 
 ## System Interactions
 
@@ -532,8 +535,6 @@ How components interact:
 
 ```mermaid
 graph TD
-    parse_proto --> match
-    parse_proto --> pop
     main --> collect_ground_truth
     main --> print
     main --> run_swop_scan
@@ -541,6 +542,7 @@ graph TD
     main --> add_subparsers
     main --> add_parser
     main --> add_argument
+    main --> set_defaults
     main --> Path
     main --> exists
     main --> mkdir
@@ -556,12 +558,13 @@ graph TD
     main --> analyze_repository
     main --> load_clusters
     main --> sort
+    main --> resolve_output_dir
+    run_swop_pipeline --> resolve
+    run_swop_pipeline --> sorted
     main --> load_cache
     main --> splitlines
     main --> strip
-    main --> analyze
-    main --> resolve_output_dir
-    register --> parse_proto
+    render_swop_markdown --> get
 ```
 
 ## Reverse Engineering Guidelines

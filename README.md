@@ -1,10 +1,10 @@
-# protos
+# protogate
 
 Migration tool and delegation platform for extracting bounded slices from legacy systems with minimal coupling. Built on SUMD + DOQL + testql + taskfile ecosystem.
 
 ## Architecture
 
-**Protos owns:**
+**Protogate owns:**
 
 - Contracts (Protobuf)
 - Commands & Queries (CQRS)
@@ -109,7 +109,7 @@ The project provides multiple code generators from Protobuf contracts:
 | `make sql` | Generate SQL DDL |
 | `make proto-all` | Run all generators (proto + zod + python + json + sql) |
 | `make proto-changed` | Detect changed proto files against main branch |
-| `make generate-incremental` | Incremental regeneration (only changed protos) |
+| `make generate-incremental` | Incremental regeneration (only changed proto files) |
 | `make clean` | Remove all generated artifacts |
 
 ### Schema Registry
@@ -144,7 +144,7 @@ Legacy schema migration and synchronization:
 ## Delegation Workflow
 
 1. **Generate candidate report** in c2004 (`detect_migration_candidates.py`)
-2. **Generate delegation plan** in protos:
+2. **Generate delegation plan** in protogate:
 
    ```bash
    python scripts/legacy_bridge/generate_delegation_plan.py \
@@ -153,7 +153,7 @@ Legacy schema migration and synchronization:
      --output-dir docs
    ```
 
-3. **(Recommended) Run full discovery pipeline** in protos:
+3. **(Recommended) Run full discovery pipeline** in protogate:
 
    ```bash
    python scripts/legacy_bridge/run_arch_migration_discovery.py \
@@ -163,14 +163,14 @@ Legacy schema migration and synchronization:
    ```
 
 4. Pick top module from Phase-1
-5. Implement full vertical slice in protos
+5. Implement full vertical slice in protogate
 6. Switch c2004 route to iframe host
 7. Validate parity & archive legacy
 
 ## Project Structure
 
 ```text
-protos/
+protogate/
 ├── contracts/              # Protobuf contracts per slice
 │   ├── user/v{1,2}/
 │   ├── search/v1/
@@ -220,7 +220,7 @@ protos/
 - **Pydantic Generator** (`scripts/generate_pydantic.py`): Python data models
 - **JSON Schema Generator** (`scripts/generate_json_schema.py`): Draft-07 JSON schemas
 - **SQL Generator** (`scripts/generate_sql.py`): Database DDL
-- **Incremental Generator** (`scripts/generate_incremental.py`): Regenerate only changed protos
+- **Incremental Generator** (`scripts/generate_incremental.py`): Regenerate only changed proto files
 
 ### Schema Registry
 
@@ -347,18 +347,18 @@ pytest tests/test_event_store.py -v
 ## Release Management
 
 - **Versioning**: Semantic versioning (semver)
-- **Commits**: Conventional commits with scope=`protos`
+- **Commits**: Conventional commits with scope=`protogate`
 - **Changelog**: Keep-a-changelog format
 - **Build strategies**: Python, Node.js, Rust
 - **Version files**: `VERSION`, generated package versions
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.1-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$1.65-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-7.7h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.2-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$1.80-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-8.3h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $1.6500 (11 commits)
-- 👤 **Human dev:** ~$767 (7.7h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $1.8000 (12 commits)
+- 👤 **Human dev:** ~$830 (8.3h @ $100/h, 30min dedup)
 
 Generated on 2026-04-24 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 

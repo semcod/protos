@@ -29,7 +29,7 @@ sql:
 proto-changed:
 	git diff --name-only origin/main | grep ".proto" > changed.txt || true
 
-# Incremental mode: only regenerate changed protos
+# Incremental mode: only regenerate changed protogate artifacts
 generate-incremental: proto-changed
 	python scripts/generate_incremental.py changed.txt
 

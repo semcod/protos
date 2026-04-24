@@ -2,7 +2,7 @@
 
 ## Objective
 
-Build a generic migration orchestrator around `protos` so that existing systems can be onboarded from different languages and architectural styles without rewriting the migration process for each repository.
+Build a generic migration orchestrator around `protogate` so that existing systems can be onboarded from different languages and architectural styles without rewriting the migration process for each repository.
 
 The orchestrator should turn migration from an ad hoc activity into a repeatable pipeline:
 
@@ -14,9 +14,9 @@ The orchestrator should turn migration from an ad hoc activity into a repeatable
 
 ## Why this is needed now
 
-Current `protos` direction already establishes the target delegation model:
+Current `protogate` direction already establishes the target delegation model:
 
-1. `protos` owns contracts, commands, queries, events, read models, and delegated UI runtime
+1. `protogate` owns contracts, commands, queries, events, read models, and delegated UI runtime
 2. legacy host keeps shell, auth/session bridge, and iframe routing only
 3. migration should be driven by readiness scoring, service-boundary analysis, health checks, and cutover gates
 
@@ -513,13 +513,13 @@ Best when:
 The orchestrator should enforce these invariants:
 
 1. no legacy module is archived before parity gates pass
-2. no direct import from legacy internals into `protos` runtime handlers
+2. no direct import from legacy internals into `protogate` runtime handlers
 3. contracts must be versioned before cutover
 4. bootstrap scripts must be idempotent
 5. health endpoints and smoke checks must exist per delegated slice
 6. cleanup plans must list guardrail files and companion modules
 
-## How this maps to current `protos`
+## How this maps to current `protogate`
 
 ### Already present (Phase 1 ✅)
 
@@ -550,7 +550,7 @@ delegated_slice.health() -> {
 
 1. add `run_arch_migration_discovery.py` – unified discovery pipeline
 2. add repository profile detection stage
-3. add shared package detection in `protos`
+3. add shared package detection in `protogate`
 4. add a common artifact schema module (`report_models.py`)
 5. add `archive_ready_gate.py`
 6. add bootstrap/parity orchestration
@@ -615,9 +615,9 @@ The orchestrator should not:
 
 ## Final strategy statement
 
-The generic migration orchestrator for `protos` should be a config-driven, adapter-based pipeline that normalizes heterogeneous repositories into one canonical migration graph, then derives candidate scores, boundary analysis, strategy selection, execution plans, and safety gates from that graph.
+The generic migration orchestrator for `protogate` should be a config-driven, adapter-based pipeline that normalizes heterogeneous repositories into one canonical migration graph, then derives candidate scores, boundary analysis, strategy selection, execution plans, and safety gates from that graph.
 
-That gives `protos` a path from:
+That gives `protogate` a path from:
 
 - isolated scripts for one legacy repo
 

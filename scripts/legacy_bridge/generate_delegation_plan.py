@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate protos delegation plan from c2004 migration reports.
+Generate protogate delegation plan from c2004 migration reports.
 
 Input:
 - module candidates report produced by c2004/scripts/detect_migration_candidates.py
@@ -67,7 +67,7 @@ def dedupe_candidates(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate delegation plan for protos from c2004 candidate report")
+    parser = argparse.ArgumentParser(description="Generate delegation plan for protogate from c2004 candidate report")
     parser.add_argument("--input", required=True, help="path to c2004 migration/module-candidates.json")
     parser.add_argument(
         "--output-dir",

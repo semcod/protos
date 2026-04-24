@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-04-24
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update SUMD.md
+- Update SUMR.md
+- Update TODO.md
+- Update docs/delegation-plan.generated.json
+- Update docs/migration-orchestrator-strategy.md
+- Update docs/protogate-integration.md
+- Update docs/refactor-delegation-architecture.md
+- Update project/README.md
+- ... and 4 more files
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+- Update tests/conftest.py
+- Update tests/test_analyze_service_boundaries.py
+- Update tests/test_conflict_resolver.py
+- Update tests/test_detect_migration_candidates.py
+- Update tests/test_generators.py
+- Update tests/test_report_rendering.py
+- ... and 1 more files
+
+### Other
+- Update Makefile
+- Update app.doql.less
+- Update gateway/main.py
+- Update generated/python_cli/examples_identification_v1_identification_models.py
+- Update generated/python_cli/legacy_bridge_user_legacy.v1_models.py
+- Update generated/python_cli/search_v1_search_models.py
+- Update generated/python_cli/user_v1_user_models.py
+- Update generated/python_cli/user_v2_user_models.py
+- Update generated/ts_cli/examples_identification_v1_identification.ts
+- Update generated/ts_cli/legacy_bridge_user_legacy.v1.ts
+- ... and 34 more files
+
 ## [0.1.1] - 2026-04-24
 
 ### Docs
@@ -15,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update SUMR.md
 - Update docs/delegation-plan.generated.json
 - Update docs/delegation-plan.generated.md
-- Update docs/protos-integration.md
+- Update docs/protogate-integration.md
 - Update project/README.md
 - Update project/context.md
 - Update reports/migration-discovery/delegation-decisions.md

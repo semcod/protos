@@ -1,24 +1,24 @@
-# Protos Integration ADR — c2004
+# Protogate Integration ADR — c2004
 
 **Status:** Draft | **Date:** 2026-04-24
 
 ## Decyzja
 
-protos jest **TOOLCHAINEM** dla c2004 — generuje kontrakty i kod, nie wymusza runtime'u.
+protogate jest **TOOLCHAINEM** dla c2004 — generuje kontrakty i kod, nie wymusza runtime'u.
 
 ## Decyzje integracyjne
 
 ### 1. Gdzie .proto files?
-**c2004/contracts/proto/** — lokalnie. protos jest CLI, nie magazyn.
+**c2004/contracts/proto/** — lokalnie. protogate jest CLI, nie magazyn.
 
-### 2. Jak protos jest wywoływany?
+### 2. Jak protogate jest wywoływany?
 **CLI tool** na maszynie dev + CI:
 ```yaml
 tasks:
   contracts:gen:
     cmds:
-      - protos generate-pydantic contracts/proto/ backend/generated/contracts/
-      - protos generate-zod      contracts/proto/ frontend/src/generated/contracts/
+      - protogate generate-pydantic contracts/proto/ backend/generated/contracts/
+      - protogate generate-zod      contracts/proto/ frontend/src/generated/contracts/
 ```
 
 ### 3. Co z 50 plikami *.command.json?
@@ -42,7 +42,7 @@ tasks:
 
 - Legacy bridge dla 50 plikow JSON
 - Wave planner (nie uzywamy w pilocie)
-- Gateway / EventStore z protos (c2004 ma wlasne)
+- Gateway / EventStore z protogate (c2004 ma wlasne)
 - Runtime validation middleware w CQRS bus (tydzien 2)
 
 ## Przykład end-to-end
@@ -64,7 +64,7 @@ Klient (React/TS)
   -> Zod.parse() w frontend (opcjonalna dodatkowa walidacja)
 ```
 
-Gateway z protos **nie jest uzywany**.
+Gateway z protogate **nie jest uzywany**.
 
 ## Ryzyko
 

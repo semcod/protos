@@ -1,13 +1,25 @@
 // LESS format — define @variables here as needed
 
 app {
-  name: protos;
-  version: 0.1.0;
+  name: protogate;
+  version: 0.1.1;
+}
+
+dependencies {
+  runtime: "protobuf>=4.25.0, pydantic>=2.0.0, pydantic[email]>=2.0.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60";
+  dev: "pytest>=7.0.0, pytest-cov>=4.0.0, black>=23.0.0, ruff>=0.1.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60";
 }
 
 interface[type="api"] {
   type: rest;
   framework: fastapi;
+}
+
+interface[type="cli"] {
+  framework: argparse;
+}
+interface[type="cli"] page[name="protogate"] {
+
 }
 
 workflow[name="proto"] {
@@ -142,4 +154,5 @@ deploy {
 environment[name="local"] {
   runtime: docker-compose;
   env_file: .env;
+  python_version: >=3.9;
 }

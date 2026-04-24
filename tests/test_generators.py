@@ -17,7 +17,17 @@ import pytest
 SCRIPTS_DIR = Path(__file__).parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from parse_proto import parse_proto  # noqa: E402
+from parse_proto import (
+    parse_proto,
+    _parse_top_level_declarations,
+    _handle_message_start,
+    _handle_enum_start,
+    _handle_block_end,
+    _handle_enum_value,
+    _handle_message_fields,
+    Message,
+    ProtoEnum,
+)  # noqa: E402
 from generate_zod import to_zod  # noqa: E402
 from generate_pydantic import generate as gen_pydantic  # noqa: E402
 from generate_json_schema import generate as gen_json_schema  # noqa: E402
@@ -81,6 +91,56 @@ class TestParseProto:
     def test_nonexistent_file_raises(self):
         with pytest.raises(FileNotFoundError):
             parse_proto("/nonexistent/path/file.proto")
+
+
+class TestParseProtoHelpers:
+    def test_parse_top_level_declarations_package(self):
+        """Test _parse_top_level_declarations extracts package."""
+        ast = {"package": "", "imports": [], "messages": [], "enums": []}
+        matched = _parse_top_level_declarations("package user.v1;", ast)
+        assert matched is True
+        assert ast["package"] == "user.v1"
+    
+    def test_parse_top_level_declarations_import(self):
+        """Test _parse_top_level_declarations extracts import."""
+        ast = {"package": "", "imports": [], "messages": [], "enums": []}
+        matched = _parse_top_level_declarations('import "google/protobuf/timestamp.proto";', ast)
+        assert matched is True
+        assert ast["imports"] == ["google/protobuf/timestamp.proto"]
+    
+    def test_handle_message_start(self):
+        """Test _handle_message_start creates message and pushes to stack."""
+        stack = []
+        matched = _handle_message_start("message User {", stack)
+        assert matched is True
+        assert len(stack) == 1
+        assert stack[0].name == "User"
+    
+    def test_handle_enum_start(self):
+        """Test _handle_enum_start creates enum."""
+        ast = {"package": "", "imports": [], "messages": [], "enums": []}
+        stack = []
+        matched, current_enum = _handle_enum_start("enum Status {", ast, stack)
+        assert matched is True
+        assert current_enum is not None
+        assert current_enum.name == "Status"
+    
+    def test_handle_block_end(self):
+        """Test _handle_block_end pops from stack."""
+        ast = {"package": "", "imports": [], "messages": [], "enums": []}
+        stack = [Message(name="Test")]
+        handled, new_enum = _handle_block_end("}", ast, stack, None)
+        assert handled is True
+        assert len(stack) == 0
+    
+    def test_handle_enum_value(self):
+        """Test _handle_enum_value adds value to enum."""
+        enum = ProtoEnum(name="Status")
+        matched = _handle_enum_value("ACTIVE = 0;", enum)
+        assert matched is True
+        assert len(enum.values) == 1
+        assert enum.values[0].name == "ACTIVE"
+        assert enum.values[0].number == 0
 
 
 # ---------------------------------------------------------------------------

@@ -114,6 +114,125 @@ def _to_dict(obj: Any) -> Any:
     return obj
 
 
+def _parse_top_level_declarations(code: str, ast: dict[str, Any]) -> bool:
+    """Parse package and import declarations. Returns True if matched."""
+    pkg_match = _PACKAGE_RE.match(code)
+    if pkg_match:
+        ast["package"] = pkg_match.group(1)
+        return True
+    
+    import_match = _IMPORT_RE.match(code)
+    if import_match:
+        ast["imports"].append(import_match.group(1))
+        return True
+    
+    return False
+
+
+def _handle_message_start(code: str, stack: list[Message]) -> bool:
+    """Handle message block start. Returns True if matched."""
+    msg_match = _MESSAGE_START_RE.match(code)
+    if msg_match:
+        msg = Message(name=msg_match.group(1))
+        if stack:
+            stack[-1].nested_messages.append(msg)
+        stack.append(msg)
+        return True
+    return False
+
+
+def _handle_enum_start(code: str, ast: dict[str, Any], stack: list[Message]) -> tuple[bool, ProtoEnum | None]:
+    """Handle enum block start. Returns (matched, current_enum)."""
+    enum_match = _ENUM_START_RE.match(code)
+    if enum_match:
+        current_enum = ProtoEnum(name=enum_match.group(1))
+        if stack:
+            stack[-1].enums.append(current_enum)
+        else:
+            ast["enums"].append(current_enum)
+        return True, current_enum
+    return False, None
+
+
+def _handle_block_end(code: str, ast: dict[str, Any], stack: list[Message], current_enum: ProtoEnum | None) -> tuple[bool, ProtoEnum | None]:
+    """Handle closing braces. Returns (handled, new_current_enum)."""
+    if "}" not in code:
+        return False, current_enum
+    
+    brace_count = code.count("}")
+    new_enum = current_enum
+    for _ in range(brace_count):
+        if new_enum is not None:
+            new_enum = None
+            continue
+        if stack:
+            finished = stack.pop()
+            if not stack:
+                ast["messages"].append(_to_dict(finished))
+    return True, new_enum
+
+
+def _handle_enum_value(code: str, current_enum: ProtoEnum) -> bool:
+    """Handle enum value parsing. Returns True if matched."""
+    val_match = _ENUM_VALUE_RE.match(code)
+    if val_match:
+        current_enum.values.append(
+            EnumValue(name=val_match.group(1), number=int(val_match.group(2)))
+        )
+        return True
+    return False
+
+
+def _handle_message_fields(code: str, active: Message) -> bool:
+    """Handle message field parsing. Returns True if matched."""
+    # Reserved names: reserved "foo", "bar";
+    names_match = _RESERVED_NAMES_RE.match(code)
+    if names_match:
+        raw = names_match.group(1)
+        active.reserved_names.extend(
+            n.strip().strip('"') for n in re.findall(r'"(\w+)"', raw)
+        )
+        return True
+    
+    # Reserved numbers: reserved 1, 2; or reserved 1 to 5;
+    numbers_match = _RESERVED_NUMBERS_RE.match(code)
+    if numbers_match:
+        active.reserved_numbers.extend(
+            _parse_reserved_numbers(numbers_match.group(1))
+        )
+        return True
+    
+    # Map fields
+    map_match = _MAP_FIELD_RE.match(code)
+    if map_match:
+        key_type, val_type, fname, fnumber = map_match.groups()
+        active.fields.append(
+            Field(
+                name=fname,
+                type="map",
+                number=int(fnumber),
+                map_key_type=key_type,
+                map_value_type=val_type,
+            )
+        )
+        return True
+    
+    field_match = _FIELD_RE.match(code)
+    if field_match:
+        label, ftype, fname, fnumber = field_match.groups()
+        active.fields.append(
+            Field(
+                name=fname,
+                type=SCALAR_TYPE_MAP.get(ftype, ftype),
+                number=int(fnumber),
+                repeated=label == "repeated",
+            )
+        )
+        return True
+    
+    return False
+
+
 def parse_proto(file_path: str) -> dict[str, Any]:
     """Parse a .proto file and return a simplified AST dict.
 
@@ -152,103 +271,35 @@ def parse_proto(file_path: str) -> dict[str, Any]:
         # Strip inline comments
         code = line.split("//")[0]
 
-        pkg_match = _PACKAGE_RE.match(code)
-        if pkg_match and not stack:
-            ast["package"] = pkg_match.group(1)
+        # Top-level declarations (package, imports)
+        if not stack and _parse_top_level_declarations(code, ast):
             continue
 
-        import_match = _IMPORT_RE.match(code)
-        if import_match and not stack:
-            ast["imports"].append(import_match.group(1))
+        # Message block start
+        if _handle_message_start(code, stack):
             continue
 
-        msg_match = _MESSAGE_START_RE.match(code)
-        if msg_match:
-            msg = Message(name=msg_match.group(1))
-            if stack:
-                stack[-1].nested_messages.append(msg)
-            stack.append(msg)
+        # Enum block start
+        matched, new_enum = _handle_enum_start(code, ast, stack)
+        if matched:
+            current_enum = new_enum
             continue
 
-        enum_match = _ENUM_START_RE.match(code)
-        if enum_match:
-            current_enum = ProtoEnum(name=enum_match.group(1))
-            if stack:
-                stack[-1].enums.append(current_enum)
-            else:
-                ast["enums"].append(current_enum)
+        # Block end handling
+        handled, new_enum = _handle_block_end(code, ast, stack, current_enum)
+        if handled:
+            current_enum = new_enum
             continue
 
-        if "{" in code:
-            # Already handled message/enum starts above; count extra braces
-            pass
-        if "}" in code:
-            brace_count = code.count("}")
-            for _ in range(brace_count):
-                if current_enum is not None:
-                    # Close enum first (either top-level or inside message)
-                    current_enum = None
-                    continue
-                if stack:
-                    finished = stack.pop()
-                    if not stack:
-                        ast["messages"].append(_to_dict(finished))
-            continue
-
+        # Enum value parsing
         if current_enum is not None:
-            val_match = _ENUM_VALUE_RE.match(code)
-            if val_match:
-                current_enum.values.append(
-                    EnumValue(name=val_match.group(1), number=int(val_match.group(2)))
-                )
+            if _handle_enum_value(code, current_enum):
                 continue
 
+        # Message field parsing
         if stack:
-            active = stack[-1]
-
-            # Reserved names: reserved "foo", "bar";
-            names_match = _RESERVED_NAMES_RE.match(code)
-            if names_match:
-                raw = names_match.group(1)
-                active.reserved_names.extend(
-                    n.strip().strip('"') for n in re.findall(r'"(\w+)"', raw)
-                )
+            if _handle_message_fields(code, stack[-1]):
                 continue
-
-            # Reserved numbers: reserved 1, 2; or reserved 1 to 5;
-            numbers_match = _RESERVED_NUMBERS_RE.match(code)
-            if numbers_match:
-                active.reserved_numbers.extend(
-                    _parse_reserved_numbers(numbers_match.group(1))
-                )
-                continue
-
-            # Map fields
-            map_match = _MAP_FIELD_RE.match(code)
-            if map_match:
-                key_type, val_type, fname, fnumber = map_match.groups()
-                active.fields.append(
-                    Field(
-                        name=fname,
-                        type="map",
-                        number=int(fnumber),
-                        map_key_type=key_type,
-                        map_value_type=val_type,
-                    )
-                )
-                continue
-
-            field_match = _FIELD_RE.match(code)
-            if field_match:
-                label, ftype, fname, fnumber = field_match.groups()
-                active.fields.append(
-                    Field(
-                        name=fname,
-                        type=SCALAR_TYPE_MAP.get(ftype, ftype),
-                        number=int(fnumber),
-                        repeated=label == "repeated",
-                    )
-                )
 
     # Drain any remaining stack (malformed input tolerance)
     while stack:

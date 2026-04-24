@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "protogate"
-version = "0.1.1"
+version = "0.1.2"
 description = "Migration tool and delegation platform for extracting bounded slices from legacy systems"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -54,9 +54,9 @@ dev = [
 protogate = "protogate.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/semcod/protos"
-Repository = "https://github.com/semcod/protos"
-Documentation = "https://github.com/semcod/protos/blob/main/README.md"
+Homepage = "https://github.com/semcod/protogate"
+Repository = "https://github.com/semcod/protogate"
+Documentation = "https://github.com/semcod/protogate/blob/main/README.md"
 
 [tool.setuptools.packages.find]
 where = ["."]

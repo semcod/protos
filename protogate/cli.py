@@ -3,14 +3,17 @@
 protogate CLI - Migration tool and delegation platform
 """
 import argparse
-import sys
 import subprocess
+import sys
 from pathlib import Path
 
 
-def run_command(cmd: list[str]) -> int:
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def run_command(cmd: list[str], cwd: Path | None = None) -> int:
     """Run a command and return its exit code."""
-    result = subprocess.run(cmd)
+    result = subprocess.run(cmd, cwd=str(cwd or REPO_ROOT))
     return result.returncode
 
 
@@ -39,14 +42,15 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
 def cmd_registry(args: argparse.Namespace) -> int:
     """Schema registry operations."""
+    script = str(REPO_ROOT / "scripts" / "schema_registry.py")
     if args.action == "register":
         proto_file = args.proto or "contracts/user/v1/user.proto"
-        cmd = ["python", "scripts/schema_registry.py", "register", proto_file]
+        cmd = [sys.executable, script, "register", proto_file]
     elif args.action == "check":
         proto_file = args.proto or "contracts/user/v1/user.proto"
-        cmd = ["python", "scripts/schema_registry.py", "check", proto_file]
+        cmd = [sys.executable, script, "check", proto_file]
     elif args.action == "list":
-        cmd = ["python", "scripts/schema_registry.py", "list"]
+        cmd = [sys.executable, script, "list"]
     else:
         print(f"Unknown action: {args.action}", file=sys.stderr)
         return 1
@@ -89,9 +93,115 @@ def cmd_ci(args: argparse.Namespace) -> int:
     return run_command(["make", "ci"])
 
 
+def cmd_discovery(args: argparse.Namespace) -> int:
+    """Run the migration discovery orchestrator."""
+    script = str(REPO_ROOT / "scripts" / "legacy_bridge" / "run_arch_migration_discovery.py")
+    cmd = [
+        sys.executable,
+        script,
+        "--repo-root",
+        args.repo_root,
+        "--output-dir",
+        args.output_dir,
+        "--delegation-limit",
+        str(args.delegation_limit),
+    ]
+    if args.config:
+        cmd.extend(["--config", args.config])
+    if args.top_services is not None:
+        cmd.extend(["--top-services", str(args.top_services)])
+    if args.swop_repo:
+        cmd.extend(["--swop-repo", args.swop_repo])
+    if args.swop_cqrs_root:
+        cmd.extend(["--swop-cqrs-root", args.swop_cqrs_root])
+    for context in args.swop_contexts:
+        cmd.extend(["--swop-context", context])
+    if args.stdout:
+        cmd.append("--stdout")
+    return run_command(cmd)
+
+
 def cmd_clean(args: argparse.Namespace) -> int:
     """Clean generated artifacts."""
     return run_command(["make", "clean"])
+
+
+def _proto_to_output_name(proto_path: Path, suffix: str) -> str:
+    """Derive an output filename from a .proto path.
+
+    E.g. contracts/user/v1/user.proto -> user_v1_models.py  (suffix="_models.py")
+         contracts/user/v1/user.proto -> user_v1.ts          (suffix=".ts")
+    """
+    parts = proto_path.with_suffix("").parts
+    # Drop leading 'contracts/' if present
+    if parts[0] == "contracts":
+        parts = parts[1:]
+    # Build versioned basename: user_v1
+    name = "_".join(parts)
+    return f"{name}{suffix}"
+
+
+def _batch_generate(args: argparse.Namespace, suffix: str, script_name: str, generate_func_name: str) -> int:
+    """Batch-run a generator over every .proto under input_dir."""
+    import importlib.util
+    from pathlib import Path
+
+    input_dir = Path(args.input_dir)
+    output_dir = Path(args.output_dir)
+    if not input_dir.exists():
+        print(f"Input directory not found: {input_dir}", file=sys.stderr)
+        return 1
+
+    # Locate the script in scripts/
+    script_path = REPO_ROOT / "scripts" / script_name
+    if not script_path.exists():
+        print(f"Generator script not found: {script_path}", file=sys.stderr)
+        return 1
+
+    # Load the module dynamically
+    spec = importlib.util.spec_from_file_location("_gen_mod", script_path)
+    if spec is None or spec.loader is None:
+        print(f"Cannot load script: {script_path}", file=sys.stderr)
+        return 1
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    generate_func = getattr(mod, generate_func_name)
+
+    proto_files = sorted(input_dir.rglob("*.proto"))
+    if not proto_files:
+        print(f"No .proto files found under {input_dir}", file=sys.stderr)
+        return 1
+
+    ok = 0
+    fail = 0
+    for proto_file in proto_files:
+        rel = proto_file.relative_to(input_dir)
+        out_name = _proto_to_output_name(rel, suffix)
+        out_path = output_dir / out_name
+        try:
+            from parse_proto import parse_proto  # type: ignore
+            ast = parse_proto(str(proto_file))
+            content = generate_func(ast)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(content, encoding="utf-8")
+            print(f"  generated → {out_path}")
+            ok += 1
+        except Exception as exc:
+            print(f"  FAILED    → {proto_file}: {exc}", file=sys.stderr)
+            fail += 1
+
+    print(f"\nDone: {ok} ok, {fail} failed")
+    return 1 if fail else 0
+
+
+def cmd_generate_pydantic(args: argparse.Namespace) -> int:
+    """Batch-generate Pydantic models from .proto contracts."""
+    return _batch_generate(args, "_models.py", "generate_pydantic.py", "generate")
+
+
+def cmd_generate_zod(args: argparse.Namespace) -> int:
+    """Batch-generate Zod schemas from .proto contracts."""
+    return _batch_generate(args, ".ts", "generate_zod.py", "to_zod")
 
 
 def main() -> int:
@@ -138,11 +248,36 @@ def main() -> int:
     # ci command
     ci_parser = subparsers.add_parser("ci", help="Run full CI pipeline")
     ci_parser.set_defaults(func=cmd_ci)
-    
+
+    # discovery command
+    discovery_parser = subparsers.add_parser("discovery", help="Run the migration discovery orchestrator")
+    discovery_parser.add_argument("--repo-root", required=True, help="Path to the repository to analyze")
+    discovery_parser.add_argument("--config", help="Optional config path for service-boundary analysis")
+    discovery_parser.add_argument("--output-dir", default="reports/migration-discovery", help="Output directory, relative to repo root if not absolute")
+    discovery_parser.add_argument("--top-services", type=int, help="Number of top service candidates to recommend")
+    discovery_parser.add_argument("--delegation-limit", type=int, default=8, help="Number of top module candidates to include in delegation outputs")
+    discovery_parser.add_argument("--swop-repo", help="Optional path to the swop repository")
+    discovery_parser.add_argument("--swop-cqrs-root", default="backend/app/cqrs", help="CQRS root inside the analyzed repository for swop scans")
+    discovery_parser.add_argument("--swop-context", action="append", dest="swop_contexts", default=[], help="Explicit CQRS context for swop; can be passed multiple times")
+    discovery_parser.add_argument("--stdout", action="store_true", help="Print discovery summary JSON to stdout")
+    discovery_parser.set_defaults(func=cmd_discovery)
+
     # clean command
     clean_parser = subparsers.add_parser("clean", help="Clean generated artifacts")
     clean_parser.set_defaults(func=cmd_clean)
-    
+
+    # generate-pydantic command
+    pydantic_parser = subparsers.add_parser("generate-pydantic", help="Batch-generate Pydantic models from .proto contracts")
+    pydantic_parser.add_argument("input_dir", help="Directory containing .proto files")
+    pydantic_parser.add_argument("output_dir", help="Output directory for generated .py files")
+    pydantic_parser.set_defaults(func=cmd_generate_pydantic)
+
+    # generate-zod command
+    zod_parser = subparsers.add_parser("generate-zod", help="Batch-generate Zod schemas from .proto contracts")
+    zod_parser.add_argument("input_dir", help="Directory containing .proto files")
+    zod_parser.add_argument("output_dir", help="Output directory for generated .ts files")
+    zod_parser.set_defaults(func=cmd_generate_zod)
+
     args = parser.parse_args()
     
     if not args.command:

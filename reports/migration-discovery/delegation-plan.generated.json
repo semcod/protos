@@ -39,7 +39,7 @@
     "has_ui_dir": true,
     "has_tests": false,
     "has_db_assets": false,
-    "recommended_owner": "protos",
+    "recommended_owner": "protogate",
     "slice": {
       "slice_name": "connect-reports-month",
       "contract_dir": "contracts/connect-reports-month/v1",
@@ -127,7 +127,7 @@
     "has_ui_dir": true,
     "has_tests": false,
     "has_db_assets": false,
-    "recommended_owner": "protos",
+    "recommended_owner": "protogate",
     "slice": {
       "slice_name": "connect-config-network",
       "contract_dir": "contracts/connect-config-network/v1",
@@ -215,7 +215,7 @@
     "has_ui_dir": true,
     "has_tests": false,
     "has_db_assets": false,
-    "recommended_owner": "protos",
+    "recommended_owner": "protogate",
     "slice": {
       "slice_name": "connect-manager-library",
       "contract_dir": "contracts/connect-manager-library/v1",
@@ -304,7 +304,7 @@
     "has_ui_dir": true,
     "has_tests": false,
     "has_db_assets": true,
-    "recommended_owner": "protos",
+    "recommended_owner": "protogate",
     "slice": {
       "slice_name": "connect-id-user-list",
       "contract_dir": "contracts/connect-id-user-list/v1",
@@ -390,7 +390,7 @@
     "has_ui_dir": true,
     "has_tests": false,
     "has_db_assets": false,
-    "recommended_owner": "protos",
+    "recommended_owner": "protogate",
     "slice": {
       "slice_name": "connect-template",
       "contract_dir": "contracts/connect-template/v1",
@@ -475,7 +475,7 @@
     "has_ui_dir": true,
     "has_tests": false,
     "has_db_assets": false,
-    "recommended_owner": "protos",
+    "recommended_owner": "protogate",
     "slice": {
       "slice_name": "connect-display",
       "contract_dir": "contracts/connect-display/v1",

@@ -1,38 +1,39 @@
-# code2llm | 93f 35316L | python:44,yaml:11,md:11,json:8,proto:5,txt:4,typescript:4,yml:1,generator:1,ini:1,shell:1 | 2026-04-24
-# CC̄=1.9 | critical:17/675 | dups:0 | cycles:0
+# code2llm | 112f 39122L | python:54,md:14,yaml:11,typescript:9,json:8,proto:5,txt:4,generator:1,ini:1,shell:1,yml:1,toml:1 | 2026-04-24
+# CC̄=1.8 | critical:18/843 | dups:0 | cycles:0
 
-HEALTH[17]:
-  🟡 CC    main CC=17 (limit:15)
+HEALTH[18]:
+  🟡 CC    parse_proto CC=15 (limit:15)
   🟡 CC    _diff_messages CC=19 (limit:15)
+  🟡 CC    analyze_repository CC=20 (limit:15)
+  🟡 CC    build_waves CC=15 (limit:15)
+  🟡 CC    main CC=17 (limit:15)
+  🟡 CC    infer_contexts_from_service_boundaries CC=15 (limit:15)
+  🟡 CC    _context_score CC=18 (limit:15)
+  🟡 CC    profile_repository CC=18 (limit:15)
+  🟡 CC    build_service_boundary_decision_report CC=21 (limit:15)
+  🟡 CC    build_delegation_decision_report CC=19 (limit:15)
+  🟡 CC    build_summary CC=18 (limit:15)
   🟡 CC    discover_candidate_paths CC=20 (limit:15)
-  🟡 CC    analyze_candidate CC=28 (limit:15)
+  🟡 CC    _analyze_file_content CC=18 (limit:15)
   🟡 CC    score_migration_candidate CC=15 (limit:15)
   🟡 CC    classify_extraction_target CC=19 (limit:15)
-  🟡 CC    resolve_merge CC=22 (limit:15)
-  🟡 CC    analyze_repository CC=20 (limit:15)
-  🟡 CC    build_service_components CC=34 (limit:15)
+  🟡 CC    _build_component_row CC=18 (limit:15)
   🟡 CC    select_execution_plan CC=20 (limit:15)
-  🟡 CC    analyze_frontend_modules CC=43 (limit:15)
-  🟡 CC    build_markdown CC=15 (limit:15)
-  🟡 CC    build_waves CC=15 (limit:15)
-  🟡 CC    parse_proto CC=28 (limit:15)
-  🟡 CC    profile_repository CC=18 (limit:15)
-  🟡 CC    build_delegation_decision_report CC=19 (limit:15)
-  🟡 CC    render_summary_markdown CC=19 (limit:15)
+  🟡 CC    _calculate_module_stats CC=26 (limit:15)
 
 REFACTOR[1]:
-  1. split 17 high-CC methods  (CC>15)
+  1. split 18 high-CC methods  (CC>15)
 
-PIPELINES[113]:
+PIPELINES[147]:
   [1] Src [CreateUserCommandSchema]: CreateUserCommandSchema
       PURITY: 100% pure
   [2] Src [GetUserQuerySchema]: GetUserQuerySchema
       PURITY: 100% pure
   [3] Src [UserSchema]: UserSchema
       PURITY: 100% pure
-  [4] Src [__init__]: __init__
+  [4] Src [CreateUserCommandSchema]: CreateUserCommandSchema
       PURITY: 100% pure
-  [5] Src [connect]: connect
+  [5] Src [GetUserQuerySchema]: GetUserQuerySchema
       PURITY: 100% pure
 
 LAYERS:
@@ -42,22 +43,24 @@ LAYERS:
   │ smoke_test_search           30L  0C    0m  CC=0.0    ←0
   │ smoke_test_dual_write       27L  0C    0m  CC=0.0    ←0
   │
-  scripts/                        CC̄=5.2    ←in:3  →out:18  !! split
-  │ !! analyze_service_boundaries   843L  2C   37m  CC=43     ←0
-  │ !! run_arch_migration_discovery   736L  0C   21m  CC=19     ←0
+  scripts/                        CC̄=5.0    ←in:1  →out:9  !! split
+  │ !! analyze_service_boundaries  1344L  2C   56m  CC=26     ←1
+  │ !! run_arch_migration_discovery   699L  0C   17m  CC=21     ←0
+  │ !! detect_migration_candidates   546L  2C   21m  CC=20     ←0
   │ !! schema_registry            543L  3C   16m  CC=19     ←1
-  │ !! detect_migration_candidates   499L  2C   19m  CC=28     ←2
-  │ !! detect_cqrs_pattern_clusters   476L  1C   15m  CC=20     ←0
+  │ !! detect_cqrs_pattern_clusters   476L  1C   15m  CC=20     ←1
   │ event_store                398L  4C   13m  CC=7      ←0
+  │ !! swop_integration           372L  0C   12m  CC=18     ←0
   │ !! generate_migration_wave_plan   338L  2C    8m  CC=15     ←1
-  │ !! parse_proto                268L  4C    3m  CC=28     ←0
+  │ !! parse_proto                319L  4C    9m  CC=15     ←8
+  │ conflict_resolver          246L  2C    7m  CC=11     ←0
   │ legacy_registry            245L  2C    8m  CC=11     ←0
-  │ !! conflict_resolver          236L  2C    5m  CC=22     ←0
-  │ generate_delegation_plan   163L  0C    7m  CC=13     ←0
-  │ delegation_plan            150L  0C    8m  CC=8      ←1
+  │ report_rendering           207L  0C    9m  CC=6      ←0
+  │ delegation_plan            150L  0C    8m  CC=8      ←2
   │ generate_incremental       148L  0C    8m  CC=11     ←0
   │ generate_pydantic          146L  0C    5m  CC=10     ←0
-  │ generate_zod               129L  0C    5m  CC=7      ←0
+  │ generate_zod               129L  0C    5m  CC=7      ←1
+  │ generate_delegation_plan   116L  0C    5m  CC=9      ←0
   │ dual_writer                114L  2C    6m  CC=5      ←0
   │ vector_clock               112L  1C    9m  CC=4      ←0
   │ diff_engine                109L  3C    1m  CC=12     ←2
@@ -66,10 +69,15 @@ LAYERS:
   │ generate_sql                97L  0C    3m  CC=6      ←1
   │ migrator                    69L  0C    2m  CC=3      ←0
   │ search_index                61L  1C    4m  CC=5      ←0
+  │ candidate_selection         57L  0C    3m  CC=14     ←2
   │ report_generator            56L  0C    1m  CC=6      ←1
   │ migration_advisor           54L  0C    2m  CC=9      ←1
   │ idempotency_store           41L  1C    5m  CC=2      ←0
   │ sync_check                  39L  0C    1m  CC=6      ←0
+  │
+  protogate/                      CC̄=3.8    ←in:0  →out:1
+  │ cli                        291L  0C   13m  CC=9      ←0
+  │ __init__                     8L  0C    0m  CC=0.0    ←0
   │
   gateway/                        CC̄=1.9    ←in:0  →out:0
   │ main                       332L  4C   16m  CC=3      ←0
@@ -84,61 +92,75 @@ LAYERS:
   │
   generated/                      CC̄=1.0    ←in:0  →out:0
   │ search_v1.ts                39L  0C    5m  CC=1      ←0
+  │ search_v1_search.ts         39L  0C    5m  CC=1      ←0
   │ search_v1_models            35L  5C    0m  CC=0.0    ←0
+  │ search_v1_search_models     35L  5C    0m  CC=0.0    ←0
   │ identification_v1.ts        32L  0C    3m  CC=1      ←0
+  │ examples_identification_v1_identification.ts    32L  0C    3m  CC=1      ←0
   │ identification_v1_models    31L  4C    0m  CC=0.0    ←0
+  │ examples_identification_v1_identification_models    31L  4C    0m  CC=0.0    ←0
   │ user_v2.ts                  21L  0C    3m  CC=1      ←0
+  │ user_v2_user.ts             21L  0C    3m  CC=1      ←0
   │ user_v2_models              21L  3C    0m  CC=0.0    ←0
+  │ user_v2_user_models         21L  3C    0m  CC=0.0    ←0
   │ user_v1.ts                  18L  0C    3m  CC=1      ←0
+  │ user_v1_user.ts             18L  0C    3m  CC=1      ←0
+  │ user_v1_user_models         18L  3C    0m  CC=0.0    ←0
   │ user_v1_models              16L  3C    0m  CC=0.0    ←0
+  │ legacy_bridge_user_legacy.v1_models    16L  1C    0m  CC=0.0    ←0
+  │ legacy_bridge_user_legacy.v1.ts    12L  0C    1m  CC=1      ←0
   │
   adapters/                       CC̄=1.0    ←in:0  →out:0
   │ user_adapter                36L  0C    2m  CC=1      ←0
   │ user_adapter                21L  0C    1m  CC=1      ←0
   │
+  docs/                           CC̄=0.0    ←in:0  →out:0
+  │ !! migration-orchestrator-strategy.md   626L  0C    0m  CC=0.0    ←0
+  │ !! delegation-plan.generated.json   526L  0C    0m  CC=0.0    ←0
+  │ refactor-delegation-architecture.md   116L  0C    0m  CC=0.0    ←0
+  │ protogate-integration.md    71L  0C    1m  CC=0.0    ←0
+  │
   ./                              CC̄=0.0    ←in:0  →out:0
-  │ !! SUMR.md                   1104L  0C    0m  CC=0.0    ←0
-  │ !! SUMD.md                   1087L  0C  198m  CC=0.0    ←7
-  │ !! goal.yaml                  511L  0C    0m  CC=0.0    ←0
-  │ README.md                  166L  0C    0m  CC=0.0    ←0
+  │ !! SUMD.md                   1236L  0C  244m  CC=0.0    ←1
+  │ !! SUMR.md                   1215L  0C    0m  CC=0.0    ←0
+  │ !! goal.yaml                  512L  0C    0m  CC=0.0    ←0
+  │ README.md                  369L  0C    0m  CC=0.0    ←0
   │ tree.txt                   148L  0C    0m  CC=0.0    ←0
+  │ CHANGELOG.md               120L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml              95L  0C    0m  CC=0.0    ←0
   │ TODO.md                     94L  0C    0m  CC=0.0    ←0
-  │ CHANGELOG.md                92L  0C    0m  CC=0.0    ←0
   │ docker-compose.yml          69L  0C    0m  CC=0.0    ←0
   │ project.sh                  48L  0C    0m  CC=0.0    ←0
   │ buf.gen.yaml                25L  0C    0m  CC=0.0    ←0
   │ buf.yaml                    10L  0C    0m  CC=0.0    ←0
   │ requirements.txt             8L  0C    0m  CC=0.0    ←0
   │ pytest.ini                   5L  0C    0m  CC=0.0    ←0
-  │ Makefile                     0L  0C    0m  CC=0.0    ←0
   │ Dockerfile.generator         0L  0C    0m  CC=0.0    ←0
+  │ Makefile                     0L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ !! calls.yaml                2064L  0C    0m  CC=0.0    ←0
-  │ !! context.md                 587L  0C    0m  CC=0.0    ←0
-  │ map.toon.yaml              497L  0C  198m  CC=0.0    ←0
+  │ !! calls.yaml                2648L  0C    0m  CC=0.0    ←0
+  │ !! map.toon.yaml              573L  0C  244m  CC=0.0    ←0
+  │ !! context.md                 573L  0C    0m  CC=0.0    ←0
   │ README.md                  339L  0C    0m  CC=0.0    ←0
-  │ calls.toon.yaml            250L  0C    0m  CC=0.0    ←0
-  │ analysis.toon.yaml         165L  0C    0m  CC=0.0    ←0
-  │ duplication.toon.yaml      158L  0C    0m  CC=0.0    ←0
-  │ project.toon.yaml           56L  0C    0m  CC=0.0    ←0
+  │ calls.toon.yaml            277L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml         182L  0C    0m  CC=0.0    ←0
+  │ duplication.toon.yaml      156L  0C    0m  CC=0.0    ←0
+  │ project.toon.yaml           51L  0C    0m  CC=0.0    ←0
   │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         43L  0C    0m  CC=0.0    ←0
   │
-  docs/                           CC̄=0.0    ←in:0  →out:0
-  │ !! migration-orchestrator-strategy.md   626L  0C    0m  CC=0.0    ←0
-  │ !! delegation-plan.generated.json   526L  0C    0m  CC=0.0    ←0
-  │ refactor-delegation-architecture.md   116L  0C    0m  CC=0.0    ←0
-  │
   reports/                        CC̄=0.0    ←in:0  →out:0
-  │ !! service-boundaries.json  16022L  0C    0m  CC=0.0    ←0
+  │ !! service-boundaries.json  16058L  0C    0m  CC=0.0    ←0
   │ !! cqrs-pattern-clusters.json   888L  0C    0m  CC=0.0    ←0
   │ !! module-candidates.json     676L  0C    0m  CC=0.0    ←0
-  │ delegation-decisions.json   324L  0C    0m  CC=0.0    ←0
-  │ migration-discovery.summary.json   303L  0C    0m  CC=0.0    ←0
-  │ excluded-candidates.json   168L  0C    0m  CC=0.0    ←0
+  │ !! delegation-plan.generated.json   526L  0C    0m  CC=0.0    ←0
+  │ migration-discovery.summary.json   474L  0C    0m  CC=0.0    ←0
+  │ delegation-decisions.md    167L  0C    0m  CC=0.0    ←0
+  │ repository-profile.json    144L  0C    0m  CC=0.0    ←0
+  │ excluded-candidates.md     137L  0C    0m  CC=0.0    ←0
+  │ service-boundary-decisions.md   126L  0C    0m  CC=0.0    ←0
   │ migration-wave-plan.md      86L  0C    0m  CC=0.0    ←0
-  │ repository-profile.md       53L  0C    0m  CC=0.0    ←0
   │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-api-smoke.testql.toon.yaml    21L  0C    0m  CC=0.0    ←0
@@ -158,14 +180,15 @@ LAYERS:
      gateway/__init__.py                       0L
 
 COUPLING:
-                                       scripts  scripts.legacy_bridge                   SUMD
-                scripts                     ──                      9                      9  !! fan-out
-  scripts.legacy_bridge                      3                     ──                         hub
-                   SUMD                     ←9                                            ──  hub
+                         scripts.legacy_bridge                scripts                   SUMD              protogate
+  scripts.legacy_bridge                     ──                     ←9                      6                         hub
+                scripts                      9                     ──                                            ←1  !! fan-out
+                   SUMD                     ←6                                            ──                         hub
+              protogate                                             1                                            ──
   CYCLES: none
-  HUB: SUMD/ (fan-in=9)
   HUB: scripts.legacy_bridge/ (fan-in=9)
-  SMELL: scripts/ fan-out=18 → split needed
+  HUB: SUMD/ (fan-in=6)
+  SMELL: scripts/ fan-out=9 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

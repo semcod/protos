@@ -224,7 +224,7 @@ def main() -> int:
 
     # Go/no-go
     if coverage >= 80:
-        verdict = "GO — swop wykrywa >=80% istniejącego CQRS; pipeline swop->proto->protos realny"
+        verdict = "GO — swop wykrywa >=80% istniejącego CQRS; pipeline swop->proto->protogate realny"
     elif coverage >= 50:
         verdict = "MAYBE — 50-80%, do rozważenia doklejenie dekoratorów do reszty"
     else:

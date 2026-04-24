@@ -19,7 +19,11 @@ SCRIPTS_DIR = Path(__file__).parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 from event_store import EventStore, StoredEvent  # noqa: E402
-from conflict_resolver import ConflictResolver, UnresolvableConflictError  # noqa: E402
+from conflict_resolver import (
+    ConflictResolver,
+    UnresolvableConflictError,
+    _EXCLUSIVE_PAIRS,
+)  # noqa: E402
 from vector_clock import VectorClock  # noqa: E402
 
 
@@ -325,3 +329,42 @@ class TestEventStoreMergeStreams:
         merged = store.merge_streams("user-1", branch, strategy="MERGE", fork_version=1)
         assert len(merged) == 1
         assert merged[0].payload["email"] == "b@x.com"
+
+
+class TestConflictResolverHelpers:
+    def test_check_exclusive_event_pairs_detects_conflicts(self, resolver):
+        """Test _check_exclusive_event_pairs helper."""
+        e_server = _event("UserDeactivated", {}, timestamp=1.0)
+        e_branch = _event("UserActivated", {}, timestamp=2.0)
+        
+        conflicts = resolver._check_exclusive_event_pairs([e_server], [e_branch])
+        assert len(conflicts) == 1
+        assert conflicts[0]["kind"] == "exclusive_event_pair"
+        assert "UserDeactivated" in conflicts[0]["types"]
+        assert "UserActivated" in conflicts[0]["types"]
+    
+    def test_check_exclusive_event_pairs_no_conflict(self, resolver):
+        """Test _check_exclusive_event_pairs with no conflicts."""
+        e_server = _event("EmailChanged", {"email": "a@x.com"}, timestamp=1.0)
+        e_branch = _event("UserCreated", {"email": "b@x.com"}, timestamp=2.0)
+        
+        conflicts = resolver._check_exclusive_event_pairs([e_server], [e_branch])
+        assert len(conflicts) == 0
+    
+    def test_check_field_conflicts_detects_value_conflicts(self, resolver):
+        """Test _check_field_conflicts helper."""
+        e_server = _event("EmailChanged", {"email": "server@x.com"}, timestamp=1.0)
+        e_branch = _event("EmailChanged", {"email": "branch@x.com"}, timestamp=2.0)
+        
+        conflicts = resolver._check_field_conflicts([e_server], [e_branch])
+        assert len(conflicts) == 1
+        assert conflicts[0]["kind"] == "field_value_conflict"
+        assert conflicts[0]["field"] == "email"
+    
+    def test_check_field_conflicts_no_conflict_different_fields(self, resolver):
+        """Test _check_field_conflicts with different fields (no conflict)."""
+        e_server = _event("UserCreated", {"first_name": "John"}, timestamp=1.0)
+        e_branch = _event("EmailChanged", {"email": "b@x.com"}, timestamp=2.0)
+        
+        conflicts = resolver._check_field_conflicts([e_server], [e_branch])
+        assert len(conflicts) == 0
