@@ -203,29 +203,29 @@ python scripts/legacy_bridge/generate_delegation_plan.py \
    - Deliverable: jeden target make do lokalnego i CI verify.
    - Estimate: 0.5 dnia.
 
-5. P1-05: Golden tests dla `protogate/codegen/typescript.py`
+5. P1-05: Golden tests dla `protogate/codegen/typescript.py` ✅
    - Scope: enum, optional/nullable, union, defaults, alias/projections.
    - Deliverable: zestaw snapshotow + test runner.
    - Estimate: 2 dni.
 
 ### P2 - Should have (mocna redukcja regresji i debt)
 
-1. P2-01: Profile output `strict` / `compat`
+1. P2-01: Profile output `strict` / `compat` ✅
    - Scope: explicit mode switch na poziomie CLI.
    - Deliverable: profile konfigurujace aliasy legacy i sekcje kompatybilnosci.
    - Estimate: 1.5 dnia.
 
-2. P2-02: First-class `DTO projections` API
+2. P2-02: First-class `DTO projections` API ✅
    - Scope: eliminacja recznych raw-string blokow w wrapperach.
    - Deliverable: emitter API typu `.add_dto_projections(...)`.
    - Estimate: 1.5 dnia.
 
-3. P2-03: Mapping canonical <-> legacy names
+3. P2-03: Mapping canonical <-> legacy names ✅
    - Scope: mapowanie np. `Device` <-> `DeviceDto`, `TestSession` <-> `TestSessionDto`.
    - Deliverable: deklaratywna mapa + walidacja konfliktow nazw.
    - Estimate: 1 dzien.
 
-4. P2-04: Codegen change report (`--write-report`)
+4. P2-04: Codegen change report (`--write-report`) ✅
    - Scope: raport add/remove/change symboli i sekcji.
    - Deliverable: JSON + markdown summary po generacji.
    - Estimate: 1 dzien.

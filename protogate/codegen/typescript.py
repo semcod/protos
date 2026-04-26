@@ -14,7 +14,8 @@ from dataclasses import fields, is_dataclass
 from datetime import datetime
 from enum import Enum
 import re
-from typing import Any, Callable, Sequence, Union, get_args, get_origin, get_type_hints
+from types import UnionType
+from typing import Any, Callable, Mapping, Sequence, Union, get_args, get_origin, get_type_hints
 
 
 PRIMITIVE_TYPE_MAP: dict[type, str] = {
@@ -94,6 +95,10 @@ def _extract_declared_symbols(content: str) -> set[str]:
     return symbols
 
 
+def _is_union_origin(origin: Any) -> bool:
+    return origin is Union or origin is UnionType
+
+
 def python_type_to_typescript(
     py_type: Any,
     *,
@@ -131,7 +136,7 @@ def python_type_to_typescript(
             return f"{item_type}[]"
         return "any[]"
 
-    if origin is Union:
+    if _is_union_origin(origin):
         non_none = [a for a in args if a is not type(None)]
         if len(non_none) == 1 and type(None) in args:
             return f"{python_type_to_typescript(non_none[0], entity_id_base=entity_id_base)} | null"
@@ -192,7 +197,7 @@ def generate_interface(
             field_def.default is not None
             and field_def.default != field_def.default_factory
         )
-        is_nullable_union = get_origin(py_type) is Union and type(None) in get_args(py_type)
+        is_nullable_union = _is_union_origin(get_origin(py_type)) and type(None) in get_args(py_type)
         is_optional = has_default or is_nullable_union
         optional_marker = "?" if is_optional else ""
         lines.append(f"  {field_name}{optional_marker}: {ts_type};")
@@ -222,6 +227,7 @@ class TypeScriptEmitter:
         self._entity_id_base: type | None = None
         self._declared_symbols: set[str] = set()
         self._referenced_symbols: list[tuple[str, str]] = []
+        self._alias_targets: dict[str, str] = {}
 
     def with_entity_id_base(self, base: type) -> "TypeScriptEmitter":
         self._entity_id_base = base
@@ -308,6 +314,80 @@ class TypeScriptEmitter:
         for cls in dataclass_types:
             self.add_interface(cls, entity_id_base=entity_id_base)
         return self
+
+    def add_dto_projections(
+        self,
+        projections: Mapping[str, str] | Sequence[tuple[str, str]],
+    ) -> "TypeScriptEmitter":
+        """Add first-class DTO projection aliases.
+
+        Example:
+            emitter.add_dto_projections({"DeviceDto": "Device"})
+            emitter.add_dto_projections([("TestSessionDto", "TestSession")])
+        """
+        if isinstance(projections, Mapping):
+            items = list(projections.items())
+        else:
+            items = list(projections)
+
+        for dto_name, canonical_name in items:
+            if not TS_IDENTIFIER_RE.fullmatch(dto_name):
+                raise ValueError(f"Invalid DTO projection alias name: {dto_name}")
+            if not TS_IDENTIFIER_RE.fullmatch(canonical_name):
+                raise ValueError(f"Invalid DTO projection target name: {canonical_name}")
+
+            existing_target = self._alias_targets.get(dto_name)
+            if existing_target is not None and existing_target != canonical_name:
+                raise ValueError(
+                    f"Conflicting DTO projection for {dto_name}: "
+                    f"{existing_target} vs {canonical_name}"
+                )
+            if dto_name in self._declared_symbols and existing_target is None:
+                raise ValueError(
+                    f"DTO projection alias '{dto_name}' conflicts with an existing symbol"
+                )
+
+            self._chunks.append(f"export type {dto_name} = {canonical_name};")
+            self._chunks.append("")
+            self._declared_symbols.add(dto_name)
+            self._referenced_symbols.append((f"dto_projection:{dto_name}", canonical_name))
+            self._alias_targets[dto_name] = canonical_name
+
+        return self
+
+    def add_legacy_name_mappings(
+        self,
+        canonical_to_legacy: Mapping[str, str] | Sequence[tuple[str, str]],
+    ) -> "TypeScriptEmitter":
+        """Add canonical <-> legacy name mappings with conflict validation.
+
+        Mapping format: canonical -> legacy, for example
+        ``{"Device": "DeviceDto", "TestSession": "TestSessionDto"}``.
+        The emitted TypeScript aliases are ``legacy = canonical``.
+        """
+        if isinstance(canonical_to_legacy, Mapping):
+            items = list(canonical_to_legacy.items())
+        else:
+            items = list(canonical_to_legacy)
+
+        legacy_to_canonical: dict[str, str] = {}
+        projections: dict[str, str] = {}
+        for canonical_name, legacy_name in items:
+            if not TS_IDENTIFIER_RE.fullmatch(canonical_name):
+                raise ValueError(f"Invalid canonical mapping name: {canonical_name}")
+            if not TS_IDENTIFIER_RE.fullmatch(legacy_name):
+                raise ValueError(f"Invalid legacy mapping name: {legacy_name}")
+
+            previous = legacy_to_canonical.get(legacy_name)
+            if previous is not None and previous != canonical_name:
+                raise ValueError(
+                    f"Legacy mapping conflict for {legacy_name}: "
+                    f"{previous} vs {canonical_name}"
+                )
+            legacy_to_canonical[legacy_name] = canonical_name
+            projections[legacy_name] = canonical_name
+
+        return self.add_dto_projections(projections)
 
     def header(self) -> str:
         border = "// " + "=" * 77

@@ -4,6 +4,7 @@ protogate CLI - Migration tool and delegation platform
 """
 import argparse
 import difflib
+import os
 import importlib.util
 import json
 import subprocess
@@ -546,15 +547,119 @@ def cmd_codegen_ts_from_python(args: argparse.Namespace) -> int:
         )
         return 1
 
+    profile = getattr(args, "profile", "compat")
+    previous_profile = os.environ.get("PROTOGATE_TS_PROFILE")
+    os.environ["PROTOGATE_TS_PROFILE"] = profile
+
     try:
-        generated = build_output()
+        try:
+            generated = build_output(profile=profile)
+        except TypeError as exc:
+            # Backward-compatible fallback for legacy wrapper scripts exposing build_output()
+            # without a profile kwarg.
+            message = str(exc)
+            if "profile" in message or "unexpected keyword" in message:
+                generated = build_output()
+            else:
+                raise
     except Exception as exc:
         print(f"build_output() failed in {script_path}: {exc}", file=sys.stderr)
         return 1
+    finally:
+        if previous_profile is None:
+            os.environ.pop("PROTOGATE_TS_PROFILE", None)
+        else:
+            os.environ["PROTOGATE_TS_PROFILE"] = previous_profile
 
     if not isinstance(generated, str):
         print("build_output() must return str", file=sys.stderr)
         return 1
+
+    report_rows: list[dict[str, object]] = []
+    changed = 0
+    added = 0
+    unchanged = 0
+
+    for output_path in output_paths:
+        exists = output_path.exists()
+        current = output_path.read_text(encoding="utf-8") if exists else ""
+        status = "unchanged"
+        if not exists:
+            status = "added"
+            added += 1
+        elif current != generated:
+            status = "changed"
+            changed += 1
+        else:
+            unchanged += 1
+
+        diff_lines = list(
+            difflib.unified_diff(
+                current.splitlines(),
+                generated.splitlines(),
+                fromfile=f"current:{output_path}",
+                tofile=f"generated:{output_path}",
+                lineterm="",
+            )
+        )
+        added_lines = sum(1 for line in diff_lines if line.startswith("+") and not line.startswith("+++"))
+        removed_lines = sum(1 for line in diff_lines if line.startswith("-") and not line.startswith("---"))
+
+        report_rows.append(
+            {
+                "path": str(output_path),
+                "status": status,
+                "line_additions": added_lines,
+                "line_removals": removed_lines,
+            }
+        )
+
+    report_target = getattr(args, "write_report", None)
+    if report_target:
+        report_base = Path(report_target).resolve()
+        report_base.parent.mkdir(parents=True, exist_ok=True)
+
+        report_json_path = report_base.with_suffix(".json")
+        report_md_path = report_base.with_suffix(".md")
+
+        summary = {
+            "script": str(script_path),
+            "profile": profile,
+            "check_mode": bool(args.check),
+            "totals": {
+                "targets": len(output_paths),
+                "changed": changed,
+                "added": added,
+                "unchanged": unchanged,
+            },
+            "rows": report_rows,
+        }
+
+        report_json_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+
+        md_lines = [
+            "# TS Codegen Change Report",
+            "",
+            f"- Script: {script_path}",
+            f"- Profile: {profile}",
+            f"- Check mode: {args.check}",
+            f"- Targets: {len(output_paths)}",
+            f"- Added: {added}",
+            f"- Changed: {changed}",
+            f"- Unchanged: {unchanged}",
+            "",
+            "| Target | Status | +Lines | -Lines |",
+            "|---|---:|---:|---:|",
+        ]
+        for row in report_rows:
+            md_lines.append(
+                f"| {row['path']} | {row['status']} | {row['line_additions']} | {row['line_removals']} |"
+            )
+        report_md_path.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
+
+        if not args.quiet:
+            print(f"report -> {report_json_path}")
+            print(f"report -> {report_md_path}")
 
     if args.check:
         drift_found = False
@@ -856,9 +961,19 @@ def main() -> int:
         help="Check-only mode; returns non-zero if output drift is detected",
     )
     codegen_ts.add_argument(
+        "--profile",
+        choices=["strict", "compat"],
+        default="compat",
+        help="Generation profile passed to wrapper script (default: compat)",
+    )
+    codegen_ts.add_argument(
         "--show-diff",
         action="store_true",
         help="When used with --check, print unified diff (truncated)",
+    )
+    codegen_ts.add_argument(
+        "--write-report",
+        help="Write change report files: <path>.json and <path>.md",
     )
     codegen_ts.add_argument(
         "--quiet",

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 from pathlib import Path
 
@@ -226,3 +227,121 @@ def test_codegen_ts_from_python_check_passes_for_all_outputs_in_sync(tmp_path: P
 
     rc = cmd_codegen_ts_from_python(args)
     assert rc == 0
+
+
+def test_codegen_ts_from_python_passes_profile_kwarg(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out = tmp_path / "generated.ts"
+    _write(
+        script,
+        "def build_output(profile='compat'):\n"
+        "    return f'// profile:{profile}\\n'\n",
+    )
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out)],
+        check=False,
+        profile="strict",
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 0
+    assert out.read_text(encoding="utf-8") == "// profile:strict\n"
+
+
+def test_codegen_ts_from_python_profile_env_fallback_for_legacy_wrapper(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out = tmp_path / "generated.ts"
+    _write(
+        script,
+        "import os\n"
+        "def build_output():\n"
+        "    return f'// env-profile:{os.getenv(\"PROTOGATE_TS_PROFILE\", \"compat\")}\\n'\n",
+    )
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out)],
+        check=False,
+        profile="strict",
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 0
+    assert out.read_text(encoding="utf-8") == "// env-profile:strict\n"
+
+
+def test_codegen_ts_from_python_write_report_generates_json_and_md(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out = tmp_path / "generated.ts"
+    report_base = tmp_path / "reports" / "ts-codegen-report"
+    content = "export interface Reported { id: string; }\n"
+    _write(
+        script,
+        "def build_output():\n"
+        f"    return {content!r}\n",
+    )
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out)],
+        check=False,
+        profile="compat",
+        show_diff=False,
+        write_report=str(report_base),
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 0
+
+    report_json = report_base.with_suffix(".json")
+    report_md = report_base.with_suffix(".md")
+    assert report_json.exists()
+    assert report_md.exists()
+
+    payload = json.loads(report_json.read_text(encoding="utf-8"))
+    assert payload["totals"]["targets"] == 1
+    assert payload["totals"]["added"] == 1
+    assert payload["totals"]["changed"] == 0
+    assert payload["totals"]["unchanged"] == 0
+    assert payload["rows"][0]["status"] == "added"
+    assert "TS Codegen Change Report" in report_md.read_text(encoding="utf-8")
+
+
+def test_codegen_ts_from_python_write_report_tracks_changed_and_unchanged(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out_a = tmp_path / "a" / "generated.ts"
+    out_b = tmp_path / "b" / "generated.ts"
+    report_base = tmp_path / "reports" / "multi"
+    target_content = "export interface R { id: string; }\n"
+    _write(
+        script,
+        "def build_output():\n"
+        f"    return {target_content!r}\n",
+    )
+    _write(out_a, target_content)
+    _write(out_b, "export interface Old { id: string; }\n")
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out_a), str(out_b)],
+        check=True,
+        profile="compat",
+        show_diff=False,
+        write_report=str(report_base),
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 1
+
+    payload = json.loads(report_base.with_suffix(".json").read_text(encoding="utf-8"))
+    assert payload["totals"]["targets"] == 2
+    assert payload["totals"]["changed"] == 1
+    assert payload["totals"]["unchanged"] == 1
