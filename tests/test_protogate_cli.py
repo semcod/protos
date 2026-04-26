@@ -3,9 +3,12 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 
-from protogate.cli import _resolve_proto_input_dir, cmd_codegen_ts_from_python
+import pytest
+
+from protogate.cli import _resolve_proto_input_dir, cmd_codegen_ts_from_python, main
 
 
 def _write(path: Path, content: str) -> None:
@@ -345,3 +348,33 @@ def test_codegen_ts_from_python_write_report_tracks_changed_and_unchanged(tmp_pa
     assert payload["totals"]["targets"] == 2
     assert payload["totals"]["changed"] == 1
     assert payload["totals"]["unchanged"] == 1
+
+
+def test_main_codegen_ts_alias_executes_ts_from_python(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out = tmp_path / "generated.ts"
+    _write(
+        script,
+        "def build_output():\n"
+        "    return 'export interface AliasPath { id: string; }\\n'\n",
+    )
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "protogate",
+            "codegen",
+            "ts",
+            "--script",
+            str(script),
+            "--output",
+            str(out),
+            "--quiet",
+        ],
+    )
+
+    rc = main()
+    assert rc == 0
+    assert out.exists()
+    assert "AliasPath" in out.read_text(encoding="utf-8")

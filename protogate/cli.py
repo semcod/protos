@@ -516,6 +516,47 @@ def cmd_codegen_registry(args: argparse.Namespace) -> int:
     )
 
 
+def _configure_codegen_ts_parser(parser: argparse.ArgumentParser) -> None:
+    """Configure shared arguments for TypeScript-from-Python codegen parsers."""
+    parser.add_argument(
+        "--script",
+        required=True,
+        help="Python script path exposing build_output() -> str",
+    )
+    parser.add_argument(
+        "--output",
+        action="append",
+        required=True,
+        help="Output TypeScript file path (repeatable for multi-target write)",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Check-only mode; returns non-zero if output drift is detected",
+    )
+    parser.add_argument(
+        "--profile",
+        choices=["strict", "compat"],
+        default="compat",
+        help="Generation profile passed to wrapper script (default: compat)",
+    )
+    parser.add_argument(
+        "--show-diff",
+        action="store_true",
+        help="When used with --check, print unified diff (truncated)",
+    )
+    parser.add_argument(
+        "--write-report",
+        help="Write change report files: <path>.json and <path>.md",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress success output",
+    )
+    parser.set_defaults(func=cmd_codegen_ts_from_python)
+
+
 def cmd_codegen_ts_from_python(args: argparse.Namespace) -> int:
     """Generate TypeScript output from a Python wrapper script.
 
@@ -944,43 +985,14 @@ def main() -> int:
         "ts-from-python",
         help="Generate TypeScript from Python wrapper script (requires build_output())",
     )
-    codegen_ts.add_argument(
-        "--script",
-        required=True,
-        help="Python script path exposing build_output() -> str",
+    _configure_codegen_ts_parser(codegen_ts)
+
+    # codegen ts (namespace alias for ts-from-python)
+    codegen_ts_alias = codegen_sub.add_parser(
+        "ts",
+        help="Alias for 'codegen ts-from-python'",
     )
-    codegen_ts.add_argument(
-        "--output",
-        action="append",
-        required=True,
-        help="Output TypeScript file path (repeatable for multi-target write)",
-    )
-    codegen_ts.add_argument(
-        "--check",
-        action="store_true",
-        help="Check-only mode; returns non-zero if output drift is detected",
-    )
-    codegen_ts.add_argument(
-        "--profile",
-        choices=["strict", "compat"],
-        default="compat",
-        help="Generation profile passed to wrapper script (default: compat)",
-    )
-    codegen_ts.add_argument(
-        "--show-diff",
-        action="store_true",
-        help="When used with --check, print unified diff (truncated)",
-    )
-    codegen_ts.add_argument(
-        "--write-report",
-        help="Write change report files: <path>.json and <path>.md",
-    )
-    codegen_ts.add_argument(
-        "--quiet",
-        action="store_true",
-        help="Suppress success output",
-    )
-    codegen_ts.set_defaults(func=cmd_codegen_ts_from_python)
+    _configure_codegen_ts_parser(codegen_ts_alias)
 
     args = parser.parse_args()
     

@@ -232,7 +232,7 @@ python scripts/legacy_bridge/generate_delegation_plan.py \
 
 ### P3 - Nice to have (DX i skalowanie)
 
-1. P3-01: Namespace cleanup komend codegen
+1. P3-01: Namespace cleanup komend codegen ✅
    - Scope: skroty i aliasy, np. `protogate codegen ts`.
    - Deliverable: kompatybilne aliasy + update help.
    - Estimate: 0.5 dnia.

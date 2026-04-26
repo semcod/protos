@@ -57,6 +57,25 @@ full reference and c2004 integration.
 - feat: implement proto pipeline with CQRS event store and incremental generation
 - refactor: configuration management system and code analysis engine
 
+## [0.1.22] - 2026-04-26
+
+### Docs
+- Update README.md
+- Update TODO.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+- Update tests/test_protogate_cli.py
+
+### Other
+- Update event_store.db-shm
+- Update event_store.db-wal
+- Update protogate/cli.py
+- Update search_index.db
+
 ## [0.1.21] - 2026-04-26
 
 ### Docs
