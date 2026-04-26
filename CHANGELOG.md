@@ -57,6 +57,28 @@ full reference and c2004 integration.
 - feat: implement proto pipeline with CQRS event store and incremental generation
 - refactor: configuration management system and code analysis engine
 
+## [0.1.24] - 2026-04-26
+
+### Docs
+- Update README.md
+- Update packages/protos-runtime-py/README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+
+### Other
+- Update packages/protos-runtime-py/pyproject.toml
+- Update packages/protos-runtime-py/src/protos_runtime/__init__.py
+- Update packages/protos-runtime-py/src/protos_runtime/models/__init__.py
+- Update packages/protos-runtime-py/src/protos_runtime/models/identification_v1.py
+- Update packages/protos-runtime-py/src/protos_runtime/models/search_v1.py
+- Update packages/protos-runtime-py/src/protos_runtime/py.typed
+- Update packages/protos-runtime-py/src/protos_runtime/search_index.py
+- Update packages/protos-runtime-py/tests/test_search_index.py
+
 ## [0.1.23] - 2026-04-26
 
 ### Docs
