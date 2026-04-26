@@ -4,11 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "protogate"
-version = "0.1.22"
+version = "0.1.23"
 description = "Migration tool and delegation platform for extracting bounded slices from legacy systems"
 readme = "README.md"
 requires-python = ">=3.9"
-license = "Apache-2.0"
 authors = [
     {name = "semcod", email = "info@semcod.io"},
     {name = "Tom Sapletta", email = "tom@sapletta.com"},
@@ -33,6 +32,9 @@ dependencies = [
     "costs>=0.1.20",
     "pfix>=0.1.60",
 ]
+
+[project.license]
+text = "Apache-2.0"
 
 [project.optional-dependencies]
 gateway = [

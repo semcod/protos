@@ -85,6 +85,8 @@ async def lifespan(app: FastAPI):  # noqa: RUF029
 
 from fastapi.staticfiles import StaticFiles
 
+from fastapi.responses import JSONResponse, RedirectResponse
+
 app = FastAPI(
     title="semcod platform gateway",
     version="0.1.0",
@@ -94,6 +96,10 @@ app = FastAPI(
     ),
     lifespan=lifespan,
 )
+
+@app.get("/", include_in_schema=False)
+async def index():
+    return RedirectResponse(url="/static/search_v2.html")
 
 app.mount("/static", StaticFiles(directory="gateway/static"), name="static")
 
