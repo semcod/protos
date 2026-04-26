@@ -92,3 +92,169 @@ python scripts/legacy_bridge/generate_delegation_plan.py \
   --clusters /home/tom/github/maskservice/c2004/migration/cqrs-pattern-clusters.json \
   --output-dir /home/tom/github/semcod/protos/docs \
   --limit 12
+
+## Discovered
+
+- Integrate directional subset check and warnings into the delegation/schema registry workflow
+- Add documentation and integration tests for the --cross-check-pydantic CLI flag
+- Expose and document migration analysis CLI commands in protogate (migration analysis workflow)
+- Track schema registry conflict resolution and vector clock support; add v2 proto handling
+- Add proto pipeline steps for CQRS event store and incremental generation into workflows and release automation
+
+## Protogen / Protogate - Refactor Plan (na bazie ostatnich zmian)
+
+### Why now
+
+1. Ostatnie poprawki generatora TS pokazały typowe ryzyka: dryf typow (np. brakujace enumy), aliasy DTO niespójne z interfejsami runtime oraz rozjazd wielu kopii wygenerowanych plikow.
+2. Te same klasy problemow beda wracac w kolejnych modulach, jesli codegen nie dostanie warstwy kontraktowej i walidacji po generacji.
+
+### Phase A - Stabilize output contract (high priority)
+
+1. Dodac profil generacji (`strict`, `compat`) dla `ts-from-python`:
+   - `strict`: bez aliasow legacy, tylko canonical interfaces.
+   - `compat`: generuje aliasy/projekcje (`*Dto`) dla starszych frontendow.
+2. Dodac jawny manifest wejscia generatora:
+   - enumy,
+   - DTO,
+   - commands/events,
+   - custom raw sections.
+3. Wymusic walidacje referencji symboli podczas renderu:
+   - jesli interfejs uzywa typu, ktory nie jest wygenerowany ani zdefiniowany w raw section, generator zwraca blad.
+
+### Phase B - Multi-target and drift prevention (high priority)
+
+1. Dodac natywne wsparcie wielu targetow w CLI `protogate codegen ts-from-python`:
+   - jeden przebieg,
+   - ta sama tresc,
+   - atomowy zapis do N lokalizacji.
+2. Dodac tryb `--check` (bez zapisu):
+   - porownuje aktualne pliki z wynikiem generatora,
+   - zwraca non-zero gdy jest drift.
+3. Dodac tryb `--write-report`:
+   - raportuje, ktore symbole zostaly dodane/usuniete/zmienione.
+
+### Phase C - Type safety and compatibility layer (medium priority)
+
+1. Dodac opcjonalna sekcje `DTO projections` jako first-class feature emitera (zamiast recznych blokow stringowych).
+2. Dodac mapowanie nazw canonical <-> legacy (np. `Device` <-> `DeviceDto`) w konfigu generatora.
+3. Dodac policy checks dla problematycznych wzorcow TS:
+   - zakaz `interface X extends SomeType['nested']` w output contracts,
+   - preferencja explicit shape dla loading state i podobnych struktur.
+
+### Phase D - Verification gates in workflow (high priority)
+
+1. Dodac `make codegen-verify` w protos:
+   - uruchamia generator w `--check`,
+   - odpala minimalny `tsc --noEmit` na fixture workspace.
+2. Dodac testy snapshot/golden dla `protogate/codegen/typescript.py`:
+   - enumy,
+   - optional/nullable,
+   - union,
+   - dataclass defaults,
+   - alias/projection generation.
+3. Dodac test e2e: Python models -> generated TS -> compile check.
+
+### Phase E - CLI and DX cleanup (medium priority)
+
+1. Ujednolicic komendy codegen pod jednym namespace (np. `protogate codegen ts`).
+2. Dodac `--verbose` i czytelne summary (ile enums/interfaces/targets).
+3. Dodac dokument `docs/protogate-codegen-hardening.md`:
+   - profile,
+   - check mode,
+   - typowe bledy i ich naprawa,
+   - rekomendowany pipeline CI.
+
+### Definition of Done
+
+1. Brak dryfu miedzy targetami TS przy uruchomieniu `--check`.
+2. Wykrywanie brakujacych symboli na etapie generatora, nie dopiero w `tsc`.
+3. Minimum 1 workflow CI, ktory blokuje merge przy niespojnym codegen.
+4. Testy golden dla TypeScriptEmitter przechodza lokalnie i w CI.
+
+### Proposed execution order
+
+1. Phase A
+2. Phase B
+3. Phase D
+4. Phase C
+5. Phase E
+
+## Execution Backlog (P1/P2/P3 + estymacja)
+
+### P1 - Must have (blokuje stabilny rollout)
+
+1. P1-01: Symbol resolution guard in TypeScriptEmitter ✅
+   - Scope: wykrywanie niezdefiniowanych typow/interfejsow jeszcze w generatorze.
+   - Deliverable: fail-fast z lista brakujacych symboli i sekcja/symbol zrodlowy.
+   - Estimate: 1.5 dnia.
+
+2. P1-02: `--check` mode dla `protogate codegen ts-from-python` ✅
+   - Scope: porownanie in-memory output vs plik docelowy bez zapisu.
+   - Deliverable: exit code 1 przy drift, czytelny diff summary.
+   - Estimate: 1 dzien.
+
+3. P1-03: Multi-target write (single run -> N targetow) ✅
+   - Scope: atomowy zapis tego samego output do wielu sciezek.
+   - Deliverable: jedna komenda codegen synchronizuje wszystkie frontend targety.
+   - Estimate: 1 dzien.
+
+4. P1-04: `make codegen-verify` ✅
+   - Scope: spiecie `--check` + minimalny compile gate.
+   - Deliverable: jeden target make do lokalnego i CI verify.
+   - Estimate: 0.5 dnia.
+
+5. P1-05: Golden tests dla `protogate/codegen/typescript.py`
+   - Scope: enum, optional/nullable, union, defaults, alias/projections.
+   - Deliverable: zestaw snapshotow + test runner.
+   - Estimate: 2 dni.
+
+### P2 - Should have (mocna redukcja regresji i debt)
+
+1. P2-01: Profile output `strict` / `compat`
+   - Scope: explicit mode switch na poziomie CLI.
+   - Deliverable: profile konfigurujace aliasy legacy i sekcje kompatybilnosci.
+   - Estimate: 1.5 dnia.
+
+2. P2-02: First-class `DTO projections` API
+   - Scope: eliminacja recznych raw-string blokow w wrapperach.
+   - Deliverable: emitter API typu `.add_dto_projections(...)`.
+   - Estimate: 1.5 dnia.
+
+3. P2-03: Mapping canonical <-> legacy names
+   - Scope: mapowanie np. `Device` <-> `DeviceDto`, `TestSession` <-> `TestSessionDto`.
+   - Deliverable: deklaratywna mapa + walidacja konfliktow nazw.
+   - Estimate: 1 dzien.
+
+4. P2-04: Codegen change report (`--write-report`)
+   - Scope: raport add/remove/change symboli i sekcji.
+   - Deliverable: JSON + markdown summary po generacji.
+   - Estimate: 1 dzien.
+
+### P3 - Nice to have (DX i skalowanie)
+
+1. P3-01: Namespace cleanup komend codegen
+   - Scope: skroty i aliasy, np. `protogate codegen ts`.
+   - Deliverable: kompatybilne aliasy + update help.
+   - Estimate: 0.5 dnia.
+
+2. P3-02: `--verbose` and diagnostics UX
+   - Scope: statystyki output (enumy, interfejsy, targety, warnings).
+   - Deliverable: czytelny summary + debug trace mode.
+   - Estimate: 0.5 dnia.
+
+3. P3-03: Hardening runbook
+   - Scope: dokument procesu i troubleshooting.
+   - Deliverable: `docs/protogate-codegen-hardening.md`.
+   - Estimate: 0.5 dnia.
+
+### Sprint proposal (2 tygodnie)
+
+1. Sprint-1 (P1): P1-01, P1-02, P1-03, P1-04.
+2. Sprint-2 (P1/P2): P1-05, P2-01, P2-02.
+3. Sprint-3 (P2/P3): P2-03, P2-04, P3-01..03.
+
+### Critical path
+
+1. Najpierw: P1-01 + P1-02.
+2. Potem: P1-03 + P1-04.
+3. Dopiero potem: P1-05 i rozszerzenia kompatybilnosci (P2).

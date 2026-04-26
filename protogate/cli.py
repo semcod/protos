@@ -3,6 +3,7 @@
 protogate CLI - Migration tool and delegation platform
 """
 import argparse
+import difflib
 import importlib.util
 import json
 import subprocess
@@ -514,6 +515,84 @@ def cmd_codegen_registry(args: argparse.Namespace) -> int:
     )
 
 
+def cmd_codegen_ts_from_python(args: argparse.Namespace) -> int:
+    """Generate TypeScript output from a Python wrapper script.
+
+    The wrapper script must expose a callable ``build_output() -> str`` that
+    returns full TypeScript file content.
+    """
+    script_path = Path(args.script).resolve()
+    if not script_path.exists():
+        print(f"Generator script not found: {script_path}", file=sys.stderr)
+        return 1
+
+    raw_outputs = getattr(args, "output", None) or []
+    output_paths = [Path(raw).resolve() for raw in raw_outputs]
+    if not output_paths:
+        print("At least one --output is required", file=sys.stderr)
+        return 1
+
+    try:
+        mod = _load_module_from_path("_ts_from_python_codegen", script_path)
+    except Exception as exc:
+        print(f"Failed to load generator script {script_path}: {exc}", file=sys.stderr)
+        return 1
+
+    build_output = getattr(mod, "build_output", None)
+    if not callable(build_output):
+        print(
+            f"Generator script {script_path} must define callable build_output()",
+            file=sys.stderr,
+        )
+        return 1
+
+    try:
+        generated = build_output()
+    except Exception as exc:
+        print(f"build_output() failed in {script_path}: {exc}", file=sys.stderr)
+        return 1
+
+    if not isinstance(generated, str):
+        print("build_output() must return str", file=sys.stderr)
+        return 1
+
+    if args.check:
+        drift_found = False
+        for output_path in output_paths:
+            if not output_path.exists():
+                print(f"DRIFT: missing output file {output_path}", file=sys.stderr)
+                drift_found = True
+                continue
+
+            existing = output_path.read_text(encoding="utf-8")
+            if existing == generated:
+                if not args.quiet:
+                    print(f"OK: {output_path} is up-to-date")
+                continue
+
+            print(f"DRIFT: {output_path} is out-of-date", file=sys.stderr)
+            drift_found = True
+            if getattr(args, "show_diff", False):
+                diff = difflib.unified_diff(
+                    existing.splitlines(),
+                    generated.splitlines(),
+                    fromfile=f"current:{output_path}",
+                    tofile=f"generated:{output_path}",
+                    lineterm="",
+                )
+                for line in list(diff)[:200]:
+                    print(line, file=sys.stderr)
+
+        return 1 if drift_found else 0
+
+    for output_path in output_paths:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(generated, encoding="utf-8")
+        if not args.quiet:
+            print(f"generated -> {output_path}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="protogate",
@@ -754,6 +833,39 @@ def main() -> int:
         help="Suppress per-file progress output",
     )
     codegen_zod.set_defaults(func=cmd_codegen_zod)
+
+    # codegen ts-from-python (from wrapper script exposing build_output())
+    codegen_ts = codegen_sub.add_parser(
+        "ts-from-python",
+        help="Generate TypeScript from Python wrapper script (requires build_output())",
+    )
+    codegen_ts.add_argument(
+        "--script",
+        required=True,
+        help="Python script path exposing build_output() -> str",
+    )
+    codegen_ts.add_argument(
+        "--output",
+        action="append",
+        required=True,
+        help="Output TypeScript file path (repeatable for multi-target write)",
+    )
+    codegen_ts.add_argument(
+        "--check",
+        action="store_true",
+        help="Check-only mode; returns non-zero if output drift is detected",
+    )
+    codegen_ts.add_argument(
+        "--show-diff",
+        action="store_true",
+        help="When used with --check, print unified diff (truncated)",
+    )
+    codegen_ts.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress success output",
+    )
+    codegen_ts.set_defaults(func=cmd_codegen_ts_from_python)
 
     args = parser.parse_args()
     

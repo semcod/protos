@@ -1,6 +1,6 @@
 .PHONY: all proto zod python json sql clean generate-incremental proto-changed \
         registry-register registry-check registry-list \
-        proto-all gateway gateway-docker ci
+	proto-all gateway gateway-docker ci codegen-verify
 
 # Default: run all generators (requires buf on PATH for the proto target)
 all: proto zod python json sql
@@ -82,6 +82,22 @@ ci:
 	@echo "==> schema registry check (v2)"
 	python scripts/schema_registry.py check contracts/user/v2/user.proto || true
 	@echo "==> CI done ✓"
+
+# Verify codegen guardrails and (optionally) check TS outputs for drift.
+# Usage with real targets:
+#   make codegen-verify TS_CODEGEN_SCRIPT=/abs/path/to/generate-typescript-types.py \
+#        TS_CODEGEN_OUTPUTS="/abs/path/a.ts /abs/path/b.ts"
+codegen-verify:
+	@echo "==> pytest: TypeScript codegen guardrails"
+	pytest tests/test_typescript_codegen.py tests/test_protogate_cli.py -q
+	@if [ -n "$(TS_CODEGEN_SCRIPT)" ] && [ -n "$(TS_CODEGEN_OUTPUTS)" ]; then \
+		echo "==> protogate ts-from-python --check"; \
+		cmd="python -m protogate.cli codegen ts-from-python --script $(TS_CODEGEN_SCRIPT) --check"; \
+		for out in $(TS_CODEGEN_OUTPUTS); do cmd="$$cmd --output $$out"; done; \
+		eval "$$cmd"; \
+	else \
+		echo "==> skip ts-from-python drift check (set TS_CODEGEN_SCRIPT and TS_CODEGEN_OUTPUTS to enable)"; \
+	fi
 
 # ---------------------------------------------------------------------------
 # Legacy Bridge targets

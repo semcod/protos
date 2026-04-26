@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import argparse
 import os
 from pathlib import Path
 
-from protogate.cli import _resolve_proto_input_dir
+from protogate.cli import _resolve_proto_input_dir, cmd_codegen_ts_from_python
 
 
 def _write(path: Path, content: str) -> None:
@@ -82,3 +83,146 @@ def test_resolve_proto_input_dir_prefers_deterministic_candidate_on_equal_mtime(
     resolved = _resolve_proto_input_dir(contracts_root)
 
     assert resolved == right.resolve()
+
+
+def test_codegen_ts_from_python_writes_output(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out = tmp_path / "generated.ts"
+    _write(
+        script,
+        "def build_output():\n"
+        "    return 'export interface A { id: string; }\\n'\n",
+    )
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out)],
+        check=False,
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 0
+    assert out.exists()
+    assert "export interface A" in out.read_text(encoding="utf-8")
+
+
+def test_codegen_ts_from_python_check_detects_drift(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out = tmp_path / "generated.ts"
+    _write(
+        script,
+        "def build_output():\n"
+        "    return 'export interface A { id: string; }\\n'\n",
+    )
+    _write(out, "export interface B { id: string; }\n")
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out)],
+        check=True,
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 1
+
+
+def test_codegen_ts_from_python_check_passes_when_synced(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out = tmp_path / "generated.ts"
+    content = "export interface A { id: string; }\n"
+    _write(
+        script,
+        "def build_output():\n"
+        f"    return {content!r}\n",
+    )
+    _write(out, content)
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out)],
+        check=True,
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 0
+
+
+def test_codegen_ts_from_python_writes_multiple_outputs(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out_a = tmp_path / "a" / "generated.ts"
+    out_b = tmp_path / "b" / "generated.ts"
+    content = "export interface Multi { id: string; }\n"
+    _write(
+        script,
+        "def build_output():\n"
+        f"    return {content!r}\n",
+    )
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out_a), str(out_b)],
+        check=False,
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 0
+    assert out_a.read_text(encoding="utf-8") == content
+    assert out_b.read_text(encoding="utf-8") == content
+
+
+def test_codegen_ts_from_python_check_detects_drift_for_any_output(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out_a = tmp_path / "a" / "generated.ts"
+    out_b = tmp_path / "b" / "generated.ts"
+    content = "export interface Multi { id: string; }\n"
+    _write(
+        script,
+        "def build_output():\n"
+        f"    return {content!r}\n",
+    )
+    _write(out_a, content)
+    _write(out_b, "export interface Drift { id: string; }\n")
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out_a), str(out_b)],
+        check=True,
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 1
+
+
+def test_codegen_ts_from_python_check_passes_for_all_outputs_in_sync(tmp_path: Path) -> None:
+    script = tmp_path / "gen.py"
+    out_a = tmp_path / "a" / "generated.ts"
+    out_b = tmp_path / "b" / "generated.ts"
+    content = "export interface Multi { id: string; }\n"
+    _write(
+        script,
+        "def build_output():\n"
+        f"    return {content!r}\n",
+    )
+    _write(out_a, content)
+    _write(out_b, content)
+
+    args = argparse.Namespace(
+        script=str(script),
+        output=[str(out_a), str(out_b)],
+        check=True,
+        show_diff=False,
+        quiet=True,
+    )
+
+    rc = cmd_codegen_ts_from_python(args)
+    assert rc == 0

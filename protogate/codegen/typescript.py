@@ -13,6 +13,7 @@ from __future__ import annotations
 from dataclasses import fields, is_dataclass
 from datetime import datetime
 from enum import Enum
+import re
 from typing import Any, Callable, Sequence, Union, get_args, get_origin, get_type_hints
 
 
@@ -25,6 +26,72 @@ PRIMITIVE_TYPE_MAP: dict[type, str] = {
     list: "any[]",
     type(None): "null",
 }
+
+
+TS_IDENTIFIER_RE = re.compile(r"\b[A-Za-z_][A-Za-z0-9_]*\b")
+
+# Built-in/global TypeScript symbols that should never require local declarations.
+TS_GLOBAL_SYMBOLS: set[str] = {
+    "any",
+    "unknown",
+    "never",
+    "void",
+    "object",
+    "null",
+    "undefined",
+    "string",
+    "number",
+    "boolean",
+    "bigint",
+    "symbol",
+    "true",
+    "false",
+    "Record",
+    "Array",
+    "Promise",
+    "Date",
+    "Map",
+    "Set",
+    "Readonly",
+    "Partial",
+    "Required",
+    "Pick",
+    "Omit",
+    "Exclude",
+    "Extract",
+    "NonNullable",
+    "Parameters",
+    "ReturnType",
+    "ConstructorParameters",
+    "InstanceType",
+    "Awaited",
+    "keyof",
+    "typeof",
+    "infer",
+    "extends",
+}
+
+
+def _extract_type_identifiers(ts_type: str) -> set[str]:
+    """Extract potential type identifiers from a TypeScript type expression."""
+    tokens = set(TS_IDENTIFIER_RE.findall(ts_type))
+    return {token for token in tokens if token not in TS_GLOBAL_SYMBOLS}
+
+
+def _extract_declared_symbols(content: str) -> set[str]:
+    """Extract top-level symbol declarations from a TypeScript raw section."""
+    symbols: set[str] = set()
+    for line in content.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("//"):
+            continue
+        match = re.match(
+            r"^(?:export\s+)?(?:declare\s+)?(?:interface|enum|type|class)\s+([A-Za-z_][A-Za-z0-9_]*)\b",
+            stripped,
+        )
+        if match:
+            symbols.add(match.group(1))
+    return symbols
 
 
 def python_type_to_typescript(
@@ -153,6 +220,8 @@ class TypeScriptEmitter:
         self._source_description = source_description
         self._script_hint = script_hint
         self._entity_id_base: type | None = None
+        self._declared_symbols: set[str] = set()
+        self._referenced_symbols: list[tuple[str, str]] = []
 
     def with_entity_id_base(self, base: type) -> "TypeScriptEmitter":
         self._entity_id_base = base
@@ -160,6 +229,7 @@ class TypeScriptEmitter:
 
     def add_raw(self, content: str) -> "TypeScriptEmitter":
         self._chunks.append(content)
+        self._declared_symbols.update(_extract_declared_symbols(content))
         return self
 
     def add_section(self, title: str) -> "TypeScriptEmitter":
@@ -170,6 +240,7 @@ class TypeScriptEmitter:
     def add_enum(self, enum_class: type[Enum]) -> "TypeScriptEmitter":
         self._chunks.append(generate_enum(enum_class))
         self._chunks.append("")
+        self._declared_symbols.add(enum_class.__name__)
         return self
 
     def add_enums(self, enum_classes: Sequence[type[Enum]]) -> "TypeScriptEmitter":
@@ -184,9 +255,49 @@ class TypeScriptEmitter:
         entity_id_base: type | None = None,
     ) -> "TypeScriptEmitter":
         base = entity_id_base if entity_id_base is not None else self._entity_id_base
+        interface_name = dataclass_type.__name__
+        self._declared_symbols.add(interface_name)
+
+        # Track referenced symbols for fail-fast validation at render-time.
+        try:
+            hints = get_type_hints(dataclass_type)
+        except Exception:
+            hints = {}
+        for field_def in fields(dataclass_type):
+            field_name = field_def.name
+            if field_name.startswith("_"):
+                continue
+            py_type = hints.get(field_name, field_def.type)
+            ts_type = python_type_to_typescript(py_type, entity_id_base=base)
+            for symbol in _extract_type_identifiers(ts_type):
+                self._referenced_symbols.append((f"{interface_name}.{field_name}", symbol))
+
         self._chunks.append(generate_interface(dataclass_type, entity_id_base=base))
         self._chunks.append("")
         return self
+
+    def _validate_references(self) -> None:
+        unresolved: dict[str, list[str]] = {}
+        for context, symbol in self._referenced_symbols:
+            if symbol in self._declared_symbols:
+                continue
+            unresolved.setdefault(symbol, []).append(context)
+
+        if not unresolved:
+            return
+
+        details = []
+        for symbol in sorted(unresolved):
+            contexts = ", ".join(unresolved[symbol][:4])
+            if len(unresolved[symbol]) > 4:
+                contexts += ", ..."
+            details.append(f"{symbol} (used in: {contexts})")
+        joined = "; ".join(details)
+        raise ValueError(
+            "Unresolved TypeScript type symbols detected. "
+            "Declare the symbols via add_interface/add_enum/add_raw before render(): "
+            f"{joined}"
+        )
 
     def add_interfaces(
         self,
@@ -211,6 +322,7 @@ class TypeScriptEmitter:
         return "\n".join(lines)
 
     def render(self) -> str:
+        self._validate_references()
         return self.header() + "\n".join(self._chunks)
 
 

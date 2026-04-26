@@ -47,6 +47,39 @@ decode", "dead code paths on the client", "HTTP 422 for client").
 See [docs/contract-cross-check.md](docs/contract-cross-check.md) for the
 full reference and c2004 integration.
 
+- test: improve test coverage and add markdown output
+- docs: contract enum cross-check + auto-fix
+- fix(tests): update docs and address test assertions
+- feat(codegen/registry): directional subset check + warnings
+- feat(codegen/registry): add --cross-check-pydantic flag
+- feat(protogate): add migration analysis CLI commands
+- feat: schema registry - conflict resolution, vector clock, v2 proto
+- feat: implement proto pipeline with CQRS event store and incremental generation
+- refactor: configuration management system and code analysis engine
+
+## [0.1.19] - 2026-04-26
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+- Update protogate/README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+- Update tests/test_protogate_cli.py
+- Update tests/test_typescript_codegen.py
+
+### Other
+- Update .taskill/state.json
+- Update Makefile
+- Update protogate/cli.py
+- Update protogate/codegen/typescript.py
+- Update pytest.ini
+
 ## [0.1.18] - 2026-04-24
 
 ### Docs

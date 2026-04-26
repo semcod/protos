@@ -2,6 +2,8 @@
 
 Migration tool and delegation platform for extracting bounded slices from legacy systems with minimal coupling. Built on SUMD + DOQL + testql + taskfile ecosystem.
 
+Package-level operational guide: see protogate/README.md.
+
 ## Architecture
 
 **c2004 owns (c2004-first):**
@@ -398,16 +400,30 @@ pytest tests/test_event_store.py -v
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.18-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$4.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-14.0h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.19-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$4.65-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-14.0h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $4.5000 (30 commits)
-- 👤 **Human dev:** ~$1397 (14.0h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $4.6500 (31 commits)
+- 👤 **Human dev:** ~$1399 (14.0h @ $100/h, 30min dedup)
 
-Generated on 2026-04-24 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
+Generated on 2026-04-26 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
 ## License
 
 Licensed under Apache-2.0.
+## Status
+
+_Last updated by [taskill](https://github.com/oqlos/taskill) at 2026-04-25 13:43 UTC_
+
+| Metric | Value |
+|---|---|
+| HEAD | `3d1c764` |
+| Coverage | — |
+| Failing tests | — |
+| Commits in last cycle | 40 |
+
+> Various tests, docs, and refactors plus new features for codegen/registry and protogate CLI. Additions include directional subset checks, a --cross-check-pydantic flag, migration-analysis CLI commands, and schema registry improvements (conflict resolution, vector clocks, v2 proto).
+
+<!-- taskill:status:end -->
