@@ -36,13 +36,16 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 from sse_starlette.sse import EventSourceResponse
 
-from .delegation import get_delegated_slice, get_delegation_health, list_delegated_slices
+from .delegation import (
+    get_delegated_slice,
+    get_delegation_health,
+    list_delegated_slices,
+)
 from .ws import WebSocketDisconnect, manager
-from .sse import event_generator, push_to_subscribers, subscribe, unsubscribe
+from .sse import event_generator, push_to_subscribers, subscribe
 from .user_handler import (
     handle_change_email,
     handle_create_user,
@@ -85,7 +88,7 @@ async def lifespan(app: FastAPI):  # noqa: RUF029
 
 from fastapi.staticfiles import StaticFiles
 
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 
 app = FastAPI(
     title="semcod platform gateway",
@@ -97,9 +100,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+
 @app.get("/", include_in_schema=False)
 async def index():
     return RedirectResponse(url="/static/search_v2.html")
+
 
 app.mount("/static", StaticFiles(directory="gateway/static"), name="static")
 
@@ -139,7 +144,9 @@ async def health_modules() -> dict[str, Any]:
 async def health_module(slice_name: str) -> dict[str, Any]:
     delegated_slice = get_delegated_slice(slice_name)
     if delegated_slice is None:
-        raise HTTPException(status_code=404, detail=f"Delegated slice {slice_name!r} not found")
+        raise HTTPException(
+            status_code=404, detail=f"Delegated slice {slice_name!r} not found"
+        )
     return delegated_slice.health()
 
 
@@ -152,7 +159,9 @@ async def delegation_slices() -> list[dict[str, Any]]:
 async def delegation_slice_detail(slice_name: str) -> dict[str, Any]:
     delegated_slice = get_delegated_slice(slice_name)
     if delegated_slice is None:
-        raise HTTPException(status_code=404, detail=f"Delegated slice {slice_name!r} not found")
+        raise HTTPException(
+            status_code=404, detail=f"Delegated slice {slice_name!r} not found"
+        )
     return delegated_slice.detail()
 
 
@@ -244,7 +253,7 @@ async def cmd_create_user(body: CreateUserRequest) -> dict[str, Any]:
 @app.post("/commands/user/dual-create", tags=["user", "commands"], status_code=201)
 async def cmd_dual_create_user(body: DualCreateUserRequest) -> dict[str, Any]:
     """Issue a Dual-Write CreateUser command with idempotency.
-    
+
     Writes to both EventStore and LegacyDB parallelly.
     """
     result = handle_dual_write_user(
@@ -257,8 +266,12 @@ async def cmd_dual_create_user(body: DualCreateUserRequest) -> dict[str, Any]:
     # Broadcast to WS + SSE
     await manager.broadcast("UserCreated", result["state"])
     await push_to_subscribers("UserCreated", result["state"])
-    log.info("DualWrite: UserCreated id=%s  email=%s  cid=%s", 
-             result["aggregate_id"], body.email, body.command_id)
+    log.info(
+        "DualWrite: UserCreated id=%s  email=%s  cid=%s",
+        result["aggregate_id"],
+        body.email,
+        body.command_id,
+    )
     return result
 
 
@@ -321,7 +334,7 @@ async def cmd_index_search_entry(body: IndexEntryRequest) -> dict[str, Any]:
         title=body.title,
         category=body.category,
         content=body.content,
-        metadata=body.metadata
+        metadata=body.metadata,
     )
     # Broadcast event
     await manager.broadcast("EntryIndexed", {"id": body.id, "title": body.title})
@@ -330,9 +343,7 @@ async def cmd_index_search_entry(body: IndexEntryRequest) -> dict[str, Any]:
 
 @app.get("/queries/search", tags=["search", "queries"])
 async def query_search(
-    q: str = "", 
-    category: str | None = None, 
-    limit: int = 20
+    q: str = "", category: str | None = None, limit: int = 20
 ) -> dict[str, Any]:
     """Perform a full-text search on the index."""
     return handle_search(q, category, limit)

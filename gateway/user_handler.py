@@ -87,7 +87,7 @@ def handle_dual_write_user(
         "is_active": True,
     }
     result = _dual_writer.execute_create_user(command_id, payload)
-    
+
     # Replay state for consistent return format
     state = _engine.replay(result["aggregate_id"])
     return {**result, "state": state}
@@ -101,7 +101,12 @@ def handle_change_email(user_id: str, new_email: str) -> dict[str, Any]:
         payload={"email": new_email},
     )
     state = _engine.replay(user_id)
-    return {"id": user_id, "event_id": event.id, "version": event.version, "state": state}
+    return {
+        "id": user_id,
+        "event_id": event.id,
+        "version": event.version,
+        "state": state,
+    }
 
 
 def handle_deactivate_user(user_id: str) -> dict[str, Any]:
@@ -112,7 +117,12 @@ def handle_deactivate_user(user_id: str) -> dict[str, Any]:
         payload={},
     )
     state = _engine.replay(user_id)
-    return {"id": user_id, "event_id": event.id, "version": event.version, "state": state}
+    return {
+        "id": user_id,
+        "event_id": event.id,
+        "version": event.version,
+        "state": state,
+    }
 
 
 # ---------------------------------------------------------------------------

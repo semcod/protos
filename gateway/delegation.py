@@ -41,7 +41,9 @@ class DelegatedSlice:
         frontend_required = self.frontend not in {"none", "planned"}
         contract_checks = self._path_checks(root_path, self.contract_paths, True)
         read_model_checks = self._path_checks(root_path, self.read_model_paths, True)
-        frontend_checks = self._path_checks(root_path, self.frontend_paths, frontend_required)
+        frontend_checks = self._path_checks(
+            root_path, self.frontend_paths, frontend_required
+        )
         missing_required = [
             entry["path"]
             for entry in [*contract_checks, *read_model_checks, *frontend_checks]
@@ -129,7 +131,9 @@ def get_delegated_slice(name: str) -> DelegatedSlice | None:
 def list_delegated_slices(root: Path | None = None) -> list[dict[str, Any]]:
     return [
         delegated_slice.summary(root)
-        for delegated_slice in sorted(SLICE_REGISTRY.values(), key=lambda item: item.name)
+        for delegated_slice in sorted(
+            SLICE_REGISTRY.values(), key=lambda item: item.name
+        )
     ]
 
 
