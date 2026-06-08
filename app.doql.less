@@ -2,12 +2,54 @@
 
 app {
   name: protogate;
-  version: 0.1.13;
+  version: 0.1.24;
+  description: "Migration tool and delegation platform for extracting bounded slices from legacy systems";
+  license: Apache-2.0;
+  authors: "semcod <info@semcod.io>, Tom Sapletta <tom@sapletta.com>";
+  keywords: "protobuf, migration, delegation, cqrs, event-sourcing";
+  homepage: https://github.com/semcod/protogate;
+  repository: https://github.com/semcod/protogate;
 }
 
 dependencies {
   runtime: "protobuf>=4.25.0, pydantic>=2.0.0, pydantic[email]>=2.0.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60";
+  gateway: "fastapi>=0.136.0, uvicorn[standard]>=0.46.0, sse-starlette>=3.3.0";
   dev: "pytest>=9.0.0, pytest-cov>=7.0.0, black>=26.0.0, ruff>=0.15.0, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60";
+}
+
+entity[name="IndexEntryCommand"] {
+  id: string!;
+  title: string!;
+  category: string!;
+  content: string!;
+  metadata: dict[str, str]!;
+}
+
+entity[name="EntryIndexed"] {
+  id: string!;
+  title: string!;
+  category: string!;
+  timestamp: float!;
+}
+
+entity[name="IdentifyUserCommand"] {
+  command_id: string!;
+  identifier: string!;
+  type: IdentifierType!;
+}
+
+entity[name="UserIdentificationReadModel"] {
+  user_id: string!;
+  display_name: string!;
+  roles: list[str]!;
+  identified_at: datetime!;
+}
+
+entity[name="UserIdentifiedEvent"] {
+  event_id: string!;
+  user_id: string!;
+  type: IdentifierType!;
+  occurred_at: datetime!;
 }
 
 interface[type="api"] {
@@ -19,7 +61,7 @@ interface[type="cli"] {
   framework: argparse;
 }
 interface[type="cli"] page[name="protogate"] {
-
+  entry: protogate.cli:main;
 }
 
 workflow[name="proto"] {
@@ -113,6 +155,20 @@ workflow[name="ci"] {
   step-11: run cmd=echo "==> CI done ✓";
 }
 
+workflow[name="codegen-verify"] {
+  trigger: manual;
+  step-1: run cmd=echo "==> pytest: TypeScript codegen guardrails";
+  step-2: run cmd=pytest tests/test_typescript_codegen.py tests/test_protogate_cli.py -q;
+  step-3: run cmd=if [ -n "$(TS_CODEGEN_SCRIPT)" ] && [ -n "$(TS_CODEGEN_OUTPUTS)" ]; then \;
+  step-4: run cmd=echo "==> protogate ts-from-python --check"; \;
+  step-5: run cmd=cmd="python -m protogate.cli codegen ts-from-python --script $(TS_CODEGEN_SCRIPT) --check"; \;
+  step-6: run cmd=for out in $(TS_CODEGEN_OUTPUTS); do cmd="$$cmd --output $$out"; done; \;
+  step-7: run cmd=eval "$$cmd"; \;
+  step-8: run cmd=else \;
+  step-9: run cmd=echo "==> skip ts-from-python drift check (set TS_CODEGEN_SCRIPT and TS_CODEGEN_OUTPUTS to enable)"; \;
+  step-10: run cmd=fi;
+}
+
 workflow[name="legacy-register"] {
   trigger: manual;
   step-1: run cmd=python scripts/legacy_registry.py register-json user.legacy contracts/legacy_bridge/user_legacy.schema.json;
@@ -146,6 +202,14 @@ workflow[name="bootstrap-legacy"] {
   step-2: run cmd=PYTHONPATH=. python scripts/legacy_bridge/migrator.py;
 }
 
+tests {
+  import: testql-scenarios/**/*.testql.toon.yaml;
+}
+
+env_vars {
+  keys: OPENROUTER_API_KEY, LLM_MODEL, PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_MAX_RETRIES, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_CREATE_BACKUPS;
+}
+
 deploy {
   target: docker-compose;
   compose_file: docker-compose.yml;
@@ -154,5 +218,9 @@ deploy {
 environment[name="local"] {
   runtime: docker-compose;
   env_file: .env;
+  template_file: .env.example;
   python_version: >=3.9;
+  vars: LLM_MODEL, OPENROUTER_API_KEY, PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_CREATE_BACKUPS, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_MAX_RETRIES;
+  runtime_llm: OPENROUTER_API_KEY;
+  runtime_pfix: PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_CREATE_BACKUPS, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_MAX_RETRIES;
 }
