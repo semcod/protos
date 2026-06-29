@@ -57,6 +57,17 @@ full reference and c2004 integration.
 - feat: implement proto pipeline with CQRS event store and incremental generation
 - refactor: configuration management system and code analysis engine
 
+## [0.1.25] - 2026-06-29
+
+### Docs
+- Update README.md
+
+### Test
+- Update test_event_store.db-shm
+- Update test_event_store.db-wal
+- Update test_event_store_mig.db-shm
+- Update test_event_store_mig.db-wal
+
 ## [0.1.24] - 2026-04-26
 
 ### Docs

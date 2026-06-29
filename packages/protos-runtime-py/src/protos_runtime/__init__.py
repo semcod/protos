@@ -9,4 +9,4 @@ Public API:
 from .search_index import SearchIndex
 
 __all__ = ["SearchIndex"]
-__version__ = "0.1.24"
+__version__ = "0.1.25"
