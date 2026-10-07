@@ -740,6 +740,15 @@ def cmd_codegen_ts_from_python(args: argparse.Namespace) -> int:
 
 
 def main() -> int:
+    try:
+        from .autoupdate import check_for_updates
+        check_for_updates("protogate")
+    except Exception:
+        try:
+            from protogate.autoupdate import check_for_updates
+            check_for_updates("protogate")
+        except Exception:
+            pass
     parser = argparse.ArgumentParser(
         prog="protogate",
         description="Migration tool and delegation platform for extracting bounded slices from legacy systems"
